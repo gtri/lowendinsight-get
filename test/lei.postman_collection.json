@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "ea5ff9d0-1e0a-493b-8e07-5ecb91e876f0",
+		"name": "lei",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000"
+				},
+				"description": "base get"
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"url\":\"https://github.com/kitplummer/lita-cron\"}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/bot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"bot"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "bad",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"url\":\"https://github.com/kitplummer/blah\"}"
+				},
+				"url": {
+					"raw": "http://localhost:4000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000"
+				},
+				"description": "basic bad url request"
+			},
+			"response": []
+		},
+		{
+			"name": "empty",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						""
+					]
+				},
+				"description": "basic no body request"
+			},
+			"response": []
+		},
+		{
+			"name": "no content-type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"url\":\"https://github.com/kitplummer/xmpp4rails\"}"
+				},
+				"url": {
+					"raw": "http://localhost:4000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000"
+				}
+			},
+			"response": []
+		}
+	]
+}

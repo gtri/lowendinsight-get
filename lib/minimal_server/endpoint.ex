@@ -13,7 +13,7 @@ defmodule MinimalServer.Endpoint do
 
   plug(Plug.Parsers,
     parsers: [:json],
-    pass: ["application/json"],
+    pass: ["application/json", "text/plain"],
     json_decoder: Poison
   )
 

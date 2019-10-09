@@ -12,7 +12,7 @@
   "jason": {:hex, :jason, "1.1.1", "d3ccb840dfb06f2f90a6d335b536dd074db748b3e7f5b11ab61d239506585eb2", [:mix], [{:decimal, "~> 1.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm"},
   "json": {:hex, :json, "1.3.0", "2c6bac5303713d1b43ca6f3c881767f57b2adf668cde3013bd7157dc65ef299c", [:mix], [], "hexpm"},
   "jsx": {:hex, :jsx, "2.8.3", "a05252d381885240744d955fbe3cf810504eb2567164824e19303ea59eef62cf", [:mix, :rebar3], [], "hexpm"},
-  "lowendinsight": {:git, "git@bitbucket.org:kitplummer/lowendinsight.git", "c4b3bbaccaf34de38f97d1bb1a77ef79a8731c77", [branch: "master"]},
+  "lowendinsight": {:git, "https://bitbucket.org/kitplummer/lowendinsight", "8cd27896f17a7316e7b2d2828a733c4b7f68d293", [branch: "develop"]},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], [], "hexpm"},
   "mime": {:hex, :mime, "1.3.0", "5e8d45a39e95c650900d03f897fbf99ae04f60ab1daa4a34c7a20a5151b7a5fe", [:mix], [], "hexpm"},
   "mimerl": {:hex, :mimerl, "1.2.0", "67e2d3f571088d5cfd3e550c383094b47159f3eee8ffa08e64106cdf5e981be3", [:rebar3], [], "hexpm"},

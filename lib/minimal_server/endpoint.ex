@@ -19,6 +19,8 @@ defmodule MinimalServer.Endpoint do
 
   plug(:dispatch)
 
+  @content_type "application/json"
+
   def child_spec(opts) do
     %{
       id: __MODULE__,
@@ -33,23 +35,39 @@ defmodule MinimalServer.Endpoint do
     end
   end
 
-  forward("/bot", to: Router)
-
-  match _ do
+  get "/" do
     conn
-    |> put_resp_header("location", redirect_url())
-    |> put_resp_content_type("text/html")
-    |> send_resp(302, redirect_body())
+    |> put_resp_content_type(@content_type)
+    |> send_resp(200, message())
   end
 
-  defp redirect_body do
-    ~S(<html><body>You are being <a href=")
-    |> Kernel.<>(HTML.html_escape(redirect_url()))
-    |> Kernel.<>(~S(">redirected</a>.</body></html>))
+  post "/" do
+    body = conn.body_params
+    IO.inspect body
+    url = body["url"]
+    IO.inspect url
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(200, message(url))
+  end
+
+  match _ do
+    send_resp(conn, 404, "Requested page not found!")
+  end
+
+  defp message do
+    Poison.encode!(%{response: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
+  end
+
+  defp message(url) do
+    rep = AnalyzerModule.analyze url, "min"
+    IO.inspect rep
+    rep = Poison.decode!(rep)
+    IO.inspect rep
+    Poison.encode!(rep)
   end
 
   defp config, do: Application.fetch_env(:minimal_server, __MODULE__)
-  defp redirect_url, do: Application.get_env(:minimal_server, :redirect_url)
 
   def handle_errors(%{status: status} = conn, %{kind: _kind, reason: _reason, stack: _stack}),
     do: send_resp(conn, status, "Something went wrong")

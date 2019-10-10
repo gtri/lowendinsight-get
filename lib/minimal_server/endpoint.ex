@@ -4,7 +4,7 @@ defmodule MinimalServer.Endpoint do
   use Plug.ErrorHandler
 
   alias MinimalServer.Router
-  alias Plug.{Adapters.Cowboy2, HTML}
+  alias Plug.{Adapters.Cowboy, HTML}
 
   require Logger
 
@@ -31,7 +31,7 @@ defmodule MinimalServer.Endpoint do
   def start_link(_opts) do
     with {:ok, [port: port] = config} <- config() do
       Logger.info("Starting server at http://localhost:#{port}/")
-      Cowboy2.http(__MODULE__, [], config)
+      Cowboy.http(__MODULE__, [], config)
     end
   end
 
@@ -42,13 +42,15 @@ defmodule MinimalServer.Endpoint do
   end
 
   post "/" do
-    body = conn.body_params
-    IO.inspect body
-    url = body["url"]
-    IO.inspect url
+    {status, body} =
+      case conn.body_params do
+        %{"url" => url} -> message(url)
+        _ -> {422, message()}
+      end
+
     conn
     |> put_resp_content_type(@content_type)
-    |> send_resp(200, message(url))
+    |> send_resp(status, body)
   end
 
   match _ do
@@ -56,15 +58,17 @@ defmodule MinimalServer.Endpoint do
   end
 
   defp message do
-    Poison.encode!(%{response: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
+    Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
   end
 
   defp message(url) do
-    rep = AnalyzerModule.analyze url, "min"
-    IO.inspect rep
+    rep = AnalyzerModule.analyze url, "lei-get"
     rep = Poison.decode!(rep)
     IO.inspect rep
-    Poison.encode!(rep)
+    cond do
+      Map.has_key?(rep, "error") -> {422, message()}
+      Map.has_key?(rep, "data") -> {200, Poison.encode!(rep)}
+    end
   end
 
   defp config, do: Application.fetch_env(:minimal_server, __MODULE__)

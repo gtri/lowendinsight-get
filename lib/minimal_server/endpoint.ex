@@ -37,8 +37,8 @@ defmodule MinimalServer.Endpoint do
 
   get "/" do
     conn
-    |> put_resp_content_type(@content_type)
-    |> send_resp(200, message())
+    |> put_resp_content_type("text/html")
+    |> send_resp(200, html())
   end
 
   post "/" do
@@ -69,6 +69,53 @@ defmodule MinimalServer.Endpoint do
       Map.has_key?(rep, "error") -> {422, message()}
       Map.has_key?(rep, "data") -> {200, Poison.encode!(rep)}
     end
+  end
+
+  defp html do
+    """
+    <html>
+      <body>
+    <h1>LowEndInsight</h1>
+    A simple OSS risk (bus-factor) analysis tool
+
+    <h2>Using</h2>
+    POST a JSON object with a "url" element pointing to a git repo.
+
+    <h2>Example</h2>
+          <code>
+            $ curl -d '{"url":"https://bitbucket.org/kitplummer/clikan"}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
+          </code>
+
+    <br/><br/><b>Returns:</b>
+    <br/><br/>
+      <code>
+{
+  "header": {
+    "uuid": "c68b28dc-ec49-11e9-9470-9a8e56ec8d22",
+    "start_time": "2019-10-11 17:08:41.286100Z",
+    "source_client": "lei-get",
+    "end_time": "2019-10-11 17:08:41.928183Z",
+    "duration": 0
+  },
+  "data": {
+    "repo": "https://bitbucket.org/kitplummer/clikan",
+    "recent_commit_size_in_percent_of_codebase": 0.080078125,
+    "large_recent_commit_risk": "medium",
+    "functional_contributors_risk": "critical",
+    "functional_contributors": 1,
+    "functional_contributor_names": [
+      "Kit Plummer"
+    ],
+    "contributor_risk": "high",
+    "contributor_count": 2,
+    "commit_currency_weeks": 36,
+    "commit_currency_risk": "medium"
+  }
+}
+</code>
+      </body>
+    </html>
+    """
   end
 
   defp config, do: Application.fetch_env(:minimal_server, __MODULE__)

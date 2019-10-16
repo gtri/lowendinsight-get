@@ -20,3 +20,8 @@ config :lowendinsight,
   medium_functional_contributors_risk: 4,
   low_functional_contributors_risk: 5,
   functional_contributors_filter_percent: 0.10
+
+# config :redix,
+#   server: "localhost",
+#   port: 6379,
+#   db: 3

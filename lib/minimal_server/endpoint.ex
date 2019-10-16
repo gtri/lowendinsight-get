@@ -63,7 +63,7 @@ defmodule MinimalServer.Endpoint do
   defp message(url) do
     rep = AnalyzerModule.analyze url, "lei-get"
     rep = Poison.decode!(rep)
-    IO.inspect rep
+    write_event(rep)
     cond do
       Map.has_key?(rep, "error") -> {422, message()}
       Map.has_key?(rep, "data") -> {200, Poison.encode!(rep)}
@@ -115,6 +115,21 @@ defmodule MinimalServer.Endpoint do
       </body>
     </html>
     """
+  end
+
+  defp write_event(report) do
+    if Application.get_all_env(:redix) != [] do
+      {:ok, conn} = Redix.start_link(
+        host: Application.fetch_env!(:redix, :server),
+        port: Application.fetch_env!(:redix, :port),
+        database: Application.fetch_env!(:redix, :db)
+      )
+      {:ok, id} = Redix.command(conn, ["INCR", "event:id"])
+      Redix.command(conn, ["SET", "event-#{id}", Poison.encode!(report)])
+      Redix.stop(conn)
+    else
+      Logger.debug("no db defined, processing -> #{Poison.encode!(report)}")
+    end
   end
 
   defp config, do: Application.fetch_env(:minimal_server, __MODULE__)

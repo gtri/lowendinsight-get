@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: lei-get
+spec:
+  selector:
+    matchLabels:
+      app: lei-get
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: lei-get
+    spec:
+      containers:
+      - name: lei-get
+        image: kitplummer/lowendinsight-get:0.0.6
+        ports:
+        - containerPort: 4000

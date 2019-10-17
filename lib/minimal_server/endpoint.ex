@@ -119,14 +119,21 @@ defmodule MinimalServer.Endpoint do
 
   defp write_event(report) do
     if Application.get_all_env(:redix) != [] do
-      {:ok, conn} = Redix.start_link(
+      case Redix.start_link(
         host: Application.fetch_env!(:redix, :server),
         port: Application.fetch_env!(:redix, :port),
         database: Application.fetch_env!(:redix, :db)
-      )
-      {:ok, id} = Redix.command(conn, ["INCR", "event:id"])
-      Redix.command(conn, ["SET", "event-#{id}", Poison.encode!(report)])
-      Redix.stop(conn)
+      ) do
+        {:ok, conn} ->
+          case Redix.command(conn, ["INCR", "event:id"]) do
+            {:ok, id} ->
+              Redix.command(conn, ["SET", "event-#{id}", Poison.encode!(report)])
+              Redix.stop(conn)
+              Logger.debug("wrote event to redis -> #{Poison.encode!(report)}")
+            {:error, _reason} -> Logger.debug("no db available, processing -> #{Poison.encode!(report)}")
+          end
+        {:error, _reason} -> Logger.debug("no db available, processing -> #{Poison.encode!(report)}")
+      end
     else
       Logger.debug("no db defined, processing -> #{Poison.encode!(report)}")
     end

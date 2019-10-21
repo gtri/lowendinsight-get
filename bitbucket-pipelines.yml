@@ -1,0 +1,11 @@
+image: elixir:1.9.0-alpine
+
+pipelines:
+  default:
+    - step:
+        script:
+          - apk add git
+          - mix local.hex --force
+          - mix local.rebar --force
+          - mix deps.get
+          - mix test --color

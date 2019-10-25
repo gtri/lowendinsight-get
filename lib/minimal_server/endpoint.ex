@@ -61,12 +61,13 @@ defmodule MinimalServer.Endpoint do
   end
 
   defp message(url) do
-    rep = AnalyzerModule.analyze url, "lei-get"
-    rep = Poison.decode!(rep)
+    {:ok, rep} = AnalyzerModule.analyze url, "lei-get"
+    #rep = Poison.decode!(rep)
     write_event(rep)
+    IO.inspect rep
     cond do
-      Map.has_key?(rep, "error") -> {422, message()}
-      Map.has_key?(rep, "data") -> {200, Poison.encode!(rep)}
+      Map.has_key?(rep, :error) -> {422, message()}
+      Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
     end
   end
 

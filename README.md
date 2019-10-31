@@ -20,6 +20,15 @@ no connection can be made, logging will track the event.  Not entirely
 sure how this will play out, perhaps sidecar tracking of logging is the
 real event store.
 
+## API
+
+Pretty simple stuff:
+
+GET / - returns usage HTML
+POST / {"url":"some git url"} - returns basic report
+POST /v1/analyze {"urls":["some git url", "some other git url"]} -
+returns aggregate report
+
 ## TODO'ing
 
 Am working to get this thing deliverable to K8s clusters.  The container

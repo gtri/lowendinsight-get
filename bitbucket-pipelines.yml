@@ -4,15 +4,20 @@ pipelines:
     - step:
         image: elixir:1.9.0-alpine
         script:
-          - apk add git
+          - apk add git bash openssh
+          - echo $SSH_KEY > ~/.ssh/id_rsa.tmp # note: assumes base64 encoded ssh key without a passphrase
+          - base64 -d ~/.ssh/id_rsa.tmp > ~/.ssh/id_rsa
+          - chmod 600 ~/.ssh/id_rsa
+          - base64 ~/.ssh/id_rsa
           - apk add --update nodejs npm
-          - npm install newman
+          - npm install -g newman
           - mix local.hex --force
           - mix local.rebar --force
           - mix deps.get
           - newman --version
           - mix test --color
-
+          - mix run --no-halt . &
+            #          - newman run test/lei.postman_collection.json
 
 definitions:
   services:

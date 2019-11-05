@@ -10,11 +10,11 @@ pipelines:
           - chmod 600 ~/.ssh/id_rsa
           - base64 ~/.ssh/id_rsa
           - apk add --update nodejs npm
-          - npm install newman
+          - npm install -g newman
           - mix local.hex --force
           - mix local.rebar --force
           - mix deps.get
-          - newman --version
+          - ~/node_modules/newman --version
           - mix test --color
 
 

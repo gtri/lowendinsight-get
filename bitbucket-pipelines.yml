@@ -17,8 +17,7 @@ pipelines:
           - newman --version
           - mix test --color
           - mix run --no-halt . &
-          - newman run test/lei.postman_collection.json
-
+            #          - newman run test/lei.postman_collection.json
 
 definitions:
   services:

@@ -14,8 +14,10 @@ pipelines:
           - mix local.hex --force
           - mix local.rebar --force
           - mix deps.get
-          - ~/node_modules/newman --version
+          - newman --version
           - mix test --color
+          - mix run --no-halt . &
+          - newman run test/lei.postman_collection.json
 
 
 definitions:

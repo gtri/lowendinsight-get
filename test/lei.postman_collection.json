@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ea5ff9d0-1e0a-493b-8e07-5ecb91e876f0",
+		"_postman_id": "f462dc17-4084-4e4a-a926-59b604d1ccc1",
 		"name": "lei",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,14 +38,104 @@
 					"raw": "{\"url\":\"https://github.com/kitplummer/lita-cron\"}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/bot",
+					"raw": "http://localhost:4000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000"
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "post multi",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://github.com/kitplummer/xmpp4rails\", \"https://github.com/kitplummer/lita-cron\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"bot"
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "post multi 1 bad",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://github.com/kitplummer/xmpp4rails\", \"https://github.com/kitplummer/litacron\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "post multi all bad",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://github.com/kitplummer/xmp4rails\", \"https://github.com/kitplummer/litacron\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
 					]
 				},
 				"description": "basic post\n"
@@ -54,6 +144,21 @@
 		},
 		{
 			"name": "bad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -119,5 +224,6 @@
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

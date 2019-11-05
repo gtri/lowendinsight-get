@@ -43,8 +43,25 @@ defmodule MinimalServer.Endpoint do
   post "/" do
     {status, body} =
       case conn.body_params do
-        %{"url" => url} -> message(url)
-        _ -> {422, message()}
+        %{"url" => url} ->
+          rep = process(url)
+          cond do
+            Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
+            Map.has_key?(rep, :error) -> {422, Poison.encode!(rep)}
+          end
+        _ -> {422, process()}
+      end
+
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(status, body)
+  end
+
+  post "/v1/analyze" do
+    {status, body} =
+      case conn.body_params do
+        %{"urls" => urls} -> multi_process(urls)
+        _ -> {422, process()}
       end
 
     conn
@@ -56,19 +73,29 @@ defmodule MinimalServer.Endpoint do
     send_resp(conn, 404, "Requested page not found!")
   end
 
-  defp message do
+  defp process do
     Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
   end
 
-  defp message(url) do
-    {:ok, rep} = AnalyzerModule.analyze url, "lei-get"
-    #rep = Poison.decode!(rep)
-    write_event(rep)
-    IO.inspect rep
-    cond do
-      Map.has_key?(rep, :error) -> {422, message()}
-      Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
+  defp process(url) do
+    response = AnalyzerModule.analyze url, "lei-get"
+    case response do
+      {:ok, rep} ->
+        rep |> write_event
+        rep
+      {:error, rep} ->
+        %{error: rep} |> write_event
+        %{error: rep}
     end
+  end
+
+  ## This gooey goodness is required to handle multiple "process"
+  ## function calls and to load the results into a new list.
+  defp multi_process(urls) do
+    new_list = []
+    l = for url <- urls, do: new_list ++ %{url => process(url)}
+    data = %{data: %{repos: l}}
+    {200, Poison.encode!(data)}
   end
 
   defp html do
@@ -111,6 +138,73 @@ defmodule MinimalServer.Endpoint do
           "commit_currency_weeks": 36,
           "commit_currency_risk": "medium"
         }
+      }
+      </code>
+
+      <br/><br/>
+      <h2>Example</h2>
+      <code>
+      $ curl -d '{"urls":["https://bitbucket.org/kitplummer/clikan","https://github.com/kitplummer/xmpp4rails"]}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
+      </code>
+      <br/><br/>Returns:<br/>
+      <code>
+        {
+          "data": {
+              "repos": [
+                  {
+                      "https://github.com/kitplummer/xmpp4rails": {
+                          "header": {
+                              "uuid": "b23c0d3c-fc1c-11e9-b523-acde48001122",
+                              "start_time": "2019-10-31 20:26:18.437254Z",
+                              "source_client": "lei-get",
+                              "end_time": "2019-10-31 20:26:19.024154Z",
+                              "duration": 1
+                          },
+                          "data": {
+                              "risk": "critical",
+                              "repo": "https://github.com/kitplummer/xmpp4rails",
+                              "recent_commit_size_in_percent_of_codebase": 0.003683241252302026,
+                              "large_recent_commit_risk": "low",
+                              "functional_contributors_risk": "critical",
+                              "functional_contributors": 1,
+                              "functional_contributor_names": [
+                                  "Kit Plummer"
+                              ],
+                              "contributor_risk": "critical",
+                              "contributor_count": 1,
+                              "commit_currency_weeks": 564,
+                              "commit_currency_risk": "critical"
+                          }
+                      }
+                  },
+                  {
+                      "https://github.com/kitplummer/lita-cron": {
+                          "header": {
+                              "uuid": "b2a1c8c0-fc1c-11e9-a07f-acde48001122",
+                              "start_time": "2019-10-31 20:26:19.149681Z",
+                              "source_client": "lei-get",
+                              "end_time": "2019-10-31 20:26:19.773646Z",
+                              "duration": 0
+                          },
+                          "data": {
+                              "risk": "critical",
+                              "repo": "https://github.com/kitplummer/lita-cron",
+                              "recent_commit_size_in_percent_of_codebase": 0.6266666666666667,
+                              "large_recent_commit_risk": "critical",
+                              "functional_contributors_risk": "critical",
+                              "functional_contributors": 1,
+                              "functional_contributor_names": [
+                                  "Kit Plummer"
+                              ],
+                              "contributor_risk": "medium",
+                              "contributor_count": 3,
+                              "commit_currency_weeks": 204,
+                              "commit_currency_risk": "critical"
+                          }
+                      }
+                  }
+              ]
+          }
       }
       </code>
       </body>

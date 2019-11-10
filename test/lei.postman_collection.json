@@ -81,6 +81,68 @@
 			"response": []
 		},
 		{
+			"name": "post multi 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":\n\t[\n\t\t\"https://github.com/kitplummer/xmpp4rails\", \n\t\t\"https://github.com/kitplummer/lita-cron\",\n\t\t\"https://github.com/kitplummer/libconfuse\", \n\t\t\"https://github.com/kitplummer/kit\",\n\t\t\"https://github.com/kitplummer/nerves_system_rpi\", \n\t\t\"https://github.com/kitplummer/Busted\",\n\t\t\"https://github.com/kitplummer/notreal\", \n\t\t\"https://github.com/kitplummer/pdftohtmlr\",\n\t\t\"https://github.com/kitplummer/puppet-ozone\", \n\t\t\"https://github.com/kitplummer/phidgets4r\"\n\t]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "post multi 11",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":\n\t[\n\t\t\"https://github.com/kitplummer/xmpp4rails\", \n\t\t\"https://github.com/kitplummer/lita-cron\",\n\t\t\"https://github.com/kitplummer/libconfuse\", \n\t\t\"https://github.com/kitplummer/kit\",\n\t\t\"https://github.com/kitplummer/nerves_system_rpi\", \n\t\t\"https://github.com/kitplummer/Busted\",\n\t\t\"https://github.com/kitplummer/notreal\", \n\t\t\"https://github.com/kitplummer/pdftohtmlr\",\n\t\t\"https://github.com/kitplummer/puppet-ozone\", \n\t\t\"https://github.com/kitplummer/worka\", \n\t\t\"https://github.com/kitplummer/phidgets4r\"\n\t]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
 			"name": "post multi 1 bad",
 			"request": {
 				"method": "POST",
@@ -224,6 +286,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

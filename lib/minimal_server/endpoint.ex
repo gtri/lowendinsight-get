@@ -77,7 +77,7 @@ defmodule MinimalServer.Endpoint do
     Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
   end
 
-  defp process(url) do
+  def process(url) do
     response = AnalyzerModule.analyze url, "lei-get"
     case response do
       {:ok, rep} ->
@@ -89,13 +89,17 @@ defmodule MinimalServer.Endpoint do
     end
   end
 
-  ## This gooey goodness is required to handle multiple "process"
-  ## function calls and to load the results into a new list.
+  # This currently has a timeout of infinity, because if any of the spun out tasks times out
+  # the function will error in whole
+  # Max concurrency is hard code, but might should be a config value
   defp multi_process(urls) do
-    new_list = []
-    l = for url <- urls, do: new_list ++ %{url => process(url)}
+    l = urls 
+      |> Task.async_stream(__MODULE__, :process, [], [timeout: :infinity, max_concurrency: 10])
+      |> Enum.map(fn {:ok, val} -> val end)
+
     data = %{data: %{repos: l}}
     {200, Poison.encode!(data)}
+
   end
 
   defp html do

@@ -60,7 +60,12 @@ defmodule MinimalServer.Endpoint do
   post "/v1/analyze" do
     {status, body} =
       case conn.body_params do
-        %{"urls" => urls} -> multi_process(urls)
+        %{"urls" => urls} -> 
+          rep = multi_process(urls)
+          cond do
+            Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
+            Map.has_key?(rep, :error) -> {422, Poison.encode!(rep)}
+          end
         _ -> {422, process()}
       end
 
@@ -77,7 +82,7 @@ defmodule MinimalServer.Endpoint do
     Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
   end
 
-  def process(url) do
+  defp process(url) do
     response = AnalyzerModule.analyze url, "lei-get"
     case response do
       {:ok, rep} ->
@@ -93,13 +98,15 @@ defmodule MinimalServer.Endpoint do
   # the function will error in whole
   # Max concurrency is hard code, but might should be a config value
   defp multi_process(urls) do
-    l = urls 
-      |> Task.async_stream(__MODULE__, :process, [], [timeout: :infinity, max_concurrency: 10])
-      |> Enum.map(fn {:ok, val} -> val end)
-
-    data = %{data: %{repos: l}}
-    {200, Poison.encode!(data)}
-
+    response = AnalyzerModule.analyze urls, "lei-get"
+    case response do
+      {:ok, rep} ->
+        rep |> write_event
+        rep
+      {:error, rep} ->
+        %{error: rep} |> write_event
+        %{error: rep}
+    end
   end
 
   defp html do

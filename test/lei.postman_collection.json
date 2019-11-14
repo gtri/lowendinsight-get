@@ -62,7 +62,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"urls\":[\"https://github.com/kitplummer/xmpp4rails\", \"https://github.com/kitplummer/lita-cron\"]}"
+					"raw": "{\"urls\":[\"https://github.com/kitplummer/xmpp4rails\", \"https://github.com/robbyrussell/oh-my-zsh\"]}"
 				},
 				"url": {
 					"raw": "http://localhost:4000/v1/analyze",
@@ -213,8 +213,8 @@
 						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
 						"exec": [
 							"// example using pm.response.to.have",
-							"pm.test(\"response is 422\", function () {",
-							"    pm.response.to.have.status(422);",
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});"
 						],
 						"type": "text/javascript"

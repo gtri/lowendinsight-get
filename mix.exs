@@ -26,8 +26,9 @@ defmodule MinimalServer.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},
-      #{:lowendinsight, path: "../lowendinsight"}
-      {:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
+      ##{:lowendinsight, path: "../lowendinsight"}
+      ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
+      {:lowendinsight, "0.2.1"}
     ]
   end
 end

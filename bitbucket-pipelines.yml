@@ -16,7 +16,7 @@ pipelines:
           - mix deps.get
           - newman --version
           - mix test --color
-          - elixir --detach -S mix run --no-halt
+          - elixir --detached -S mix run --no-halt
           - jobs
           - newman run test/lei.postman_collection.json
 

@@ -17,6 +17,7 @@ pipelines:
           - newman --version
           - mix test --color
           - mix run --no-halt . &
+          - jobs
           - newman run test/lei.postman_collection.json
 
 definitions:

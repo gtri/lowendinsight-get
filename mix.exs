@@ -20,7 +20,7 @@ defmodule MinimalServer.MixProject do
 
   defp deps do
     [
-      {:poison, "~> 3.0"},
+      #{:poison, "~> 3.0"},
       {:plug, "~> 1.6"},
       {:cowboy, "~> 2.4"},
       {:plug_cowboy, "~> 2.0"},
@@ -28,7 +28,7 @@ defmodule MinimalServer.MixProject do
       {:redix, ">= 0.0.0"},
       ##{:lowendinsight, path: "../lowendinsight"}
       ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
-      {:lowendinsight, "0.2.1"}
+      {:lowendinsight, "0.2.2"}
     ]
   end
 end

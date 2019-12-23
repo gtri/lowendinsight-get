@@ -13,7 +13,7 @@ defmodule MinimalServer.Endpoint do
   plug(Plug.Parsers,
     parsers: [:json],
     pass: ["application/json", "text/plain"],
-    json_decoder: Poison
+    json_decoder: JSON
   )
 
   plug(:dispatch)
@@ -46,8 +46,8 @@ defmodule MinimalServer.Endpoint do
         %{"url" => url} ->
           rep = process(url)
           cond do
-            Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
-            Map.has_key?(rep, :error) -> {422, Poison.encode!(rep)}
+            Map.has_key?(rep, :data) -> {200, JSON.encode!(rep)}
+            Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
           end
         _ -> {422, process()}
       end
@@ -63,8 +63,8 @@ defmodule MinimalServer.Endpoint do
         %{"urls" => urls} -> 
           rep = multi_process(urls)
           cond do
-            Map.has_key?(rep, :data) -> {200, Poison.encode!(rep)}
-            Map.has_key?(rep, :error) -> {422, Poison.encode!(rep)}
+            Map.has_key?(rep, :data) -> {200, JSON.encode!(rep)}
+            Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
           end
         _ -> {422, process()}
       end
@@ -79,7 +79,7 @@ defmodule MinimalServer.Endpoint do
   end
 
   defp process do
-    Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
+    JSON.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
   end
 
   defp process(url) do
@@ -233,15 +233,15 @@ defmodule MinimalServer.Endpoint do
         {:ok, conn} ->
           case Redix.command(conn, ["INCR", "event:id"]) do
             {:ok, id} ->
-              Redix.command(conn, ["SET", "event-#{id}", Poison.encode!(report)])
+              Redix.command(conn, ["SET", "event-#{id}", JSON.encode!(report)])
               Redix.stop(conn)
-              Logger.debug("wrote event to redis -> #{Poison.encode!(report)}")
-            {:error, _reason} -> Logger.debug("no db available, processing -> #{Poison.encode!(report)}")
+              Logger.debug("wrote event to redis -> #{JSON.encode!(report)}")
+            {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
           end
-        {:error, _reason} -> Logger.debug("no db available, processing -> #{Poison.encode!(report)}")
+        {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
       end
     else
-      Logger.debug("no db defined, processing -> #{Poison.encode!(report)}")
+      Logger.debug("no db defined, processing -> #{JSON.encode!(report)}")
     end
   end
 

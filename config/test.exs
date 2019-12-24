@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :minimal_server, MinimalServer.Endpoint,
+config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")
 
 config :lowendinsight,

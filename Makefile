@@ -15,6 +15,7 @@ build: ## Build the Docker image
   -t kitplummer/$(APP_NAME):latest .
 
 run: ## Run the app in Docker
-	docker run --env-file config/docker.env \
+	docker run \
+	-e LEI_CRITICAL_CONTRIBUTOR_LEVEL=1 \
   --expose 4000 -p 4000:4000 \
   --rm -it kitplummer/$(APP_NAME):latest

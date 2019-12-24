@@ -16,9 +16,9 @@ pipelines:
           - mix deps.get
           - newman --version
           - mix test --color
-          - docker build -t kitplummer/lowendinsight-get:test .
-          - docker run -d -p 4000:4000 kitplummer/lowendinsight-get:test
-#          - elixir --detached -S mix run --no-halt
+          - mix distillery.init
+          - make build
+          - make run
           - newman run test/lei.postman_collection.json
         services:
           - docker

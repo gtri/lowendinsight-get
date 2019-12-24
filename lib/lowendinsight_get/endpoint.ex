@@ -1,4 +1,4 @@
-defmodule MinimalServer.Endpoint do
+defmodule LowendinsightGet.Endpoint do
   use Plug.Router
   use Plug.Debugger
   use Plug.ErrorHandler
@@ -245,7 +245,7 @@ defmodule MinimalServer.Endpoint do
     end
   end
 
-  defp config, do: Application.fetch_env(:minimal_server, __MODULE__)
+  defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
   def handle_errors(%{status: status} = conn, %{kind: _kind, reason: _reason, stack: _stack}),
     do: send_resp(conn, status, "Something went wrong")

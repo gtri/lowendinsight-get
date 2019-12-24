@@ -1,0 +1,2 @@
+defmodule LowendinsightGet do
+end

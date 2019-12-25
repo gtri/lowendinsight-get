@@ -18,4 +18,4 @@ run: ## Run the app in Docker
 	docker run \
 	-e LEI_CRITICAL_CONTRIBUTOR_LEVEL=1 \
   --expose 4000 -p 4000:4000 \
-  --rm kitplummer/$(APP_NAME):latest
+  --rm -d kitplummer/$(APP_NAME):latest

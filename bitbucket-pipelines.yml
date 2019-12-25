@@ -9,7 +9,7 @@ pipelines:
           - base64 -d ~/.ssh/id_rsa.tmp > ~/.ssh/id_rsa
           - chmod 600 ~/.ssh/id_rsa
           - base64 ~/.ssh/id_rsa
-          - apk add --update nodejs npm
+          - apk add --update nodejs npm make
           - npm install -g newman
           - mix local.hex --force
           - mix local.rebar --force

@@ -20,9 +20,10 @@ jobs:
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+        mix distillery.init
     - name: Run Tests
       run: mix test --color
-    - name: Package Container
-      run: |
-        mix distillery.init
-        make build
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build Container
+      run: make build

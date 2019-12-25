@@ -1,10 +1,10 @@
-defmodule MinimalServer.MixProject do
+defmodule LowendinsightGet.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :minimal_server,
-      version: "0.1.0",
+      app: :lowendinsight_get,
+      version: "0.1.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -14,13 +14,12 @@ defmodule MinimalServer.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {MinimalServer.Application, []}
+      mod: {LowendinsightGet.Application, []}
     ]
   end
 
   defp deps do
     [
-      #{:poison, "~> 3.0"},
       {:plug, "~> 1.6"},
       {:cowboy, "~> 2.4"},
       {:plug_cowboy, "~> 2.0"},
@@ -28,7 +27,8 @@ defmodule MinimalServer.MixProject do
       {:redix, ">= 0.0.0"},
       ##{:lowendinsight, path: "../lowendinsight"}
       ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
-      {:lowendinsight, "0.2.2"}
+      {:lowendinsight, "0.2.2"},
+      {:distillery, "~> 2.1"}
     ]
   end
 end

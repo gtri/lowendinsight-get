@@ -1,7 +1,7 @@
-defmodule MinimalServer.Application do
+defmodule LowendinsightGet.Application do
   use Application
 
-  alias MinimalServer.Endpoint
+  alias LowendinsightGet.Endpoint
 
   def start(_type, _args),
     do: Supervisor.start_link(children(), opts())
@@ -15,7 +15,7 @@ defmodule MinimalServer.Application do
   defp opts do
     [
       strategy: :one_for_one,
-      name: MinimalServer.Supervisor
+      name: LowendinsightGet.Supervisor
     ]
   end
 end

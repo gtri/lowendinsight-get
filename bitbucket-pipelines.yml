@@ -9,17 +9,18 @@ pipelines:
           - base64 -d ~/.ssh/id_rsa.tmp > ~/.ssh/id_rsa
           - chmod 600 ~/.ssh/id_rsa
           - base64 ~/.ssh/id_rsa
-          - apk add --update nodejs npm
+          - apk add --update nodejs npm make
           - npm install -g newman
           - mix local.hex --force
           - mix local.rebar --force
           - mix deps.get
           - newman --version
           - mix test --color
-          - docker build -t kitplummer/lowendinsight-get:test .
-          - docker run -d -p 4000:4000 kitplummer/lowendinsight-get:test
-#          - elixir --detached -S mix run --no-halt
-          - newman run test/lei.postman_collection.json
+          - mix distillery.init
+          - make build
+          - make run
+          - docker ps
+            #- newman run test/lei.postman_collection.json
         services:
           - docker
 

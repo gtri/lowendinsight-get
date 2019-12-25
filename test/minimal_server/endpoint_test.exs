@@ -1,15 +1,15 @@
-defmodule MinimalServer.EndpointTest do
+defmodule LowendinsightGet.EndpointTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  @opts MinimalServer.Endpoint.init([])
+  @opts LowendinsightGet.Endpoint.init([])
 
   test "it returns HTML" do
     # Create a test connection
     conn = conn(:get, "/")
 
     # Invoke the plug
-    conn = MinimalServer.Endpoint.call(conn, @opts)
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response and status
     assert conn.state == :sent
@@ -22,7 +22,7 @@ defmodule MinimalServer.EndpointTest do
     conn = conn(:post, "/", %{url: "https://github.com/kitplummer/xmpp4rails"})
 
     # Invoke the plug
-    conn = MinimalServer.Endpoint.call(conn, @opts)
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
     assert conn.status == 200
@@ -33,7 +33,7 @@ defmodule MinimalServer.EndpointTest do
     conn = conn(:post, "/", %{})
 
     # Invoke the plug
-    conn = MinimalServer.Endpoint.call(conn, @opts)
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
     assert conn.status == 422
@@ -44,7 +44,7 @@ defmodule MinimalServer.EndpointTest do
     conn = conn(:get, "/fail")
 
     # Invoke the plug
-    conn = MinimalServer.Endpoint.call(conn, @opts)
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
     assert conn.status == 404

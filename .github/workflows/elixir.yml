@@ -15,13 +15,14 @@ jobs:
     - name: Install Dependencies
       run: |
         apk add git nodejs npm make
+        npm install -g newman
+        newman --version
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
-        newman --version
     - name: Run Tests
       run: mix test --color
     - name: Package Container
       run: |
-        mix distillery.init \
+        mix distillery.init
         make build

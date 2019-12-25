@@ -19,7 +19,8 @@ pipelines:
           - mix distillery.init
           - make build
           - make run
-          - newman run test/lei.postman_collection.json
+          - docker ps
+            #- newman run test/lei.postman_collection.json
         services:
           - docker
 

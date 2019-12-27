@@ -27,7 +27,5 @@ jobs:
           mix distillery.init
       - name: Run Tests
         run: mix test --color
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       - name: Build Container
         run: make build

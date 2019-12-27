@@ -7,14 +7,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: elixir:1.9.4-alpine
+    # container:
+    #   image: elixir:1.9.4-alpine
 
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: 22.x
+          elixir-version: 1.9.x
     - name: Install Dependencies
       run: |
-        apk add git nodejs npm make
+        # apk add git nodejs npm make
         npm install -g newman
         newman --version
         mix local.rebar --force

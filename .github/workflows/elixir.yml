@@ -33,7 +33,7 @@ jobs:
         run: |
           make run
           docker ps
-      - name: Sleep
+      - name: Sleep for 10 seconds
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'

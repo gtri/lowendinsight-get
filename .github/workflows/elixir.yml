@@ -29,3 +29,7 @@ jobs:
         run: mix test --color
       - name: Build Container
         run: make build
+      - name: Run Container Tests
+        run: |
+          make runs
+          newman run test/lei.postman_collection.json

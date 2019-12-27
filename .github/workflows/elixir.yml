@@ -31,5 +31,5 @@ jobs:
         run: make build
       - name: Run Container Tests
         run: |
-          make runs
+          make run
           newman run test/lei.postman_collection.json

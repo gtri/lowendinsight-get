@@ -32,4 +32,5 @@ jobs:
       - name: Run Container Tests
         run: |
           make run
+          docker ps
           newman run test/lei.postman_collection.json

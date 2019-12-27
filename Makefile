@@ -19,3 +19,8 @@ run: ## Run the app in Docker
 	-e LEI_CRITICAL_CONTRIBUTOR_LEVEL=1 \
   --expose 4000 -p 4000:4000 \
   --rm -d kitplummer/$(APP_NAME):latest
+
+publish: ## Push the artifact out
+	echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin
+	docker push kitplummer/$(APP_NAME):$(APP_VSN)-$(BUILD) 
+	docker push kitplummer/$(APP_NAME):latest

@@ -29,14 +29,9 @@ jobs:
         run: mix test --color
       - name: Build Container
         run: make build
-      - name: Run Container
-        run: |
-          make run
-      - name: Sleep for 10 seconds
-        uses: jakejarvis/wait-action@master
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          time: '10s'
-      - name: Run Container Test
-        run: |
-          docker ps
-          newman run test/lei.postman_collection.json
+          name: kitplummer/lowendinsight_get
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}

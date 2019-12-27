@@ -32,11 +32,11 @@ jobs:
       - name: Run Container
         run: |
           make run
-          docker ps
       - name: Sleep for 10 seconds
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
       - name: Run Container Test
         run: |
+          docker ps
           newman run test/lei.postman_collection.json

@@ -35,9 +35,10 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/" do
+    {:ok, html} = File.read("lib/lowendinsight_get/index.html")
     conn
     |> put_resp_content_type("text/html")
-    |> send_resp(200, html())
+    |> send_resp(200, html)
   end
 
   post "/" do
@@ -107,120 +108,6 @@ defmodule LowendinsightGet.Endpoint do
         %{error: rep} |> write_event
         %{error: rep}
     end
-  end
-
-  defp html do
-    """
-    <html>
-      <body>
-    <h1>LowEndInsight</h1>
-    A simple OSS risk (bus-factor) analysis tool
-
-    <h2>Using</h2>
-    POST a JSON object with a "url" element pointing to a git repo.
-
-    <h2>Example</h2>
-          <code>
-            $ curl -d '{"url":"https://bitbucket.org/kitplummer/clikan"}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
-          </code>
-
-    <br/><br/><b>Returns:</b>
-    <br/><br/>
-      <code>
-      {
-        "header": {
-          "uuid": "c68b28dc-ec49-11e9-9470-9a8e56ec8d22",
-          "start_time": "2019-10-11 17:08:41.286100Z",
-          "source_client": "lei-get",
-          "end_time": "2019-10-11 17:08:41.928183Z",
-          "duration": 0
-        },
-        "data": {
-          "repo": "https://bitbucket.org/kitplummer/clikan",
-          "recent_commit_size_in_percent_of_codebase": 0.080078125,
-          "large_recent_commit_risk": "medium",
-          "functional_contributors_risk": "critical",
-          "functional_contributors": 1,
-          "functional_contributor_names": [
-            "Kit Plummer"
-          ],
-          "contributor_risk": "high",
-          "contributor_count": 2,
-          "commit_currency_weeks": 36,
-          "commit_currency_risk": "medium"
-        }
-      }
-      </code>
-
-      <br/><br/>
-      <h2>Example</h2>
-      <code>
-      $ curl -d '{"urls":["https://bitbucket.org/kitplummer/clikan","https://github.com/kitplummer/xmpp4rails"]}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
-      </code>
-      <br/><br/>Returns:<br/>
-      <code>
-        {
-          "data": {
-              "repos": [
-                  {
-                      "https://github.com/kitplummer/xmpp4rails": {
-                          "header": {
-                              "uuid": "b23c0d3c-fc1c-11e9-b523-acde48001122",
-                              "start_time": "2019-10-31 20:26:18.437254Z",
-                              "source_client": "lei-get",
-                              "end_time": "2019-10-31 20:26:19.024154Z",
-                              "duration": 1
-                          },
-                          "data": {
-                              "risk": "critical",
-                              "repo": "https://github.com/kitplummer/xmpp4rails",
-                              "recent_commit_size_in_percent_of_codebase": 0.003683241252302026,
-                              "large_recent_commit_risk": "low",
-                              "functional_contributors_risk": "critical",
-                              "functional_contributors": 1,
-                              "functional_contributor_names": [
-                                  "Kit Plummer"
-                              ],
-                              "contributor_risk": "critical",
-                              "contributor_count": 1,
-                              "commit_currency_weeks": 564,
-                              "commit_currency_risk": "critical"
-                          }
-                      }
-                  },
-                  {
-                      "https://github.com/kitplummer/lita-cron": {
-                          "header": {
-                              "uuid": "b2a1c8c0-fc1c-11e9-a07f-acde48001122",
-                              "start_time": "2019-10-31 20:26:19.149681Z",
-                              "source_client": "lei-get",
-                              "end_time": "2019-10-31 20:26:19.773646Z",
-                              "duration": 0
-                          },
-                          "data": {
-                              "risk": "critical",
-                              "repo": "https://github.com/kitplummer/lita-cron",
-                              "recent_commit_size_in_percent_of_codebase": 0.6266666666666667,
-                              "large_recent_commit_risk": "critical",
-                              "functional_contributors_risk": "critical",
-                              "functional_contributors": 1,
-                              "functional_contributor_names": [
-                                  "Kit Plummer"
-                              ],
-                              "contributor_risk": "medium",
-                              "contributor_count": 3,
-                              "commit_currency_weeks": 204,
-                              "commit_currency_risk": "critical"
-                          }
-                      }
-                  }
-              ]
-          }
-      }
-      </code>
-      </body>
-    </html>
-    """
   end
 
   defp write_event(report) do

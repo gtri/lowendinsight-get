@@ -1,0 +1,194 @@
+<html>
+  <body bgcolor="#6e6d6d">
+    <h1>LowEndInsight</h1>
+    A simple OSS risk (bus-factor) analysis tool.  Provides insight into the source repository, looking at contributors, commits and governing aginst pre-defined par-levels.
+
+    <h2>Using</h2>
+    POST a JSON object with a "url" element pointing to a git repo.
+
+    <h2>Example</h2>
+          <code>
+            $ curl -d '{"url":"https://bitbucket.org/kitplummer/clikan"}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
+          </code>
+
+    <br/><br/><b>Returns:</b>
+    <br/><br/>
+      <pre>
+        {
+          "data": {
+            "commit_currency_risk": "medium",
+            "commit_currency_weeks": 48,
+            "config": {
+              "medium_large_commit_level": 0.05,
+              "high_functional_contributors_level": 3,
+              "critical_currency_level": 104,
+              "high_contributor_level": 3,
+              "high_large_commit_level": 0.15,
+              "critical_contributor_level": 2,
+              "medium_contributor_level": 5,
+              "high_currency_level": 52,
+              "critical_functional_contributors_level": 2,
+              "medium_functional_contributors_level": 5,
+              "medium_currency_level": 26,
+              "critical_large_commit_level": 0.3
+            },
+            "contributor_count": 2,
+            "contributor_risk": "high",
+            "functional_contributor_names": [
+              "Kit Plummer"
+            ],
+            "functional_contributors": 1,
+            "functional_contributors_risk": "critical",
+            "large_recent_commit_risk": "medium",
+            "recent_commit_size_in_percent_of_codebase": 0.080078125,
+            "repo": "https://bitbucket.org/kitplummer/clikan",
+            "risk": "critical"
+          },
+          "header": {
+            "duration": 1,
+            "end_time": "2020-01-02 20:40:22.539621Z",
+            "source_client": "lei-get",
+            "start_time": "2020-01-02 20:40:21.388629Z",
+            "uuid": "18fbf8b6-2da0-11ea-baf8-2e94bed47b47"
+          }
+        }
+      </pre>
+
+      <br/><br/>
+      <h2>Example</h2>
+      <code>
+      $ curl -d '{"urls":["https://bitbucket.org/kitplummer/clikan","https://github.com/kitplummer/xmpp4rails"]}' -H "Content-Type: application/json" -X POST https://lowendinsight.k8s.elsys.gtri.org | jq
+      </code>
+      <br/><br/>Returns:<br/>
+      <pre>
+        {
+          "data": {
+            "repos": [
+              {
+                "data": {
+                  "commit_currency_risk": "medium",
+                  "commit_currency_weeks": 48,
+                  "config": {
+                    "medium_large_commit_level": 0.05,
+                    "high_functional_contributors_level": 3,
+                    "critical_currency_level": 104,
+                    "high_contributor_level": 3,
+                    "high_large_commit_level": 0.15,
+                    "critical_contributor_level": 2,
+                    "medium_contributor_level": 5,
+                    "high_currency_level": 52,
+                    "critical_functional_contributors_level": 2,
+                    "medium_functional_contributors_level": 5,
+                    "medium_currency_level": 26,
+                    "critical_large_commit_level": 0.3
+                  },
+                  "contributor_count": 2,
+                  "contributor_risk": "high",
+                  "functional_contributor_names": [
+                    "Kit Plummer"
+                  ],
+                  "functional_contributors": 1,
+                  "functional_contributors_risk": "critical",
+                  "large_recent_commit_risk": "medium",
+                  "recent_commit_size_in_percent_of_codebase": 0.080078125,
+                  "repo": "https://bitbucket.org/kitplummer/clikan",
+                  "risk": "critical"
+                },
+                "header": {
+                  "duration": 0,
+                  "end_time": "2020-01-02 21:09:02.966954Z",
+                  "source_client": "lei-get",
+                  "start_time": "2020-01-02 21:09:02.425246Z",
+                  "uuid": "1a70489c-2da4-11ea-a9e5-2e94bed47b47"
+                }
+              },
+              {
+                "data": {
+                  "commit_currency_risk": "critical",
+                  "commit_currency_weeks": 573,
+                  "config": {
+                    "medium_large_commit_level": 0.05,
+                    "high_functional_contributors_level": 3,
+                    "critical_currency_level": 104,
+                    "high_contributor_level": 3,
+                    "high_large_commit_level": 0.15,
+                    "critical_contributor_level": 2,
+                    "medium_contributor_level": 5,
+                    "high_currency_level": 52,
+                    "critical_functional_contributors_level": 2,
+                    "medium_functional_contributors_level": 5,
+                    "medium_currency_level": 26,
+                    "critical_large_commit_level": 0.3
+                  },
+                  "contributor_count": 1,
+                  "contributor_risk": "critical",
+                  "functional_contributor_names": [
+                    "Kit Plummer"
+                  ],
+                  "functional_contributors": 1,
+                  "functional_contributors_risk": "critical",
+                  "large_recent_commit_risk": "low",
+                  "recent_commit_size_in_percent_of_codebase": 0.003683241252302026,
+                  "repo": "https://github.com/kitplummer/xmpp4rails",
+                  "risk": "critical"
+                },
+                "header": {
+                  "duration": 0,
+                  "end_time": "2020-01-02 21:09:02.658002Z",
+                  "source_client": "lei-get",
+                  "start_time": "2020-01-02 21:09:02.425419Z",
+                  "uuid": "1a412418-2da4-11ea-a428-2e94bed47b47"
+                }
+              }
+            ],
+            "uuid": "1a70576a-2da4-11ea-8487-2e94bed47b47"
+          },
+          "metadata": {
+            "repo_count": 2,
+            "risk_counts": {
+              "critical": 2
+            },
+            "times": {
+              "duration": 0,
+              "end_time": {
+                "__struct__": "Elixir.DateTime",
+                "calendar": "Elixir.Calendar.ISO",
+                "day": 2,
+                "hour": 21,
+                "microsecond": [
+                  967806,
+                  6
+                ],
+                "minute": 9,
+                "month": 1,
+                "second": 2,
+                "std_offset": 0,
+                "time_zone": "Etc/UTC",
+                "utc_offset": 0,
+                "year": 2020,
+                "zone_abbr": "UTC"
+              },
+              "start_time": {
+                "__struct__": "Elixir.DateTime",
+                "calendar": "Elixir.Calendar.ISO",
+                "day": 2,
+                "hour": 21,
+                "microsecond": [
+                  425133,
+                  6
+                ],
+                "minute": 9,
+                "month": 1,
+                "second": 2,
+                "std_offset": 0,
+                "time_zone": "Etc/UTC",
+                "utc_offset": 0,
+                "year": 2020,
+                "zone_abbr": "UTC"
+              }
+            }
+          }
+        }
+    </pre>
+  </body bgcolor="#E6E6FA">
+</html>

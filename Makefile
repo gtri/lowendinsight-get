@@ -4,7 +4,9 @@ APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e
 APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
 BUILD ?= `git rev-parse --short HEAD`
 
-ORG := $(if $(ORG),$(ORG),$("kitplummer"))
+ifeq ($(ORG),)
+ORG := "kitplummer"
+endif
 
 help:
 	@echo "$(APP_NAME):$(APP_VSN)-$(BUILD)"

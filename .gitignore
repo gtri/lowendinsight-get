@@ -25,5 +25,3 @@ lowendinsight_get-*.tar
 .elixir_ls
 .vscode/
 
-# Automated release documents
-rel/

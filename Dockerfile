@@ -53,9 +53,10 @@ fi
 
 RUN \
   mkdir -p /opt/built && \
-  mix distillery.release --verbose && \
+  MIX_ENV=${MIX_ENV} mix distillery.release --verbose && \
   cp _build/${MIX_ENV}/rel/${APP_NAME}/releases/${APP_VSN}/${APP_NAME}.tar.gz /opt/built && \
   cd /opt/built && \
+  tar tvf ${APP_NAME}.tar.gz && \
   tar -xzf ${APP_NAME}.tar.gz && \
   rm ${APP_NAME}.tar.gz
 

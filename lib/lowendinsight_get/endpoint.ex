@@ -35,7 +35,7 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/" do
-    {:ok, html} = File.read("lib/lowendinsight_get/index.html")
+    {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, html)

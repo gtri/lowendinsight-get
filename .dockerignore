@@ -6,4 +6,3 @@ Dockerfile
 Makefile
 README*
 test/
-priv/static/

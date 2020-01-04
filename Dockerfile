@@ -53,10 +53,11 @@ fi
 
 RUN \
   mkdir -p /opt/built && \
-  mix distillery.release --verbose && \
+  MIX_ENV=${MIX_ENV} mix distillery.release --verbose --env=prod && \
   cp _build/${MIX_ENV}/rel/${APP_NAME}/releases/${APP_VSN}/${APP_NAME}.tar.gz /opt/built && \
   cd /opt/built && \
-  tar -xzf ${APP_NAME}.tar.gz && \
+  tar tvf ${APP_NAME}.tar.gz && \
+  tar -xvzf ${APP_NAME}.tar.gz && \
   rm ${APP_NAME}.tar.gz
 
 # From this line onwards, we're in a new image, which will be the image used in production

@@ -25,6 +25,6 @@ run: ## Run the app in Docker
   --rm -d $(ORG)/$(APP_NAME):latest
 
 publish: ## Push the artifact out
-#	echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin
+	echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin $(ORG)
 	docker push $(ORG)/$(APP_NAME):$(APP_VSN)-$(BUILD)
 	docker push $(ORG)/$(APP_NAME):latest

@@ -56,7 +56,6 @@ RUN \
   MIX_ENV=${MIX_ENV} mix distillery.release --verbose --env=prod && \
   cp _build/${MIX_ENV}/rel/${APP_NAME}/releases/${APP_VSN}/${APP_NAME}.tar.gz /opt/built && \
   cd /opt/built && \
-  tar tvf ${APP_NAME}.tar.gz && \
   tar -xvzf ${APP_NAME}.tar.gz && \
   rm ${APP_NAME}.tar.gz
 

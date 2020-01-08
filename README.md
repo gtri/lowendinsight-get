@@ -29,6 +29,8 @@ POST / {"url":"some git url"} - returns basic report
 POST /v1/analyze {"urls":["some git url", "some other git url"]} -
 returns aggregate report
 
+Swagger docs to come soon...
+
 ## License
 
 See LICENSE

@@ -1,3 +1,7 @@
+# Copyright (C) 2020 by the Georgia Tech Research Institute (GTRI)
+# This software may be modified and distributed under the terms of
+# the BSD 3-Clause license. See the LICENSE file for details.
+
 defmodule LowendinsightGet.Endpoint do
   use Plug.Router
   use Plug.Debugger
@@ -64,7 +68,7 @@ defmodule LowendinsightGet.Endpoint do
         %{"urls" => urls} -> 
           rep = multi_process(urls)
           cond do
-            Map.has_key?(rep, :data) -> {200, JSON.encode!(rep)}
+            Map.has_key?(rep, :report) -> {200, JSON.encode!(rep)}
             Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
           end
         _ -> {422, process()}

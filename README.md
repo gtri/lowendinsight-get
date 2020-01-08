@@ -29,7 +29,10 @@ POST / {"url":"some git url"} - returns basic report
 POST /v1/analyze {"urls":["some git url", "some other git url"]} -
 returns aggregate report
 
-## TODO'ing
+## License
 
-Am working to get this thing deliverable to K8s clusters.  The container
-can be found in a regular place soon...
+See LICENSE
+
+# Copyright (C) 2020 by the Georgia Tech Research Institute (GTRI)
+# This software may be modified and distributed under the terms of
+# the BSD 3-Clause license. See the LICENSE file for details.

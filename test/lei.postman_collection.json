@@ -24,6 +24,21 @@
 		},
 		{
 			"name": "post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ee64ce38-d1a7-4e18-9fb2-8fd9f7e9594c",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -38,12 +53,61 @@
 					"raw": "{\"url\":\"https://github.com/kitplummer/lita-cron\"}"
 				},
 				"url": {
-					"raw": "http://localhost:4000",
+					"raw": "http://localhost:4000/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000"
+					"port": "4000",
+					"path": [
+						""
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "post repo dot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https%3A%2F%2Fgithub.com%2Fsatori%2Fgo.uuid\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
 				},
 				"description": "basic post\n"
 			},
@@ -286,5 +350,6 @@
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

@@ -45,23 +45,6 @@ defmodule LowendinsightGet.Endpoint do
     |> send_resp(200, html)
   end
 
-  post "/" do
-    {status, body} =
-      case conn.body_params do
-        %{"url" => url} ->
-          rep = process(url)
-          cond do
-            Map.has_key?(rep, :data) -> {200, JSON.encode!(rep)}
-            Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
-          end
-        _ -> {422, process()}
-      end
-
-    conn
-    |> put_resp_content_type(@content_type)
-    |> send_resp(status, body)
-  end
-
   post "/v1/analyze" do
     {status, body} =
       case conn.body_params do

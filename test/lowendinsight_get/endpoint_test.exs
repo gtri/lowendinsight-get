@@ -23,7 +23,7 @@ defmodule LowendinsightGet.EndpointTest do
 
   test "it returns 200 with a valid payload" do
     # Create a test connection
-    conn = conn(:post, "/", %{url: "https://github.com/kitplummer/xmpp4rails"})
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/xmpp4rails"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
@@ -34,7 +34,7 @@ defmodule LowendinsightGet.EndpointTest do
 
   test "it returns 422 with an invalid payload" do
     # Create a test connection
-    conn = conn(:post, "/", %{})
+    conn = conn(:post, "/v1/analyze", %{})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)

@@ -4,7 +4,7 @@
 
 defmodule LowendinsightGet.Endpoint do
   use Plug.Router
-  use Plug.Debugger
+  #use Plug.Debugger
   use Plug.ErrorHandler
 
   alias Plug.{Adapters.Cowboy}
@@ -49,10 +49,14 @@ defmodule LowendinsightGet.Endpoint do
     {status, body} =
       case conn.body_params do
         %{"urls" => urls} -> 
-          rep = multi_process(urls)
-          cond do
-            Map.has_key?(rep, :report) -> {200, JSON.encode!(rep)}
-            Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
+          if is_list(urls) do
+            rep = multi_process(urls)
+            cond do
+              Map.has_key?(rep, :report) -> {200, JSON.encode!(rep)}
+              Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
+            end
+          else
+            {422, process()}
           end
         _ -> {422, process()}
       end
@@ -67,20 +71,20 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   defp process do
-    JSON.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json."})
+    JSON.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"})
   end
 
-  defp process(url) do
-    response = AnalyzerModule.analyze url, "lei-get"
-    case response do
-      {:ok, rep} ->
-        rep |> write_event
-        rep
-      {:error, rep} ->
-        %{error: rep} |> write_event
-        %{error: rep}
-    end
-  end
+  # defp process(url) do
+  #   response = AnalyzerModule.analyze url, "lei-get"
+  #   case response do
+  #     {:ok, rep} ->
+  #       rep |> write_event
+  #       rep
+  #     {:error, rep} ->
+  #       %{error: rep} |> write_event
+  #       %{error: rep}
+  #   end
+  # end
 
   # This currently has a timeout of infinity, because if any of the spun out tasks times out
   # the function will error in whole
@@ -121,6 +125,9 @@ defmodule LowendinsightGet.Endpoint do
 
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
-  def handle_errors(%{status: status} = conn, %{kind: _kind, reason: _reason, stack: _stack}),
-    do: send_resp(conn, status, "Something went wrong")
+  def handle_errors(%{status: status} = conn, %{kind: _kind, reason: reason, stack: _stack}) do
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(status, process())
+  end
 end

@@ -277,8 +277,8 @@
 						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
 						"exec": [
 							"// example using pm.response.to.have",
-							"pm.test(\"response is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"response is 422\", function () {",
+							"    pm.response.to.have.status(422);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -299,12 +299,154 @@
 					"raw": "{\"url\":\"https://github.com/kitplummer/blah\"}"
 				},
 				"url": {
-					"raw": "http://localhost:4000",
+					"raw": "http://localhost:4000/v1/analyze",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000"
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic bad url request"
+			},
+			"response": []
+		},
+		{
+			"name": "bad Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":\"https://github.com/kitplummer/blah\"}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic bad url request"
+			},
+			"response": []
+		},
+		{
+			"name": "bad Copy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":{\"https://github.com/kitplummer/blah\"}}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic bad url request"
+			},
+			"response": []
+		},
+		{
+			"name": "bad Copy Copy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd4fcd56-440b-4094-b98b-852eedd8a6d9",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"response is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://\"https://github.com/kitplummer/blah\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
 				},
 				"description": "basic bad url request"
 			},

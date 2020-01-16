@@ -32,7 +32,7 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 200
   end
 
-  test "it returns 422 with an invalid payload" do
+  test "it returns 422 with an empty payload" do
     # Create a test connection
     conn = conn(:post, "/v1/analyze", %{})
 
@@ -41,6 +41,17 @@ defmodule LowendinsightGet.EndpointTest do
 
     # Assert the response
     assert conn.status == 422
+  end
+
+  test "it returns 200 with an invalid json payload" do
+    # Create a test connection
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://https://github.com/kitplummer/xmpp4rails"]})
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response
+    assert conn.status == 200
   end
 
   test "it returns 404 when no route matches" do

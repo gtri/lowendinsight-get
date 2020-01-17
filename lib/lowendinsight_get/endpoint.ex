@@ -101,12 +101,20 @@ defmodule LowendinsightGet.Endpoint do
     end
   end
 
+  defp write_cache(url, report) do
+    
+  end
+
+  defp write_job(job_uuid, report)
+
+  end
+
   defp write_event(report) do
     if Application.get_all_env(:redix) != [] do
       case Redix.start_link(
         host: Application.fetch_env!(:redix, :server),
         port: Application.fetch_env!(:redix, :port),
-        database: Application.fetch_env!(:redix, :db)
+        database: Application.fetch_env!(:redix, :event_db)
       ) do
         {:ok, conn} ->
           case Redix.command(conn, ["INCR", "event:id"]) do

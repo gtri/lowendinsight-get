@@ -105,7 +105,7 @@ defmodule LowendinsightGet.Endpoint do
     
   end
 
-  defp write_job(job_uuid, report)
+  defp write_job(job_uuid, report) do
 
   end
 

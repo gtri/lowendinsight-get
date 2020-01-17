@@ -38,6 +38,6 @@ config :lowendinsight,
  config :redix,
    server: "localhost",
    port: 6379,
-   event_db: 3
-   cache_db: 4
+   event_db: 3,
+   cache_db: 4,
    job_db: 5

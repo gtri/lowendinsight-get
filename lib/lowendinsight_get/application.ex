@@ -12,7 +12,8 @@ defmodule LowendinsightGet.Application do
 
   defp children do
     [
-      Endpoint
+      Endpoint,
+      {Redix, name: :redix},
     ]
   end
 

@@ -26,4 +26,5 @@ config :lowendinsight,
 config :redix,
   server: System.get_env("REDIS_HOST") || "localhost",
   port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
-  db: String.to_integer(System.get_env("REDIS_DB") || "3")
+  db: 3
+ 

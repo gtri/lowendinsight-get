@@ -102,38 +102,27 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   defp write_cache(url, report) do
-    
+    IO.inspect url
+    IO.inspect report
   end
 
   defp write_job(job_uuid, report) do
-
+    IO.inspect job_uuid
+    IO.inspect report
   end
 
   defp write_event(report) do
-    if Application.get_all_env(:redix) != [] do
-      case Redix.start_link(
-        host: Application.fetch_env!(:redix, :server),
-        port: Application.fetch_env!(:redix, :port),
-        database: Application.fetch_env!(:redix, :event_db)
-      ) do
-        {:ok, conn} ->
-          case Redix.command(conn, ["INCR", "event:id"]) do
-            {:ok, id} ->
-              Redix.command(conn, ["SET", "event-#{id}", JSON.encode!(report)])
-              Redix.stop(conn)
-              Logger.debug("wrote event to redis -> #{JSON.encode!(report)}")
-            {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
-          end
-        {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
-      end
-    else
-      Logger.debug("no db defined, processing -> #{JSON.encode!(report)}")
+    case Redix.command(:redix, ["INCR", "event:id"]) do
+      {:ok, id} ->
+        Redix.command(:redix, ["SET", "event-#{id}", JSON.encode!(report)])
+        Logger.debug("wrote event to redis -> #{JSON.encode!(report)}")
+      {:error, _reason} -> Logger.error("no db available, processing -> #{JSON.encode!(report)}")
     end
   end
 
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
-  def handle_errors(%{status: status} = conn, %{kind: _kind, reason: reason, stack: _stack}) do
+  def handle_errors(%{status: status} = conn, %{kind: _kind, _reason: _reason, stack: _stack}) do
     conn
     |> put_resp_content_type(@content_type)
     |> send_resp(status, process())

@@ -35,9 +35,7 @@ config :lowendinsight,
   high_functional_contributors_level: String.to_integer(System.get_env("LEI_HIGH_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "3"),
   medium_functional_contributors_level: String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
 
- config :redix,
-   server: "localhost",
-   port: 6379,
-   event_db: 3,
-   cache_db: 4,
-   job_db: 5
+config :redix,
+  server: "localhost",
+  port: 6379,
+  db: 3

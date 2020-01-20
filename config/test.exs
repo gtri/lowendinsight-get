@@ -4,6 +4,8 @@
 
 use Mix.Config
 
+config :logger, level: :info
+
 config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")
 
@@ -26,5 +28,5 @@ config :lowendinsight,
 config :redix,
   server: System.get_env("REDIS_HOST") || "localhost",
   port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
-  db: 3
+  db: 5
  

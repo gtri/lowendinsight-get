@@ -116,7 +116,7 @@ defmodule LowendinsightGet.Endpoint do
       {:ok, id} ->
         Redix.command(:redix, ["SET", "event-#{id}", JSON.encode!(report)])
         Logger.debug("wrote event to redis -> #{JSON.encode!(report)}")
-      {:error, _reason} -> Logger.error("no db available, processing -> #{JSON.encode!(report)}")
+      {:error, reason} -> Logger.error("no db available (#{reason}), processing -> #{JSON.encode!(report)}")
     end
   end
 

@@ -6,6 +6,8 @@ defmodule LowendinsightGet.Application do
   use Application
 
   alias LowendinsightGet.Endpoint
+  
+  require Logger
 
   def start(_type, _args) do
     #import Supervisor.spec
@@ -14,6 +16,8 @@ defmodule LowendinsightGet.Application do
   end
 
   defp children do
+    Logger.info("REDIS_HOST: #{System.get_env("REDIS_HOST")}")
+    Logger.info("REDIS_PORT: #{System.get_env("REDIS_PORT")}")
     [
       {Redix, sync_connect: true, exit_on_disconnection: true, name: :redix},
       Endpoint,

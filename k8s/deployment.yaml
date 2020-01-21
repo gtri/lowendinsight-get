@@ -20,6 +20,8 @@ spec:
       - env:
         - name: REDIS_HOST
           value: redis-master
+        - name: REDIS_PORT
+          value: "6379"
         name: lei-get
         image: kitplummer/lowendinsight_get:latest
         ports:

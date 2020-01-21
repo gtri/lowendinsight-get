@@ -17,6 +17,10 @@ jobs:
         with:
           otp-version: 22.x
           elixir-version: 1.9.x
+      - uses: zhulik/redis-action@1.1.0
+        with:
+          redis version: '5'
+          number of databases: 1
       - name: Install Dependencies
         run: |
           npm install -g newman

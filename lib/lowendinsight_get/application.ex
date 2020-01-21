@@ -15,8 +15,8 @@ defmodule LowendinsightGet.Application do
 
   defp children do
     [
+      {Redix, sync_connect: true, exit_on_disconnection: true, name: :redix},
       Endpoint,
-      {Redix, name: :redix},
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]
   end

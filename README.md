@@ -8,6 +8,12 @@ something to evaluate.
 
 https://github.com/gtri/lowendinsight
 
+The workflow for this API is asynchronous.  The POST to `/v1/analyze` will return immediately, providing you with a `uuid` for the job.
+
+You then can do a GET to `/v1/analyze/:uuid` (with your newly minted ID) to retrieve the results.  The analyzer job will change `state` from "incomplete" to "complete" when the analysis is done.
+
+Unfortunately some git repositories are just huge, and will take time to download - even a single branch.
+
 ## Run
 
 ### Development
@@ -37,7 +43,27 @@ real event store.
 ```bash
 curl --location --request POST 'http://localhost:4000/v1/analyze' \
 --header 'Content-Type: application/json' \
---data-raw '{"urls":"[https://github.com/kitplummer/lita-cron]"}'
+--data-raw '{"urls":["https://github.com/kitplummer/lita-cron"]}'
+```
+
+returns:
+
+```json
+{"metadata":{"times":{"duration":0,"end_time":"","start_time":"2020-01-20T23:18:52.800934Z"}},"report":{"repos":[{"data":{"repo":"https://github.com/kitplummer/lita-cron"}}]},"state":"incomplete","uuid":"38fa1d0c-3bdb-11ea-902c-784f434ce29a"}
+```
+
+* GET /v1/analyze/:uuid
+
+`:uuid` here is the analysis job id, that was returned from the POST above.
+
+```bash
+curl 'http://localhost:4000/v1/analyze/38fa1d0c-3bdb-11ea-902c-784f434ce29a'
+```
+
+if `state` is actually complete, then it'll return:
+
+```json
+{"metadata":{"repo_count":1,"risk_counts":{"critical":1},"times":{"duration":1,"end_time":"2020-01-20T23:18:53.491871Z","start_time":"2020-01-20T23:18:52.800934Z"}},"report":{"repos":[{"data":{"config":{"medium_functional_contributors_level":5,"high_contributor_level":3,"high_functional_contributors_level":3,"high_currency_level":52,"high_large_commit_level":0.15,"critical_large_commit_level":0.3,"critical_currency_level":104,"critical_contributor_level":2,"medium_contributor_level":5,"medium_currency_level":26,"medium_large_commit_level":0.05,"critical_functional_contributors_level":2},"repo":"https://github.com/kitplummer/lita-cron","results":{"commit_currency_risk":"critical","commit_currency_weeks":215,"contributor_count":3,"contributor_risk":"medium","functional_contributor_names":["Kit Plummer"],"functional_contributors":1,"functional_contributors_risk":"critical","large_recent_commit_risk":"critical","recent_commit_size_in_percent_of_codebase":0.6266666666666667},"risk":"critical"},"header":{"duration":1,"end_time":"2020-01-20T23:18:53.490764Z","library_version":"0.3.1","source_client":"lei-get","start_time":"2020-01-20T23:18:52.843176Z","uuid":"396366b8-3bdb-11ea-9987-784f434ce29a"}}],"uuid":"396379aa-3bdb-11ea-a2d8-784f434ce29a"},"state":"complete"}
 ```
 
 Swagger docs to come soon...

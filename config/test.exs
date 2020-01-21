@@ -4,7 +4,7 @@
 
 use Mix.Config
 
-config :logger, level: :info
+config :logger, level: :error
 
 config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")

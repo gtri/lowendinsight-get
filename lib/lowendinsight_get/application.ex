@@ -7,13 +7,17 @@ defmodule LowendinsightGet.Application do
 
   alias LowendinsightGet.Endpoint
 
-  def start(_type, _args),
-    do: Supervisor.start_link(children(), opts())
+  def start(_type, _args) do
+    #import Supervisor.spec
+
+    Supervisor.start_link(children(), opts())
+  end
 
   defp children do
     [
       Endpoint,
       {Redix, name: :redix},
+      {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]
   end
 

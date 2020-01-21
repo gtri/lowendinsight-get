@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "8f50335e-6a23-49c3-9915-63b2b262264f",
+		"name": "async",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "submit job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"it should return a uuid\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.uuid).to.not.be.empty;",
+							"});",
+							"",
+							"pm.environment.set(\"uuid\", jsonData.uuid);",
+							"",
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "get report",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
+						"exec": [
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"it should return a complete state\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"state\", jsonData);",
+							"    pm.expect(jsonData.state).to.eql(\"complete\")",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d6af0520-5ff4-4348-aaff-8b21b0728dc0",
+						"exec": [
+							"setTimeout(function(){}, [1000]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/analyze/{{uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"analyze",
+						"{{uuid}}"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

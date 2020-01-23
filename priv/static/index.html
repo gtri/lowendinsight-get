@@ -14,110 +14,144 @@
       <br/><br/>
       <h2>Example</h2>
       <code>
-      $ curl -d '{"urls":["https://bitbucket.org/kitplummer/clikan","https://github.com/kitplummer/xmpp4rails"]}' -H "Content-Type: application/json" -X POST https://lowendinsight.local | jq
+      $ curl -s -d '{"urls":["https://bitbucket.org/kitplummer/clikan","https://github.com/kitplummer/xmpp4rails"]}' -H "Content-Type: application/json" -X POST http://192.168.99.109:30579/v1/analyze | jq
       </code>
       <br/><br/>Returns:<br/>
       <pre>
+
         {
           "metadata": {
-            "repo_count": 2,
-            "risk_counts": {
-              "critical": 2
-            },
             "times": {
-              "duration": 1,
-              "end_time": "2020-01-09T22:44:56.009119Z",
-              "start_time": "2020-01-09T22:44:55.471040Z"
+              "duration": 0,
+              "end_time": "",
+              "start_time": "2020-01-23T20:33:58.131642Z"
             }
           },
           "report": {
             "repos": [
               {
                 "data": {
-                  "config": {
-                    "medium_functional_contributors_level": 5,
-                    "high_contributor_level": 3,
-                    "high_functional_contributors_level": 3,
-                    "high_currency_level": 52,
-                    "high_large_commit_level": 0.15,
-                    "critical_large_commit_level": 0.3,
-                    "critical_currency_level": 104,
-                    "critical_contributor_level": 2,
-                    "medium_contributor_level": 5,
-                    "medium_currency_level": 26,
-                    "medium_large_commit_level": 0.05,
-                    "critical_functional_contributors_level": 2
-                  },
-                  "repo": "https://bitbucket.org/kitplummer/clikan",
-                  "results": {
-                    "commit_currency_risk": "medium",
-                    "commit_currency_weeks": 49,
-                    "contributor_count": 2,
-                    "contributor_risk": "high",
-                    "functional_contributor_names": [
-                      "Kit Plummer"
-                    ],
-                    "functional_contributors": 1,
-                    "functional_contributors_risk": "critical",
-                    "large_recent_commit_risk": "medium",
-                    "recent_commit_size_in_percent_of_codebase": 0.080078125
-                  },
-                  "risk": "critical"
-                },
-                "header": {
-                  "duration": 1,
-                  "end_time": "2020-01-09T22:44:56.008450Z",
-                  "library_version": "0.3.0",
-                  "source_client": "lei-get",
-                  "start_time": "2020-01-09T22:44:55.471095Z",
-                  "uuid": "a868fc9c-3331-11ea-926f-acde48001122"
+                  "repo": "https://bitbucket.org/kitplummer/clikan"
                 }
               },
               {
                 "data": {
-                  "config": {
-                    "medium_functional_contributors_level": 5,
-                    "high_contributor_level": 3,
-                    "high_functional_contributors_level": 3,
-                    "high_currency_level": 52,
-                    "high_large_commit_level": 0.15,
-                    "critical_large_commit_level": 0.3,
-                    "critical_currency_level": 104,
-                    "critical_contributor_level": 2,
-                    "medium_contributor_level": 5,
-                    "medium_currency_level": 26,
-                    "medium_large_commit_level": 0.05,
-                    "critical_functional_contributors_level": 2
-                  },
-                  "repo": "https://github.com/kitplummer/xmpp4rails",
-                  "results": {
-                    "commit_currency_risk": "critical",
-                    "commit_currency_weeks": 574,
-                    "contributor_count": 1,
-                    "contributor_risk": "critical",
-                    "functional_contributor_names": [
-                      "Kit Plummer"
-                    ],
-                    "functional_contributors": 1,
-                    "functional_contributors_risk": "critical",
-                    "large_recent_commit_risk": "low",
-                    "recent_commit_size_in_percent_of_codebase": 0.003683241252302026
-                  },
-                  "risk": "critical"
-                },
-                "header": {
-                  "duration": 0,
-                  "end_time": "2020-01-09T22:44:55.876140Z",
-                  "library_version": "0.3.0",
-                  "source_client": "lei-get",
-                  "start_time": "2020-01-09T22:44:55.471193Z",
-                  "uuid": "a854cf38-3331-11ea-876e-acde48001122"
+                  "repo": "https://github.com/kitplummer/xmpp4rails"
                 }
               }
-            ],
-            "uuid": "a86907e6-3331-11ea-9ec4-acde48001122"
-          }
+            ]
+          },
+          "state": "incomplete",
+          "uuid": "ae88a430-3e1f-11ea-a207-0242ac110007"
         } 
     </pre>
+    Then fetch the results:
+    <code>
+      $ curl http://192.168.99.109:30579/v1/analzye/ae88a430-3e1f-11ea-a207-0242ac110007
+    </code>
+    Returns:
+    <pre>
+      {
+        "metadata": {
+          "repo_count": 2,
+          "risk_counts": {
+            "critical": 2
+          },
+          "times": {
+            "duration": 0,
+            "end_time": "2020-01-23T20:33:58.555362Z",
+            "start_time": "2020-01-23T20:33:58.131642Z"
+          }
+        },
+        "report": {
+          "repos": [
+            {
+              "data": {
+                "config": {
+                  "critical_contributor_level": 2,
+                  "high_functional_contributors_level": 3,
+                  "high_currency_level": 52,
+                  "critical_functional_contributors_level": 2,
+                  "medium_large_commit_level": 0.05,
+                  "high_contributor_level": 3,
+                  "high_large_commit_level": 0.15,
+                  "medium_contributor_level": 5,
+                  "critical_currency_level": 104,
+                  "critical_large_commit_level": 0.3,
+                  "medium_currency_level": 26,
+                  "medium_functional_contributors_level": 5
+                },
+                "repo": "https://bitbucket.org/kitplummer/clikan",
+                "results": {
+                  "commit_currency_risk": "medium",
+                  "commit_currency_weeks": 51,
+                  "contributor_count": 2,
+                  "contributor_risk": "high",
+                  "functional_contributor_names": [
+                    "Kit Plummer"
+                  ],
+                  "functional_contributors": 1,
+                  "functional_contributors_risk": "critical",
+                  "large_recent_commit_risk": "medium",
+                  "recent_commit_size_in_percent_of_codebase": 0.080078125
+                },
+                "risk": "critical"
+              },
+              "header": {
+                "duration": 0,
+                "end_time": "2020-01-23T20:33:58.554693Z",
+                "library_version": "0.3.1",
+                "source_client": "lei-get",
+                "start_time": "2020-01-23T20:33:58.137963Z",
+                "uuid": "aec932de-3e1f-11ea-9ac3-0242ac110007"
+              }
+            },
+            {
+              "data": {
+                "config": {
+                  "critical_contributor_level": 2,
+                  "high_functional_contributors_level": 3,
+                  "high_currency_level": 52,
+                  "critical_functional_contributors_level": 2,
+                  "medium_large_commit_level": 0.05,
+                  "high_contributor_level": 3,
+                  "high_large_commit_level": 0.15,
+                  "medium_contributor_level": 5,
+                  "critical_currency_level": 104,
+                  "critical_large_commit_level": 0.3,
+                  "medium_currency_level": 26,
+                  "medium_functional_contributors_level": 5
+                },
+                "repo": "https://github.com/kitplummer/xmpp4rails",
+                "results": {
+                  "commit_currency_risk": "critical",
+                  "commit_currency_weeks": 576,
+                  "contributor_count": 1,
+                  "contributor_risk": "critical",
+                  "functional_contributor_names": [
+                    "Kit Plummer"
+                  ],
+                  "functional_contributors": 1,
+                  "functional_contributors_risk": "critical",
+                  "large_recent_commit_risk": "low",
+                  "recent_commit_size_in_percent_of_codebase": 0.003683241252302026
+                },
+                "risk": "critical"
+              },
+              "header": {
+                "duration": 0,
+                "end_time": "2020-01-23T20:33:58.436148Z",
+                "library_version": "0.3.1",
+                "source_client": "lei-get",
+                "start_time": "2020-01-23T20:33:58.138130Z",
+                "uuid": "aeb717a2-3e1f-11ea-9d3c-0242ac110007"
+              }
+            }
+          ],
+          "uuid": "aec93c7a-3e1f-11ea-8579-0242ac110007"
+        },
+        "state": "complete"
+      }
+    </pre> 
   </body bgcolor="#E6E6FA">
 </html>

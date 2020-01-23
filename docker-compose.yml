@@ -6,6 +6,6 @@ services:
     ports:
       - "4444:4444"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: redis-master
   redis-master:
     image: "redis:alpine"

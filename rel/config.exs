@@ -47,7 +47,7 @@ environment :prod do
     {Distillery.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/prod.exs"]}
   ]
   set overlays: [
-    {:copy, "rel/config/prod.exs", "/opt/app/etc/prod.exs"}
+    {:copy, "rel/config/prod.exs", "etc/prod.exs"}
   ]
 end
 

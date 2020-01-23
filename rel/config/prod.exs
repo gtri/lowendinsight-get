@@ -4,9 +4,7 @@
 
 use Mix.Config
 
-config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4000
-
-import_config "#{Mix.env()}.exs"
+config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4444
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

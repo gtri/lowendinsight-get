@@ -6,10 +6,10 @@
 <html>
   <body bgcolor="#FFFFFF">
     <h1>LowEndInsight</h1>
-    A simple OSS risk (bus-factor) analysis tool.  Provides insight into the source repository, looking at contributors, commits and governing aginst pre-defined par-levels.
+    A simple OSS risk (bus-factor) analysis tool.  Provides insight into the source repository, looking at basic data such as contributors and commits.  Governance is applied by comparing data against pre-defined par-levels for risk tolerance.
 
     <h2>Using</h2>
-    POST a JSON object with a "url" element pointing to a git repo.
+    POST a JSON object with a "urls" element pointing to a git repo, which will return a UUID for the analysis. Then GET it by the fetching the UUID.
 
       <br/><br/>
       <h2>Example</h2>
@@ -46,10 +46,11 @@
         } 
     </pre>
     Then fetch the results:
+    <br/><br/>
     <code>
-      $ curl http://192.168.99.109:30579/v1/analzye/ae88a430-3e1f-11ea-a207-0242ac110007
+      $ curl http://192.168.99.109:30579/v1/analzye/ae88a430-3e1f-11ea-a207-0242ac110007 | jq
     </code>
-    Returns:
+    <br/><br/>Returns:<br/>
     <pre>
       {
         "metadata": {

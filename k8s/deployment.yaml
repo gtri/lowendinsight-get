@@ -22,21 +22,14 @@ spec:
           value: redis-master
         - name: REDIS_PORT
           value: "6379"
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "2"
+          requires:
+            memory: 128Mi
+            cpu: "1"
         name: lei-get
         image: kitplummer/lowendinsight_get:latest
         ports:
         - containerPort: 4444
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: lei-get
-  labels:
-    run: lei-get
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 4444
-    protocol: TCP
-  selector:
-    run: lei-get

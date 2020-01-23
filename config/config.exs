@@ -36,6 +36,6 @@ config :lowendinsight,
   medium_functional_contributors_level: String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
 
 config :redix,
-  server: "localhost",
-  port: 6379,
-  db: 3
+  server: System.get_env("REDIS_HOST") || "localhost",
+  port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
+  db: String.to_integer(System.get_env("REDIS_DB") || "3")

@@ -45,15 +45,35 @@ defmodule LowendinsightGet.Endpoint do
     |> send_resp(200, html)
   end
 
+  get "/v1/analyze/:uuid" do
+    {status, body} = case LowendinsightGet.Datastore.get_job(uuid) do
+      {:ok, job} ->
+        {200, job}
+      {:error, _job} ->
+        {404, JSON.encode!(%{:error => "no job found."})}
+    end
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(status, body)
+  end
+
   post "/v1/analyze" do
+    start_time = DateTime.utc_now()
+    uuid = UUID.uuid1
     {status, body} =
       case conn.body_params do
         %{"urls" => urls} -> 
-          if is_list(urls) do
-            rep = multi_process(urls)
-            cond do
-              Map.has_key?(rep, :report) -> {200, JSON.encode!(rep)}
-              Map.has_key?(rep, :error) -> {422, JSON.encode!(rep)}
+          if :ok == Helpers.validate_urls(urls) do
+            Logger.debug("started #{uuid} at #{start_time}")
+
+            ## Get empty report for new job to respond the request with
+            empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
+            LowendinsightGet.Datastore.write_job(uuid, empty)
+            case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
+              {:ok, task} -> 
+                Logger.info(task)
+                {200, JSON.encode!(empty)}
+              {:error, error} -> {422, "LEI error - something went wrong #{error}"}
             end
           else
             {422, process()}
@@ -74,60 +94,9 @@ defmodule LowendinsightGet.Endpoint do
     JSON.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"})
   end
 
-  # defp process(url) do
-  #   response = AnalyzerModule.analyze url, "lei-get"
-  #   case response do
-  #     {:ok, rep} ->
-  #       rep |> write_event
-  #       rep
-  #     {:error, rep} ->
-  #       %{error: rep} |> write_event
-  #       %{error: rep}
-  #   end
-  # end
-
-  # This currently has a timeout of infinity, because if any of the spun out tasks times out
-  # the function will error in whole
-  # Max concurrency is hard code, but might should be a config value
-  defp multi_process(urls) do
-    response = AnalyzerModule.analyze urls, "lei-get"
-    case response do
-      {:ok, rep} ->
-        rep |> write_event
-        rep
-      {:error, rep} ->
-        %{error: rep} |> write_event
-        %{error: rep}
-    end
-  end
-
-  defp write_event(report) do
-    if Application.get_all_env(:redix) != [] do
-      case Redix.start_link(
-        host: Application.fetch_env!(:redix, :server),
-        port: Application.fetch_env!(:redix, :port),
-        database: Application.fetch_env!(:redix, :db)
-      ) do
-        {:ok, conn} ->
-          case Redix.command(conn, ["INCR", "event:id"]) do
-            {:ok, id} ->
-              Redix.command(conn, ["SET", "event-#{id}", JSON.encode!(report)])
-              Redix.stop(conn)
-              Logger.debug("wrote event to redis -> #{JSON.encode!(report)}")
-            {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
-          end
-        {:error, _reason} -> Logger.debug("no db available, processing -> #{JSON.encode!(report)}")
-      end
-    else
-      Logger.debug("no db defined, processing -> #{JSON.encode!(report)}")
-    end
-  end
-
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
-  def handle_errors(%{status: status} = conn, %{kind: _kind, reason: reason, stack: _stack}) do
-    conn
-    |> put_resp_content_type(@content_type)
-    |> send_resp(status, process())
+  def handle_errors(conn, _) do
+    send_resp(conn, conn.status, process())
   end
 end

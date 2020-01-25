@@ -25,7 +25,7 @@ build: ## Build the Docker image
 run: ## Run the app in Docker
 	docker run \
 	-e LEI_CRITICAL_CONTRIBUTOR_LEVEL=1 \
-  --expose 4000 -p 4000:4000 \
+  --expose 4444 -p 4444:4444 \
   --rm -d $(ORG)/$(APP_NAME):latest
 
 publish: ## Push the artifact out

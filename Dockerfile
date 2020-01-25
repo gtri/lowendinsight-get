@@ -22,10 +22,13 @@ ARG SKIP_PHOENIX=true
 # can be built
 ARG PHOENIX_SUBDIR=.
 
+ARG RELEASE_ROOT_DIR=/opt/app
+
 ENV SKIP_PHOENIX=${SKIP_PHOENIX} \
     APP_NAME=${APP_NAME} \
     APP_VSN=${APP_VSN} \
-    MIX_ENV=${MIX_ENV}
+    MIX_ENV=${MIX_ENV} \
+    RELEASE_ROOT_DIR=${RELEASE_ROOT_DIR}
 
 # By convention, /opt is typically used for applications
 WORKDIR /opt/app
@@ -42,7 +45,7 @@ RUN apk update && \
 # This copies our app source code into the build container
 COPY . .
 
-RUN mix do deps.get, deps.compile, compile
+RUN MIX_ENV=${MIX_ENV} mix do deps.get, deps.compile, compile
 
 # This step builds assets for the Phoenix app (if there is one)
 # If you aren't building a Phoenix app, pass `--build-arg SKIP_PHOENIX=true`

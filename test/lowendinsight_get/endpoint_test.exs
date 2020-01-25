@@ -8,6 +8,13 @@ defmodule LowendinsightGet.EndpointTest do
 
   @opts LowendinsightGet.Endpoint.init([])
 
+  setup_all do
+    on_exit(fn ->
+      Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
+      |> Enum.map(fn child -> Task.Supervisor.terminate_child(LowendinsightGet.AnalysisSupervisor, child) end)
+    end)
+  end
+
   test "it returns HTML" do
     # Create a test connection
     conn = conn(:get, "/")
@@ -30,6 +37,13 @@ defmodule LowendinsightGet.EndpointTest do
 
     # Assert the response
     assert conn.status == 200
+    :timer.sleep(1000)
+    json = JSON.decode!(conn.resp_body)
+    conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+    assert conn.status == 200
+    json = JSON.decode!(conn.resp_body)
+    assert "complete" == json["state"]
   end
 
   test "it returns 422 with an empty payload" do
@@ -51,7 +65,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
-    assert conn.status == 200
+    assert conn.status == 422
   end
 
   test "it returns 404 when no route matches" do
@@ -64,4 +78,5 @@ defmodule LowendinsightGet.EndpointTest do
     # Assert the response
     assert conn.status == 404
   end
+
 end

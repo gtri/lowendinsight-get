@@ -1,0 +1,11 @@
+---
+version: '3'
+services:
+  lei-get:
+    image: "kitplummer/lowendinsight_get:latest"
+    ports:
+      - "4444:4444"
+    environment:
+      REDIS_HOST: redis-master
+  redis-master:
+    image: "redis:alpine"

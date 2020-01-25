@@ -4,15 +4,14 @@
 
 use Mix.Config
 
-config :lowendinsight_get, LowendinsightGet.Endpoint,
-  port: String.to_integer(System.get_env("PORT") || "4444")
+config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4444
 
 config :lowendinsight,
- ## Contributor in terms of discrete users
+  ## Contributor in terms of discrete users
   ## NOTE: this currently doesn't discern same user with different email
   critical_contributor_level: String.to_integer(System.get_env("LEI_CRITICAL_CONTRIBUTOR_LEVEL") || "2"),
-  high_contributor_level: String.to_integer(System.get_env("LEI_HIGH_CONTRIBUTOR_LEVEL") || "3"),
-  medium_contributor_level: String.to_integer(System.get_env("LEI_CRITICAL_CONTRIBUTOR_LEVEL") || "5"),
+  high_contributor_level: System.get_env("LEI_HIGH_CONTRIBUTOR_LEVEL") || 3,
+  medium_contributor_level: System.get_env("LEI_CRITICAL_CONTRIBUTOR_LEVEL") || 5,
 
   ## Commit currency in weeks - is the project active.  This by itself
   ## may not indicate anything other than the repo is stable. The reason

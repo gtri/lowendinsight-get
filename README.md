@@ -24,15 +24,13 @@ mix deps.get && mix run --no-halt
 
 ### Production
 
-```bash
-MIX_ENV=prod mix run --no-halt
-```
+Well, if you're at this point I'd recommend using the Docker Compose or Kubernetes deployments.  Configuration for both are found in the repo.
 
-This will attempt to connect to `redis` for event transaction storage.
-Note, the `config/prod.exs` config points to the expected Redis store.  If
-no connection can be made, logging will track the event.  Not entirely
-sure how this will play out, perhaps sidecar tracking of logging is the
-real event store.
+The `docker-compose.yml` will spin up a Redis db and the LowEndInsight containers, exposing the services.  You can simply run `docker-compose up` to launch things.
+
+Within the `k8s` subdirectory you'll find configuration files for both Redis (single node configuration) and LowEndInsight.
+
+You can also run with `mix` but you'll have to ensure a provided Redis service is available and the correct configuration is referenced in `config/prod.exs`.  Then you run: `MIX_ENV=prod mix run --no-halt`.
 
 ## REST API
 

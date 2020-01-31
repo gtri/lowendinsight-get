@@ -5,7 +5,9 @@
 defmodule LowendinsightGet.Analysis do
   require Logger
   def process(uuid, urls, start_time) do
-
+    # TODO: process each url individually after checking to see if there is
+    # a fresh entry in the cache
+     
     Logger.info("processing #{uuid} -> #{urls}")
     response = AnalyzerModule.analyze urls, "lei-get", start_time
     case response do

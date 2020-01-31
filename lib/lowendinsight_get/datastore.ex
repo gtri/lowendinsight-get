@@ -41,4 +41,58 @@ defmodule LowendinsightGet.Datastore do
         {:error, "failed to get job: #{uuid}"}
     end
   end
+
+  @doc """
+  write_to_cache/2: takes in a url as the key, and the analysis report as value
+  and returns {:ok, res} on success, or {:error, res} on write error.
+  """
+  def write_to_cache(url, report) do
+    case Redix.command(:redix, ["SET", url, JSON.encode!(report)]) do
+      {:ok, res} -> 
+        Logger.debug("wrote report #{url} -> #{JSON.encode!(report)}")
+        {:ok, res}
+      {:error, res} -> 
+        Logger.error("failed to write report #{url} -> #{JSON.encode!(report)}: #{res}")
+        {:error, res}
+    end 
+  end
+
+  @doc """
+  get_from_cache/2: takes in a url and age in days, queries the datastore 
+  and returns {:ok, report} if it exists, and {:not_found} if it does not,
+  or {:error, message} if there was an issue reading from the datastore.
+  """
+  def get_from_cache(url, age) do
+    ## NOTE: redix will return :ok even if key is not found, with
+    ## the returned value as 'nil'
+    case Redix.command(:redix, ["GET", url]) do
+      {:ok, res} ->
+        Logger.debug("get report #{url} -> #{res}")
+        case res do
+          nil -> {:error, "report not found"}
+          _ -> 
+            r = JSON.decode!(res)["report"]["repos"]
+            case too_old?(List.first(r), age) do
+              true -> {:error, "current report not found"}
+              false -> {:ok, res}
+            end
+        end
+      {:error, _res} ->
+        Logger.debug("failed to get report -> #{url}")
+        {:error, "failed to get report: #{url}"}
+    end 
+  end
+
+  @doc """
+  too_old?/2: takes in a repo report and age in days and returns 'true' if the diff
+  between the current datetime and the report end_time is greater than the 
+  provided age - or return 'false'
+  """
+  def too_old?(repo, age) do
+    days = 
+    TimeHelper.get_commit_delta(repo["header"]["end_time"])
+    |> TimeHelper.sec_to_days()
+    days > age
+  end
+
 end

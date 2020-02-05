@@ -30,9 +30,9 @@ defmodule LowendinsightGet.EndpointTest do
   end
 
   test "it returns 200 with a valid payload" do
-    Redix.command(:redix, ["DELETE", "https://github.com/kitplummer/kit"])
+    Redix.command(:redix, ["DELETE", "https://github.com/kitplummer/elixir_gitlab"])
     # Create a test connection
-    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/kit"]})
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/elixir_gitlab"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
@@ -96,7 +96,7 @@ defmodule LowendinsightGet.EndpointTest do
 
   test "it returns 422 with an invalid json payload" do
     # Create a test connection
-    conn = conn(:post, "/v1/analyze", %{urls: ["https://https://github.com/kitplummer/xmpp4rails"]})
+    conn = conn(:post, "/v1/analyze", %{urls: ["htps://github.com/kitplummer/xmpp4rails"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)

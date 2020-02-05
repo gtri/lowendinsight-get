@@ -29,9 +29,10 @@ defmodule LowendinsightGet.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},
-      {:lowendinsight, path: "../lowendinsight"},
+      {:ex_url, "~> 0.3"},
+      ##{:lowendinsight, path: "../lowendinsight"},
       ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
-      ##{:lowendinsight, "0.3.2"},
+      {:lowendinsight, "0.3.3"},
       {:distillery, "~> 2.1"}
     ]
   end

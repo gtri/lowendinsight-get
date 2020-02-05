@@ -3,7 +3,7 @@
 # the BSD 3-Clause license. See the LICENSE file for details.
 
 defmodule LowendinsightGet.DatastoreTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   setup_all do
     report =
@@ -52,9 +52,9 @@ defmodule LowendinsightGet.DatastoreTest do
 
   test "it stores and gets job" do
     uuid = UUID.uuid1
-
     {:ok, res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "test"})
     assert res == "OK"
+    Getter.there_yet?(false, uuid)
     {:ok, val} = Redix.command(:redix, ["GET", uuid])
     assert val == "{\"test\":\"test\"}"
     {:ok, val} = LowendinsightGet.Datastore.get_job(uuid)
@@ -69,9 +69,11 @@ defmodule LowendinsightGet.DatastoreTest do
   test "it handles the overwrite of a job value" do
     uuid = UUID.uuid1
     {:ok, _res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "will_get_overwritten"})
+    Getter.there_yet?(false, uuid)
     {:ok, val} = LowendinsightGet.Datastore.get_job(uuid)
     assert val == "{\"test\":\"will_get_overwritten\"}"
     {:ok, _res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "overwritten"})
+    Getter.there_yet?(false, uuid)
     {:ok, val} = LowendinsightGet.Datastore.get_job(uuid)
     assert val == "{\"test\":\"overwritten\"}"
   end
@@ -100,16 +102,18 @@ defmodule LowendinsightGet.DatastoreTest do
 
   test "it returns correctly when cache window has expired" do
     datetime_plus_31 = DateTime.utc_now |> DateTime.add(-(86400 * 31)) |> DateTime.to_iso8601
+    uuid = "8b08f58a-4420-11ea-8806-88e9fe666193"
     report = 
     %{
       data: %{repo: "http://repo.com/org/expired"},
       header: %{
         end_time: datetime_plus_31,
         start_time: "2020-01-31T11:55:14.148997Z",
-        uuid: "8b08f58a-4420-11ea-8806-88e9fe666193"
+        uuid: uuid 
       }
     }
     assert {:ok, "OK"} == LowendinsightGet.Datastore.write_to_cache("http://repo.com/org/expired", report)
+    Getter.there_yet?(false, uuid)
     assert {:error, "current report not found"} == LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 30)
     {:ok, report} = LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 31)
     repo = Poison.decode!(report)

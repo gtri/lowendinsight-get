@@ -17,7 +17,7 @@ defmodule LowendinsightGet.Endpoint do
   plug(Plug.Parsers,
     parsers: [:json],
     pass: ["application/json", "text/plain"],
-    json_decoder: JSON
+    json_decoder: Poison
   )
 
   plug(:dispatch)
@@ -50,7 +50,7 @@ defmodule LowendinsightGet.Endpoint do
       {:ok, job} ->
         {200, job}
       {:error, _job} ->
-        {404, JSON.encode!(%{:error => "no job found."})}
+        {404, Poison.encode!(%{:error => "no job found."})}
     end
     conn
     |> put_resp_content_type(@content_type)
@@ -72,7 +72,7 @@ defmodule LowendinsightGet.Endpoint do
             case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
               {:ok, task} -> 
                 Logger.info(task)
-                {200, JSON.encode!(empty)}
+                {200, Poison.encode!(empty)}
               {:error, error} -> {422, "LEI error - something went wrong #{error}"}
             end
           else
@@ -91,7 +91,7 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   defp process do
-    JSON.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"})
+    Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"})
   end
 
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)

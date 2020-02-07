@@ -44,12 +44,12 @@
 					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\"]}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze",
+					"raw": "http://localhost:4444/v1/analyze",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000",
+					"port": "4444",
 					"path": [
 						"v1",
 						"analyze"
@@ -109,12 +109,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze/{{uuid}}",
+					"raw": "http://localhost:4444/v1/analyze/{{uuid}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000",
+					"port": "4444",
 					"path": [
 						"v1",
 						"analyze",
@@ -164,12 +164,12 @@
 					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\"]}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze",
+					"raw": "http://localhost:4444/v1/analyze",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000",
+					"port": "4444",
 					"path": [
 						"v1",
 						"analyze"
@@ -229,12 +229,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze/{{uuid}}",
+					"raw": "http://localhost:4444/v1/analyze/{{uuid}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4000",
+					"port": "4444",
 					"path": [
 						"v1",
 						"analyze",

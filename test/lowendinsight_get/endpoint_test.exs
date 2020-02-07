@@ -9,6 +9,7 @@ defmodule LowendinsightGet.EndpointTest do
   @opts LowendinsightGet.Endpoint.init([])
 
   setup_all do
+    Redix.command(:redix, ["FLUSHDB"])
     on_exit(fn ->
       Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
       |> Enum.map(fn child -> Task.Supervisor.terminate_child(LowendinsightGet.AnalysisSupervisor, child) end)
@@ -29,8 +30,44 @@ defmodule LowendinsightGet.EndpointTest do
   end
 
   test "it returns 200 with a valid payload" do
+    Redix.command(:redix, ["DELETE", "https://github.com/kitplummer/elixir_gitlab"])
     # Create a test connection
-    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/xmpp4rails"]})
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/elixir_gitlab"]})
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response
+    assert conn.status == 200
+    :timer.sleep(2000)
+    json = Poison.decode!(conn.resp_body)
+    conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+    assert conn.status == 200
+    json = Poison.decode!(conn.resp_body)
+    assert "complete" == json["state"]
+  end
+
+  test "it returns 200 with a valid payload when cached" do
+    Redix.command(:redix, ["DELETE", "https://github.com/kitplummer/git-author"])
+    # Create a test connection
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/git-author"]})
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response
+    assert conn.status == 200
+    :timer.sleep(2000)
+    json = Poison.decode!(conn.resp_body)
+    conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+    assert conn.status == 200
+    json = Poison.decode!(conn.resp_body)
+    assert "complete" == json["state"]
+
+    # Create a test connection
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/git-author"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
@@ -38,11 +75,11 @@ defmodule LowendinsightGet.EndpointTest do
     # Assert the response
     assert conn.status == 200
     :timer.sleep(1000)
-    json = JSON.decode!(conn.resp_body)
+    json = Poison.decode!(conn.resp_body)
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200
-    json = JSON.decode!(conn.resp_body)
+    json = Poison.decode!(conn.resp_body)
     assert "complete" == json["state"]
   end
 
@@ -57,9 +94,9 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 422
   end
 
-  test "it returns 200 with an invalid json payload" do
+  test "it returns 422 with an invalid json payload" do
     # Create a test connection
-    conn = conn(:post, "/v1/analyze", %{urls: ["https://https://github.com/kitplummer/xmpp4rails"]})
+    conn = conn(:post, "/v1/analyze", %{urls: ["htps://github.com/kitplummer/xmpp4rails"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)

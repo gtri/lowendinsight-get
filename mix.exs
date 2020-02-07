@@ -31,7 +31,7 @@ defmodule LowendinsightGet.MixProject do
       {:redix, ">= 0.0.0"},
       ##{:lowendinsight, path: "../lowendinsight"},
       ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
-      {:lowendinsight, "0.3.1"},
+      {:lowendinsight, "0.3.3"},
       {:distillery, "~> 2.1"}
     ]
   end

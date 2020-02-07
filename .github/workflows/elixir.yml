@@ -42,6 +42,6 @@ jobs:
       - name: Sleep
         uses: jakejarvis/wait-action@master
         with:
-        time: '30s'
+          time: '30s'
       - name: Postman tests
         run: newman run test/docker-compose.postman_collection.json

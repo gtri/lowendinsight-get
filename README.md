@@ -18,6 +18,10 @@ Unfortunately some git repositories are just huge, and will take time to downloa
 
 ### Development
 
+You can run with `mix` but you'll have to ensure a provided Redis service is available and the correct configuration is referenced in `config/config.exs`.  Then you run: `mix run --no-halt`.
+
+Don't forget to get fetch the dependencies:
+
 ```bash
 mix deps.get && mix run --no-halt
 ```
@@ -28,9 +32,37 @@ Well, if you're at this point I'd recommend using the Docker Compose or Kubernet
 
 The `docker-compose.yml` will spin up a Redis db and the LowEndInsight containers, exposing the services.  You can simply run `docker-compose up` to launch things.
 
-Within the `k8s` subdirectory you'll find configuration files for both Redis (single node configuration) and LowEndInsight.
+Within the `k8s` subdirectory you'll find configuration files for both Redis (single node configuration) and LowEndInsight.  For example:
 
-You can also run with `mix` but you'll have to ensure a provided Redis service is available and the correct configuration is referenced in `config/prod.exs`.  Then you run: `MIX_ENV=prod mix run --no-halt`.
+```bash
+➜  kubectl apply -f k8s/redis-master-deployment.yaml
+deployment.apps/redis-master created
+➜  kubectl apply -f k8s/redis-master-service.yaml
+service/redis-master created
+➜  kubectl apply -f k8s/deployment.yaml
+deployment.apps/lei-get created
+➜  kubectl apply -f k8s/service.yaml
+service/lei-get created
+➜  kubectl get all
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/lei-get-7f4bd755c9-7m6fz        1/1     Running   0          23s
+pod/redis-master-7db7f6579f-x97df   1/1     Running   0          37s
+
+
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes     ClusterIP      10.96.0.1       <none>        443/TCP          17d
+service/lei-get        LoadBalancer   10.96.15.135    <pending>     4000:32224/TCP   17s
+service/redis-master   ClusterIP      10.96.247.238   <none>        6379/TCP         33s
+
+
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/lei-get        1/1     1            1           23s
+deployment.apps/redis-master   1/1     1            1           37s
+
+NAME                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/lei-get-7f4bd755c9        1         1         1       23s
+replicaset.apps/redis-master-7db7f6579f   1         1         1       37s
+```
 
 ## REST API
 
@@ -64,7 +96,8 @@ if `state` is actually complete, then it'll return:
 {"metadata":{"repo_count":1,"risk_counts":{"critical":1},"times":{"duration":1,"end_time":"2020-01-20T23:18:53.491871Z","start_time":"2020-01-20T23:18:52.800934Z"}},"report":{"repos":[{"data":{"config":{"medium_functional_contributors_level":5,"high_contributor_level":3,"high_functional_contributors_level":3,"high_currency_level":52,"high_large_commit_level":0.15,"critical_large_commit_level":0.3,"critical_currency_level":104,"critical_contributor_level":2,"medium_contributor_level":5,"medium_currency_level":26,"medium_large_commit_level":0.05,"critical_functional_contributors_level":2},"repo":"https://github.com/kitplummer/lita-cron","results":{"commit_currency_risk":"critical","commit_currency_weeks":215,"contributor_count":3,"contributor_risk":"medium","functional_contributor_names":["Kit Plummer"],"functional_contributors":1,"functional_contributors_risk":"critical","large_recent_commit_risk":"critical","recent_commit_size_in_percent_of_codebase":0.6266666666666667},"risk":"critical"},"header":{"duration":1,"end_time":"2020-01-20T23:18:53.490764Z","library_version":"0.3.1","source_client":"lei-get","start_time":"2020-01-20T23:18:52.843176Z","uuid":"396366b8-3bdb-11ea-9987-784f434ce29a"}}],"uuid":"396379aa-3bdb-11ea-a2d8-784f434ce29a"},"state":"complete"}
 ```
 
-Swagger docs to come soon...
+OpenAPI/Swagger docs to come soon...
+[Issue: https://github.com/kitplummer/lowendinsight-get/issues/5]
 
 ## License
 

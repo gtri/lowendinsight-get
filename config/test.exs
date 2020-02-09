@@ -14,7 +14,8 @@ config :lowendinsight,
   critical_contributor_par_level: 2,
   high_contributor_par_level: 3,
   medium_contributor_par_level: 5,
-  critical_currency_par_level: 104,  # in weeks
+  # in weeks
+  critical_currency_par_level: 104,
   high_currency_par_level: 52,
   medium_currency_par_level: 26,
   high_large_commit_risk: 0.30,
@@ -29,4 +30,3 @@ config :redix,
   server: System.get_env("REDIS_HOST") || "localhost",
   port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
   db: 5
- 

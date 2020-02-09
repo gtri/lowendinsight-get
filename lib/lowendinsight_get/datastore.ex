@@ -21,16 +21,19 @@ defmodule LowendinsightGet.Datastore do
       {:ok, id} ->
         Redix.command(:redix, ["SET", "event-#{id}", Poison.encode!(report)])
         Logger.debug("wrote event to redis -> #{Poison.encode!(report)}")
-      {:error, reason} -> Logger.error("no db available (#{reason}), processing -> #{Poison.encode!(report)}")
+
+      {:error, reason} ->
+        Logger.error("no db available (#{reason}), processing -> #{Poison.encode!(report)}")
     end
   end
 
   def write_job(uuid, report) do
     case Redix.command(:redix, ["SET", uuid, Poison.encode!(report)]) do
-      {:ok, res} -> 
+      {:ok, res} ->
         Logger.debug("wrote job #{uuid} -> #{Poison.encode!(report)}")
         {:ok, res}
-      {:error, res} -> 
+
+      {:error, res} ->
         Logger.error("failed to write job #{uuid} -> #{Poison.encode!(report)}")
         {:error, res}
     end
@@ -42,10 +45,12 @@ defmodule LowendinsightGet.Datastore do
     case Redix.command(:redix, ["GET", uuid]) do
       {:ok, res} ->
         Logger.debug("get job #{uuid} -> #{res}")
+
         case res do
           nil -> {:error, "job not found"}
           _ -> {:ok, res}
         end
+
       {:error, _res} ->
         Logger.debug("failed to get job -> #{uuid}")
         {:error, "failed to get job: #{uuid}"}
@@ -58,13 +63,14 @@ defmodule LowendinsightGet.Datastore do
   """
   def write_to_cache(url, report) do
     case Redix.command(:redix, ["SET", url, Poison.encode!(report)]) do
-      {:ok, res} -> 
+      {:ok, res} ->
         Logger.debug("wrote report #{url} -> #{Poison.encode!(report)}")
         {:ok, res}
-      {:error, res} -> 
+
+      {:error, res} ->
         Logger.error("failed to write report #{url} -> #{Poison.encode!(report)}: #{res}")
         {:error, res}
-    end 
+    end
   end
 
   @doc """
@@ -78,19 +84,24 @@ defmodule LowendinsightGet.Datastore do
     case Redix.command(:redix, ["GET", url]) do
       {:ok, res} ->
         Logger.debug("get report #{url} -> #{res}")
+
         case res do
-          nil -> {:error, "report not found"}
-          _ -> 
+          nil ->
+            {:error, "report not found"}
+
+          _ ->
             r = Poison.decode!(res)
+
             case too_old?(r, age) do
               true -> {:error, "current report not found"}
               false -> {:ok, res}
             end
         end
+
       {:error, _res} ->
         Logger.debug("failed to get report -> #{url}")
         {:error, "failed to get report: #{url}"}
-    end 
+    end
   end
 
   @doc """
@@ -99,10 +110,10 @@ defmodule LowendinsightGet.Datastore do
   provided age - or return 'false'
   """
   def too_old?(repo, age) do
-    days = 
-    TimeHelper.get_commit_delta(repo["header"]["end_time"])
-    |> TimeHelper.sec_to_days()
+    days =
+      TimeHelper.get_commit_delta(repo["header"]["end_time"])
+      |> TimeHelper.sec_to_days()
+
     days > age
   end
-
 end

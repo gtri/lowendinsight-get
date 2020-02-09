@@ -4,7 +4,7 @@
 
 defmodule LowendinsightGet.Endpoint do
   use Plug.Router
-  #use Plug.Debugger
+  # use Plug.Debugger
   use Plug.ErrorHandler
 
   alias Plug.{Adapters.Cowboy}
@@ -40,18 +40,22 @@ defmodule LowendinsightGet.Endpoint do
 
   get "/" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
+
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, html)
   end
 
   get "/v1/analyze/:uuid" do
-    {status, body} = case LowendinsightGet.Datastore.get_job(uuid) do
-      {:ok, job} ->
-        {200, job}
-      {:error, _job} ->
-        {404, Poison.encode!(%{:error => "no job found."})}
-    end
+    {status, body} =
+      case LowendinsightGet.Datastore.get_job(uuid) do
+        {:ok, job} ->
+          {200, job}
+
+        {:error, _job} ->
+          {404, Poison.encode!(%{:error => "no job found."})}
+      end
+
     conn
     |> put_resp_content_type(@content_type)
     |> send_resp(status, body)
@@ -59,26 +63,32 @@ defmodule LowendinsightGet.Endpoint do
 
   post "/v1/analyze" do
     start_time = DateTime.utc_now()
-    uuid = UUID.uuid1
+    uuid = UUID.uuid1()
+
     {status, body} =
       case conn.body_params do
-        %{"urls" => urls} -> 
+        %{"urls" => urls} ->
           if :ok == Helpers.validate_urls(urls) do
             Logger.debug("started #{uuid} at #{start_time}")
 
             ## Get empty report for new job to respond the request with
             empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
             LowendinsightGet.Datastore.write_job(uuid, empty)
+
             case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
-              {:ok, task} -> 
+              {:ok, task} ->
                 Logger.info(task)
                 {200, Poison.encode!(empty)}
-              {:error, error} -> {422, "LEI error - something went wrong #{error}"}
+
+              {:error, error} ->
+                {422, "LEI error - something went wrong #{error}"}
             end
           else
             {422, process()}
           end
-        _ -> {422, process()}
+
+        _ ->
+          {422, process()}
       end
 
     conn
@@ -91,7 +101,10 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   defp process do
-    Poison.encode!(%{error: "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"})
+    Poison.encode!(%{
+      error:
+        "this is a POSTful service, JSON body with valid git url param required and content-type set to application/json.  e.g. {\"urls\": [\"https://gitrepo/org/repo\", \"https://gitrepo/org/repo1\"]"
+    })
   end
 
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)

@@ -29,7 +29,7 @@ jobs:
           mix local.hex --force
           mix deps.get
       - name: Run Tests
-        run: mix coveralls.html
+        run: MIX_ENV=test mix coveralls.html
       - name: Archive code coverage report
         uses: actions/upload-artifact@v1
         with:

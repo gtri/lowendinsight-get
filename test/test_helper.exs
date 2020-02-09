@@ -12,6 +12,7 @@ defmodule Getter do
 
       false ->
         :timer.sleep(100)
+
         case Redix.command(:redix, ["GET", key]) do
           {:ok, _} -> there_yet?(true, key)
           {:error, _} -> there_yet?(false, key)

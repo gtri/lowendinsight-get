@@ -6,8 +6,7 @@ defmodule LowendinsightGet.DatastoreTest do
   use ExUnit.Case, async: false
 
   setup_all do
-    report =
-    %{
+    report = %{
       data: %{
         config: %{
           critical_contributor_level: 2,
@@ -47,11 +46,12 @@ defmodule LowendinsightGet.DatastoreTest do
         uuid: "c3996b38-47c1-11ea-97ea-88e9fe666193"
       }
     }
+
     [report: report]
   end
 
   test "it stores and gets job" do
-    uuid = UUID.uuid1
+    uuid = UUID.uuid1()
     {:ok, res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "test"})
     assert res == "OK"
     Getter.there_yet?(false, uuid)
@@ -67,7 +67,7 @@ defmodule LowendinsightGet.DatastoreTest do
   end
 
   test "it handles the overwrite of a job value" do
-    uuid = UUID.uuid1
+    uuid = UUID.uuid1()
     {:ok, _res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "will_get_overwritten"})
     Getter.there_yet?(false, uuid)
     {:ok, val} = LowendinsightGet.Datastore.get_job(uuid)
@@ -79,45 +79,53 @@ defmodule LowendinsightGet.DatastoreTest do
   end
 
   test "it does the age math correctly", %{report: report} do
-    repo = elem(elem(Poison.encode(report),1) |> Poison.decode(),1)
+    repo = elem(elem(Poison.encode(report), 1) |> Poison.decode(), 1)
     assert false == LowendinsightGet.Datastore.too_old?(repo, 30)
-    datetime_plus_30 = DateTime.utc_now |> DateTime.add(-(86400 * 30)) |> DateTime.to_iso8601
+    datetime_plus_30 = DateTime.utc_now() |> DateTime.add(-(86400 * 30)) |> DateTime.to_iso8601()
     repo = %{"header" => %{"end_time" => datetime_plus_30}}
     assert false == LowendinsightGet.Datastore.too_old?(repo, 30)
-    datetime_plus_31 = DateTime.utc_now |> DateTime.add(-(86400 * 31)) |> DateTime.to_iso8601
+    datetime_plus_31 = DateTime.utc_now() |> DateTime.add(-(86400 * 31)) |> DateTime.to_iso8601()
     repo = %{"header" => %{"end_time" => datetime_plus_31}}
     assert true == LowendinsightGet.Datastore.too_old?(repo, 30)
   end
-  
+
   test "it writes and reads successfully to cache", %{report: report} do
-    assert {:ok, "OK"} == LowendinsightGet.Datastore.write_to_cache("http://repo.com/org/repo", report)
+    assert {:ok, "OK"} ==
+             LowendinsightGet.Datastore.write_to_cache("http://repo.com/org/repo", report)
+
     {:ok, report} = LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/repo", 30)
     repo = Poison.decode!(report)
     assert "https://github.com/kitplummer/xmpp4rails" == repo["data"]["repo"]
   end
 
   test "it returns successfully with not_found when uh" do
-    assert {:error, "report not found"} == LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/not_found", 30)
+    assert {:error, "report not found"} ==
+             LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/not_found", 30)
   end
 
   test "it returns correctly when cache window has expired" do
-    datetime_plus_31 = DateTime.utc_now |> DateTime.add(-(86400 * 31)) |> DateTime.to_iso8601
+    datetime_plus_31 = DateTime.utc_now() |> DateTime.add(-(86400 * 31)) |> DateTime.to_iso8601()
     uuid = "8b08f58a-4420-11ea-8806-88e9fe666193"
-    report = 
-    %{
+
+    report = %{
       data: %{repo: "http://repo.com/org/expired"},
       header: %{
         end_time: datetime_plus_31,
         start_time: "2020-01-31T11:55:14.148997Z",
-        uuid: uuid 
+        uuid: uuid
       }
     }
-    assert {:ok, "OK"} == LowendinsightGet.Datastore.write_to_cache("http://repo.com/org/expired", report)
+
+    assert {:ok, "OK"} ==
+             LowendinsightGet.Datastore.write_to_cache("http://repo.com/org/expired", report)
+
     Getter.there_yet?(false, uuid)
-    assert {:error, "current report not found"} == LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 30)
+
+    assert {:error, "current report not found"} ==
+             LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 30)
+
     {:ok, report} = LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 31)
     repo = Poison.decode!(report)
     assert "http://repo.com/org/expired" == repo["data"]["repo"]
   end
-
 end

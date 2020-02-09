@@ -11,7 +11,8 @@ defmodule LowendinsightGet.MixProject do
       version: "0.3.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -29,10 +30,11 @@ defmodule LowendinsightGet.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},
-      ##{:lowendinsight, path: "../lowendinsight"},
-      ##{:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
+      ## {:lowendinsight, path: "../lowendinsight"},
+      ## {:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
       {:lowendinsight, "0.3.3"},
-      {:distillery, "~> 2.1"}
+      {:distillery, "~> 2.1"},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 end

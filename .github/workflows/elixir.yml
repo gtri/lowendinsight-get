@@ -29,7 +29,12 @@ jobs:
           mix local.hex --force
           mix deps.get
       - name: Run Tests
-        run: mix test --color
+        run: MIX_ENV=test mix coveralls.html
+      - name: Archive code coverage report
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage-report
+          path: cover/excoveralls.html
       - name: Build Container
         run: make build
       - name: Publish to Registry

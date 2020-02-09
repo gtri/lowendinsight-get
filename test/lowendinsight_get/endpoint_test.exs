@@ -10,9 +10,12 @@ defmodule LowendinsightGet.EndpointTest do
 
   setup_all do
     Redix.command(:redix, ["FLUSHDB"])
+
     on_exit(fn ->
       Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
-      |> Enum.map(fn child -> Task.Supervisor.terminate_child(LowendinsightGet.AnalysisSupervisor, child) end)
+      |> Enum.map(fn child ->
+        Task.Supervisor.terminate_child(LowendinsightGet.AnalysisSupervisor, child)
+      end)
     end)
   end
 
@@ -115,5 +118,4 @@ defmodule LowendinsightGet.EndpointTest do
     # Assert the response
     assert conn.status == 404
   end
-
 end

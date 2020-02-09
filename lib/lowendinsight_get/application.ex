@@ -6,11 +6,11 @@ defmodule LowendinsightGet.Application do
   use Application
 
   alias LowendinsightGet.Endpoint
-  
+
   require Logger
 
   def start(_type, _args) do
-    #import Supervisor.spec
+    # import Supervisor.spec
 
     Supervisor.start_link(children(), opts())
   end
@@ -18,8 +18,14 @@ defmodule LowendinsightGet.Application do
   defp children do
     Logger.info("REDIS_HOST: #{Application.get_env(:redix, :server)}")
     Logger.info("REDIS_PORT: #{Application.get_env(:redix, :port)}")
+
     [
-      {Redix, host: Application.get_env(:redix, :server), port: Application.get_env(:redix, :port), sync_connect: true, exit_on_disconnection: true, name: :redix},
+      {Redix,
+       host: Application.get_env(:redix, :server),
+       port: Application.get_env(:redix, :port),
+       sync_connect: true,
+       exit_on_disconnection: true,
+       name: :redix},
       Endpoint,
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]

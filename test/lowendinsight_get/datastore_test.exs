@@ -50,6 +50,12 @@ defmodule LowendinsightGet.DatastoreTest do
     [report: report]
   end
 
+  test "it writes event", %{report: report} do
+    {:ok, curr_id} = Redix.command(:redix, ["GET", "event:id"])
+    {:ok, id} = LowendinsightGet.Datastore.write_event(report)
+    assert String.to_integer(curr_id) + 1 == id
+  end
+
   test "it stores and gets job" do
     uuid = UUID.uuid1()
     {:ok, res} = LowendinsightGet.Datastore.write_job(uuid, %{:test => "test"})

@@ -21,9 +21,10 @@ defmodule LowendinsightGet.Datastore do
       {:ok, id} ->
         Redix.command(:redix, ["SET", "event-#{id}", Poison.encode!(report)])
         Logger.debug("wrote event to redis -> #{Poison.encode!(report)}")
-
+        {:ok, id}
       {:error, reason} ->
         Logger.error("no db available (#{reason}), processing -> #{Poison.encode!(report)}")
+        {:error, reason}
     end
   end
 

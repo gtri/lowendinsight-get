@@ -27,6 +27,4 @@ config :lowendinsight,
   functional_contributors_filter_percent: 0.10
 
 config :redix,
-  server: System.get_env("REDIS_HOST") || "localhost",
-  port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
-  db: 5
+  redis_url: "http://localhost:6379/5"

@@ -4,7 +4,7 @@ Super simple POST API to get a LowEndInsight report
 
 ![default_elixir_ci](https://github.com/kitplummer/lowendinsight-get/workflows/default_elixir_ci/badge.svg)
 
-See `lowendinsight`'s README for me details on the underlying
+See `lowendinsight`'s README for more details on the underlying
 functionality.  This is just the API to provide the library with
 something to evaluate.
 
@@ -65,6 +65,10 @@ NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/lei-get-7f4bd755c9        1         1         1       23s
 replicaset.apps/redis-master-7db7f6579f   1         1         1       37s
 ```
+
+### Heroku?
+
+It's also possible to run this in Heroku though I've just not done it since wiring up to Redis.  The `procfile` still exists at the root of the repo. 
 
 ## REST API
 

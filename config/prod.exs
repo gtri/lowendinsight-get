@@ -44,6 +44,4 @@ config :lowendinsight,
     String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
 
 config :redix,
-  server: System.get_env("REDIS_HOST") || "redis-master",
-  port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
-  db: String.to_integer(System.get_env("REDIS_DB") || "3")
+  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/3"

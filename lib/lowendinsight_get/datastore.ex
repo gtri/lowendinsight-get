@@ -22,9 +22,6 @@ defmodule LowendinsightGet.Datastore do
         Redix.command(:redix, ["SET", "event-#{id}", Poison.encode!(report)])
         Logger.debug("wrote event to redis -> #{Poison.encode!(report)}")
         {:ok, id}
-      {:error, reason} ->
-        Logger.error("no db available (#{reason}), processing -> #{Poison.encode!(report)}")
-        {:error, reason}
     end
   end
 
@@ -33,10 +30,6 @@ defmodule LowendinsightGet.Datastore do
       {:ok, res} ->
         Logger.debug("wrote job #{uuid} -> #{Poison.encode!(report)}")
         {:ok, res}
-
-      {:error, res} ->
-        Logger.error("failed to write job #{uuid} -> #{Poison.encode!(report)}")
-        {:error, res}
     end
   end
 
@@ -51,10 +44,6 @@ defmodule LowendinsightGet.Datastore do
           nil -> {:error, "job not found"}
           _ -> {:ok, res}
         end
-
-      {:error, _res} ->
-        Logger.debug("failed to get job -> #{uuid}")
-        {:error, "failed to get job: #{uuid}"}
     end
   end
 
@@ -67,10 +56,6 @@ defmodule LowendinsightGet.Datastore do
       {:ok, res} ->
         Logger.debug("wrote report #{url} -> #{Poison.encode!(report)}")
         {:ok, res}
-
-      {:error, res} ->
-        Logger.error("failed to write report #{url} -> #{Poison.encode!(report)}: #{res}")
-        {:error, res}
     end
   end
 
@@ -97,11 +82,7 @@ defmodule LowendinsightGet.Datastore do
               true -> {:error, "current report not found"}
               false -> {:ok, res}
             end
-        end
-
-      {:error, _res} ->
-        Logger.debug("failed to get report -> #{url}")
-        {:error, "failed to get report: #{url}"}
+        end 
     end
   end
 

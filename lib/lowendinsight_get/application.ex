@@ -16,8 +16,7 @@ defmodule LowendinsightGet.Application do
   end
 
   defp children do
-    #Logger.info("REDIS_HOST: #{Application.get_env(:redix, :server)}")
-    #Logger.info("REDIS_PORT: #{Application.get_env(:redix, :port)}")
+    Logger.info("REDIS_URL: #{Application.get_env(:redix, :redis_url)}")
 
     [
       {Redix,

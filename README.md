@@ -2,6 +2,8 @@
 
 Super simple POST API to get a LowEndInsight report
 
+![default_elixir_ci](https://github.com/kitplummer/lowendinsight-get/workflows/default_elixir_ci/badge.svg)
+
 See `lowendinsight`'s README for me details on the underlying
 functionality.  This is just the API to provide the library with
 something to evaluate.

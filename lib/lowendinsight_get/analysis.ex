@@ -20,10 +20,6 @@ defmodule LowendinsightGet.Analysis do
             Logger.info("caching #{url}")
             LowendinsightGet.Datastore.write_to_cache(url, rep)
             {:ok, rep}
-
-          {:error, rep} ->
-            Logger.info("could not perform analysis on #{url}")
-            {:error, rep}
         end
     end
   end

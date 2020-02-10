@@ -27,4 +27,4 @@ config :lowendinsight,
   functional_contributors_filter_percent: 0.10
 
 config :redix,
-  redis_url: "http://localhost:6379/5"
+  redis_url: "redis://localhost:6379/5"

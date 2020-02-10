@@ -22,11 +22,7 @@ defmodule LowendinsightGet.Application do
     [
       {Redix,
         {Application.get_env(:redix, :redis_url),
-      #  host: Application.get_env(:redix, :server),
-      #  port: Application.get_env(:redix, :port),
-      #  sync_connect: true,
-      #  exit_on_disconnection: true,
-        [name: :redix]}},
+        [name: :redix, sync_connect: true, exit_on_disconnection: true,]}},
       Endpoint,
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]

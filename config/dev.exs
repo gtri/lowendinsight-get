@@ -3,3 +3,6 @@
 # the BSD 3-Clause license. See the LICENSE file for details.
 
 use Mix.Config
+
+config :redix,
+  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/3"

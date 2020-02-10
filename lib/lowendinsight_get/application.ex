@@ -16,16 +16,12 @@ defmodule LowendinsightGet.Application do
   end
 
   defp children do
-    Logger.info("REDIS_HOST: #{Application.get_env(:redix, :server)}")
-    Logger.info("REDIS_PORT: #{Application.get_env(:redix, :port)}")
+    Logger.info("REDIS_URL: #{Application.get_env(:redix, :redis_url)}")
 
     [
       {Redix,
-       host: Application.get_env(:redix, :server),
-       port: Application.get_env(:redix, :port),
-       sync_connect: true,
-       exit_on_disconnection: true,
-       name: :redix},
+        {Application.get_env(:redix, :redis_url),
+        [name: :redix, sync_connect: true, exit_on_disconnection: true,]}},
       Endpoint,
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]

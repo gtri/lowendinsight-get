@@ -20,7 +20,7 @@ jobs:
       - uses: zhulik/redis-action@1.1.0
         with:
           redis version: '5'
-          number of databases: 1
+          number of databases: 20
       - name: Install Dependencies
         run: |
           npm install -g newman

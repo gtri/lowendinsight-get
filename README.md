@@ -4,7 +4,7 @@ Super simple POST API to get a LowEndInsight report
 
 ![default_elixir_ci](https://github.com/kitplummer/lowendinsight-get/workflows/default_elixir_ci/badge.svg)
 
-See `lowendinsight`'s README for me details on the underlying
+See `lowendinsight`'s README for more details on the underlying
 functionality.  This is just the API to provide the library with
 something to evaluate.
 
@@ -65,6 +65,16 @@ NAME                                      DESIRED   CURRENT   READY   AGE
 replicaset.apps/lei-get-7f4bd755c9        1         1         1       23s
 replicaset.apps/redis-master-7db7f6579f   1         1         1       37s
 ```
+
+### Heroku
+
+It's also possible to run this in Heroku using the Elixir buildpack.  The Redis configuration requires the Heroku Redis addon which will set the REDIS_URL environment variable.  The `procfile` at the root of the repo is used by the buildpack to run the app.  While this isn't a Phoenix app I used this URL as a guide:
+
+https://hexdocs.pm/phoenix/heroku.html
+
+And this one for the Redis setup:
+
+https://devcenter.heroku.com/articles/heroku-redis#provisioning-the-add-on
 
 ## REST API
 

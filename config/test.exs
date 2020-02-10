@@ -43,5 +43,5 @@ config :lowendinsight,
     String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/5"
+  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/2"
   

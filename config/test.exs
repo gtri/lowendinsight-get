@@ -3,6 +3,7 @@
 # the BSD 3-Clause license. See the LICENSE file for details.
 
 use Mix.Config
+config :logger, level: :error
 
 config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4000
 
@@ -42,5 +43,5 @@ config :lowendinsight,
     String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/5"
+  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/1"
   

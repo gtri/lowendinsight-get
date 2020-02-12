@@ -9,7 +9,7 @@
     A simple OSS risk (bus-factor) analysis tool.  Provides insight into the source repository, looking at basic data such as contributors and commits.  Governance is applied by comparing data against pre-defined par-levels for risk tolerance.
 
     <h2>Using</h2>
-    POST a JSON object with a "urls" element pointing to a git repo, which will return a UUID for the analysis. Then GET it by the fetching the UUID.
+    POST a JSON object with a "urls" element pointing to an array of one or more git repos, which will return a UUID for the analysis. Then GET it by the fetching the UUID.
 
       <br/><br/>
       <h2>Example</h2>
@@ -153,6 +153,6 @@
         },
         "state": "complete"
       }
-    </pre> 
+    </pre>
   </body bgcolor="#E6E6FA">
 </html>

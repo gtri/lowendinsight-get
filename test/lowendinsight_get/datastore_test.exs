@@ -132,8 +132,10 @@ defmodule LowendinsightGet.DatastoreTest do
 
     Getter.there_yet?(false, uuid)
 
+    cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl)
+
     assert {:error, "current report not found"} ==
-             LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 30)
+             LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", cache_ttl)
 
     {:ok, report} = LowendinsightGet.Datastore.get_from_cache("http://repo.com/org/expired", 31)
     repo = Poison.decode!(report)

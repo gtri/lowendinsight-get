@@ -6,7 +6,7 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source) do
-    case LowendinsightGet.Datastore.get_from_cache(url, 30) do
+    case LowendinsightGet.Datastore.get_from_cache(url, Application.get_env(:lowendinsight_get, :cache_ttl)) do
       {:ok, repo_report} ->
         Logger.info("#{url} is cached, yay!")
         # have it in the cache, yay

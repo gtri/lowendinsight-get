@@ -8,7 +8,7 @@ config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4444
 
 ## Default Cache TTL is 30 days or 25920000 seconds
 config :lowendinsight_get,
-  cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "25920000")
+  cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "30")
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

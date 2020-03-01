@@ -14,7 +14,7 @@ The workflow for this API is asynchronous.  The POST to `/v1/analyze` will retur
 
 You then can do a GET to `/v1/analyze/:uuid` (with your newly minted ID) to retrieve the results.  The analyzer job will change `state` from "incomplete" to "complete" when the analysis is done.
 
-Unfortunately some git repositories are just huge, and will take time to download - even a single branch.
+Unfortunately some git repositories are just huge, and will take time to download - even a single branch.  The service does employ a basic cache, and can be configured with a TTL.  The default is set to sweep out reports at 30 days.
 
 ## Run
 

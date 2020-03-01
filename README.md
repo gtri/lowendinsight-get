@@ -16,6 +16,14 @@ You then can do a GET to `/v1/analyze/:uuid` (with your newly minted ID) to retr
 
 Unfortunately some git repositories are just huge, and will take time to download - even a single branch.  The service does employ a basic cache, and can be configured with a TTL.  The default is set to sweep out reports at 30 days.
 
+## Configuration
+
+Look at `config/config.exs` or if you're building your own container
+`rel/config/prod.exs` (which is used as the container's prod config :)) for how to set the governance par levels, and the cache TTL.
+
+The configuration items are also explained at
+https://github.com/gtri/lowendinsight in more detail.
+
 ## Run
 
 ### Development

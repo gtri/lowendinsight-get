@@ -44,4 +44,3 @@ config :lowendinsight,
 
 config :redix,
   redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/2"
-  

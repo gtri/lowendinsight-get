@@ -82,7 +82,7 @@ defmodule LowendinsightGet.Datastore do
               true -> {:error, "current report not found"}
               false -> {:ok, res}
             end
-        end 
+        end
     end
   end
 

@@ -52,9 +52,10 @@ defmodule LowendinsightGet.DatastoreTest do
 
   test "it writes event", %{report: report} do
     case Redix.command(:redix, ["GET", "event:id"]) do
-      {:ok, nil} -> 
+      {:ok, nil} ->
         {:ok, id} = LowendinsightGet.Datastore.write_event(report)
         assert 1 == id
+
       {:ok, curr_id} ->
         {:ok, id} = LowendinsightGet.Datastore.write_event(report)
         assert String.to_integer(curr_id) + 1 == id

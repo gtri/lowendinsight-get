@@ -20,10 +20,11 @@ defmodule LowendinsightGet.Application do
 
     [
       {Redix,
-        {Application.get_env(:redix, :redis_url),
-        [name: :redix, sync_connect: true, exit_on_disconnection: true,]}},
+       {Application.get_env(:redix, :redis_url),
+        [name: :redix, sync_connect: true, exit_on_disconnection: true]}},
       Endpoint,
-      {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
+      {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor},
+      LowendinsightGet.Scheduler
     ]
   end
 

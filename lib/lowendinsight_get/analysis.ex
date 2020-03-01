@@ -55,6 +55,7 @@ defmodule LowendinsightGet.Analysis do
     metadata = Map.put_new(report[:metadata], :times, times)
     report = report |> Map.put(:metadata, metadata)
 
+    report = report |> Map.put(:uuid, uuid)
     ## We're finished with all the analysis work, write the report to datastore
     LowendinsightGet.Datastore.write_job(uuid, report)
     {:ok, report}

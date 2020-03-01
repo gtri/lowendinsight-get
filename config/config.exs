@@ -6,6 +6,11 @@ use Mix.Config
 import_config "#{Mix.env()}.exs"
 
 config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4000
+## Set the cache TTL period for keeping reports
+
+config :lowendinsight_get, 
+  cache_ttl:
+    String.to_integer(System.get_env("LEI_CACHE_TTL") || "30")
 
 ## Default Cache TTL is 30 days or 25920000 seconds
 config :lowendinsight_get,
@@ -45,6 +50,8 @@ config :lowendinsight,
     String.to_integer(System.get_env("LEI_HIGH_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "3"),
   medium_functional_contributors_level:
     String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
+
+  
 
 config :redix,
   redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/5"

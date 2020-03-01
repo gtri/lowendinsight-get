@@ -7,6 +7,9 @@ config :logger, level: :error
 
 config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4000
 
+config :lowendinsight_get,
+  cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "30000000")
+
 config :lowendinsight,
   ## Contributor in terms of discrete users
   ## NOTE: this currently doesn't discern same user with different email

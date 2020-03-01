@@ -21,7 +21,6 @@ defmodule LowendinsightGet.CacheCleaner do
             {:ok, json} ->
               value = Poison.decode!(json)
               report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
-              IO.inspect(report_time)
 
               if report_time > Application.get_env(:lowendinsight_get, :cache_ttl, 2_592_000) do
                 Redix.command(:redix, ["DEL", key])

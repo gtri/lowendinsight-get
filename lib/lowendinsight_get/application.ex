@@ -18,14 +18,19 @@ defmodule LowendinsightGet.Application do
   defp children do
     Logger.info("REDIS_URL: #{Application.get_env(:redix, :redis_url)}")
 
-    [
+    kids = [
       {Redix,
-       {Application.get_env(:redix, :redis_url),
+      {Application.get_env(:redix, :redis_url),
         [name: :redix, sync_connect: true, exit_on_disconnection: true]}},
       Endpoint,
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor},
-      LowendinsightGet.Scheduler
     ]
+    kids =
+      case Application.get_env(:lowendinsight_get, :cache_clean_enable) do
+        true -> kids ++ [LowendinsightGet.Scheduler]
+        false -> kids
+      end
+    kids
   end
 
   defp opts do

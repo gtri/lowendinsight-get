@@ -6,7 +6,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      MIX_ENV: test
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # container:
     #   image: elixir:1.9.4-alpine
 
@@ -29,12 +31,7 @@ jobs:
           mix local.hex --force
           mix deps.get
       - name: Run Tests
-        run: MIX_ENV=test mix coveralls.html
-      - name: Archive code coverage report
-        uses: actions/upload-artifact@v1
-        with:
-          name: code-coverage-report
-          path: cover/excoveralls.html
+        run: MIX_ENV=test mix coveralls.github
       - name: Build Container
         run: make build
       - name: Publish to Registry

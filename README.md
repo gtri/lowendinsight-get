@@ -2,7 +2,7 @@
 
 Super simple POST API to get a LowEndInsight report
 
-![default_elixir_ci](https://github.com/kitplummer/lowendinsight-get/workflows/default_elixir_ci/badge.svg)
+![default_elixir_ci](https://github.com/gtri/lowendinsight-get/workflows/default_elixir_ci/badge.svg)
 
 See `lowendinsight`'s README for more details on the underlying
 functionality.  This is just the API to provide the library with
@@ -143,6 +143,7 @@ The repo includes auto-formatting, please run `mix format` to format to
 the standard style prescribed by the Elixir project:
 
 https://hexdocs.pm/mix/Mix.Tasks.Format.html
+
 https://github.com/christopheradams/elixir_style_guide
 
 Code docs for functions are expected.  Examples are a bonus:

@@ -9,7 +9,7 @@ APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
 BUILD ?= `git rev-parse --short HEAD`
 
 ifeq ($(ORG),)
-ORG := "kitplummer"
+ORG := "gtri"
 endif
 
 help:

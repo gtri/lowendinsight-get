@@ -7,7 +7,7 @@ defmodule LowendinsightGet.CacheCleaner do
 
   def clean() do
     cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl, 2_592_000)
-    Logger.info("TESTING SCHEDULER: TTL -> #{cache_ttl}")
+    Logger.info("SCHEDULER: TTL -> #{cache_ttl}")
 
     case Redix.command(:redix, ["KEYS", "http*"]) do
       {:ok, keys} ->
@@ -24,7 +24,7 @@ defmodule LowendinsightGet.CacheCleaner do
               cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
               if report_time > cache_ttl do
                 Redix.command(:redix, ["DEL", key])
-                Logger.debug("deleting key: #{key}")
+                Logger.info("Deleting TTL expired key: #{key}")
               end
           end
         end)

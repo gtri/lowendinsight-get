@@ -1,6 +1,11 @@
 name: default_elixir_ci
 
-on: push
+on:
+  push:
+    branches:
+      - '*'         # matches every branch
+      - '*/*'       # matches every branch containing a single '/'
+      - '!master'   # excludes master
 
 jobs:
   build:

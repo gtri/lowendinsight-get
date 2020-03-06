@@ -33,7 +33,7 @@ jobs:
       - name: Run Tests
         run: MIX_ENV=test mix coveralls.github
       - name: Build Container
-        run: make build
+        run: make build-release
       - name: docker-compose run LEI-get
         run: docker-compose up -d
       - name: Sleep

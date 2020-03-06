@@ -1,6 +1,9 @@
-name: default_elixir_ci
+name: deploy_release_elixir_ci
 
-on: push
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -9,9 +12,6 @@ jobs:
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # container:
-    #   image: elixir:1.9.4-alpine
-
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -46,4 +46,4 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: make publish-snapshot
+        run: make publish-release

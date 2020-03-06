@@ -28,7 +28,12 @@ run: ## Run the app in Docker
   --expose 4444 -p 4444:4444 \
   --rm -d $(ORG)/$(APP_NAME):latest
 
-publish: ## Push the artifact out
+publish-snapshot: ## Push the artifact out
 	echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin
 	docker push $(ORG)/$(APP_NAME):$(APP_VSN)-$(BUILD)
+	docker push $(ORG)/$(APP_NAME):latest
+
+publish-release: ## Push the artifact out
+	echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin
+	docker push $(ORG)/$(APP_NAME):$(APP_VSN)
 	docker push $(ORG)/$(APP_NAME):latest

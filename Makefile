@@ -22,6 +22,12 @@ build: ## Build the Docker image
   -t $(ORG)/$(APP_NAME):$(APP_VSN)-$(BUILD) \
   -t $(ORG)/$(APP_NAME):latest .
 
+build-release: ## Build the release Docker image
+	docker build --build-arg APP_NAME=$(APP_NAME) \
+  --build-arg APP_VSN=$(APP_VSN) \
+  -t $(ORG)/$(APP_NAME):$(APP_VSN) \
+  -t $(ORG)/$(APP_NAME):latest .
+
 run: ## Run the app in Docker
 	docker run \
 	-e LEI_CRITICAL_CONTRIBUTOR_LEVEL=1 \

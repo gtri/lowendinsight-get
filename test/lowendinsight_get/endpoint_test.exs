@@ -33,17 +33,19 @@ defmodule LowendinsightGet.EndpointTest do
   end
 
   test "it returns 200 with a valid payload" do
-    Redix.command(:redix, ["DELETE", "https://github.com/kitplummer/elixir_gitlab"])
+    Redix.command(:redix, ["DELETE", "https://github.com/gbtestee/gbtestee"])
     # Create a test connection
-    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/elixir_gitlab"]})
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/gbtestee/gbtestee"]})
 
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
     assert conn.status == 200
-    :timer.sleep(2000)
+    :timer.sleep(5000)
     json = Poison.decode!(conn.resp_body)
+    uuid = json["uuid"]
+    IO.puts("UUID: #{uuid}")
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200

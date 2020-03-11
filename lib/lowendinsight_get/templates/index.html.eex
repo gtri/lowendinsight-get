@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LowEndInsight</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        LowEndInsight
+      </h1>
+      <p class="subtitle">
+        Analysis of Today's Github Trending Elixir Repos
+      </p>
+      <p>
+        Report generated: <%= report["metadata"]["times"]["end_time"] %>
+      </p>
+      <p>
+        From: https://github.com/trending/elixir?since=daily
+      </p>
+      <p>
+        Report ID: <%= report["uuid"] %>
+      </p>
+    </div>
+  </section>
+  <section class="section" id="report">
+      <div class="table-container">
+        <table class="table is-fullwidth is-striped" id="repo">
+          <thead>
+          <tr>
+            <th><abbr title="Url">URL</abbr></th>
+            <th><abbr title="Risk">Risk</abbr></th>
+          </tr>
+          </thead>
+          <tbody>
+          
+          <%= for repo <- report["report"]["repos"] do %>
+            <tr class="row">
+              <td class="table-data">
+                <%= repo["data"]["repo"] %>
+              </td>
+              <td class="table-data">
+                <%= repo["data"]["risk"] %>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
+                <div>
+                  <%= Poison.encode!(repo) %>                   
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </section>
+      </div>
+    </section>
+  </body>
+</html>

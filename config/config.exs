@@ -55,5 +55,6 @@ config :redix,
 config :lowendinsight_get, LowendinsightGet.Scheduler,
   jobs: [
     # Every 5 minutes
-    {"*/1 * * * *", {LowendinsightGet.CacheCleaner, :clean, []}}
+    {"*/5 * * * *", {LowendinsightGet.CacheCleaner, :clean, []}},
+    {"0 0 * * *", {LowendinsightGet.GithubTrending, :analyze, []}}
   ]

@@ -22,7 +22,7 @@ defmodule LowendinsightGet.Application do
       {Redix,
        {Application.get_env(:redix, :redis_url),
         [name: :redix, sync_connect: true, exit_on_disconnection: true]}},
-      Endpoint,
+      Plug.Cowboy.child_spec(scheme: :http, plug: LowendinsightGet.Endpoint, options: [port: 4000]),
       {Task.Supervisor, name: LowendinsightGet.AnalysisSupervisor}
     ]
 
@@ -41,4 +41,5 @@ defmodule LowendinsightGet.Application do
       name: LowendinsightGet.Supervisor
     ]
   end
+
 end

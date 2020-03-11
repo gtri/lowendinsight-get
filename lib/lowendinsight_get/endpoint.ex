@@ -68,23 +68,12 @@ defmodule LowendinsightGet.Endpoint do
     {status, body} =
       case conn.body_params do
         %{"urls" => urls} ->
-          if :ok == Helpers.validate_urls(urls) do
-            Logger.debug("started #{uuid} at #{start_time}")
+          case LowendinsightGet.Analysis.process_urls(urls, uuid, start_time) do
+            {:ok, empty} ->
+              {200, empty}
 
-            ## Get empty report for new job to respond the request with
-            empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
-            LowendinsightGet.Datastore.write_job(uuid, empty)
-
-            case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
-              {:ok, task} ->
-                Logger.info(task)
-                {200, Poison.encode!(empty)}
-
-              {:error, error} ->
-                {422, "LEI error - something went wrong #{error}"}
-            end
-          else
-            {422, process()}
+            {:error, error} ->
+              {422, "LEI error - something went wrong #{error}"}
           end
 
         _ ->

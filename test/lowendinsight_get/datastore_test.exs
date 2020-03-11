@@ -7,7 +7,7 @@ defmodule LowendinsightGet.DatastoreTest do
 
   setup_all do
     datetime_plus_30 = DateTime.utc_now() |> DateTime.add(-(86400 * 10)) |> DateTime.to_iso8601()
-    IO.inspect datetime_plus_30
+
     report = %{
       data: %{
         config: %{

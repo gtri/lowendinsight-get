@@ -44,8 +44,6 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 200
     :timer.sleep(5000)
     json = Poison.decode!(conn.resp_body)
-    uuid = json["uuid"]
-    IO.puts("UUID: #{uuid}")
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200

@@ -6,6 +6,7 @@ defmodule LowendinsightGet.GithubTrendingTest do
   use ExUnit.Case, async: false
 
   test "it performs analysis on the trending repos in github" do
-    assert {:ok, "OK"} == LowendinsightGet.GithubTrending.analyze("elixir")
+    {:ok, msg} = LowendinsightGet.GithubTrending.analyze("elixir")
+    assert true == String.contains?(msg, "successfully")
   end
 end

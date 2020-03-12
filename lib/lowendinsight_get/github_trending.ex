@@ -23,12 +23,12 @@ defmodule LowendinsightGet.GithubTrending do
           uuid,
           DateTime.utc_now()
         )
-
-        :ok
+        #Write the UUID into the gh_trending entry in Redis
+        Redix.command(:redix, ["SET", "gh_trending_uuid", uuid])
+        {:ok, "successfully analyzed trending repos for job id:#{uuid}"}
     end
 
-    #Write the UUID into the gh_trending entry in Redis
-    Redix.command(:redix, ["SET", "gh_trending_uuid", uuid])
+
   end
 
   def get_current_gh_trending_report() do

@@ -117,7 +117,6 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   def handle_errors(conn, _) do
-    IO.puts("****HERE*****")
     send_resp(conn, conn.status, process())
   end
 

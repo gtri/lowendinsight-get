@@ -11,6 +11,7 @@ defmodule LowendinsightGet.GithubTrending do
   def analyze(language) do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()
+
     case fetch_trending_list(language) do
       {:error, reason} ->
         {:error, reason}
@@ -23,19 +24,31 @@ defmodule LowendinsightGet.GithubTrending do
           uuid,
           DateTime.utc_now()
         )
-        #Write the UUID into the gh_trending entry in Redis
+
+        # Write the UUID into the gh_trending entry in Redis
         Redix.command(:redix, ["SET", "gh_trending_uuid", uuid])
         {:ok, "successfully analyzed trending repos for job id:#{uuid}"}
     end
-
-
   end
 
   def get_current_gh_trending_report() do
-    {:ok, uuid} = Redix.command(:redix, ["GET", "gh_trending_uuid"])
-    {:ok, report_json} = Redix.command(:redix, ["GET", uuid])
-    Poison.Parser.parse!(report_json)
+    case Redix.command(:redix, ["GET", "gh_trending_uuid"]) do
+      {:error, reason} ->
+        {:error, reason}
 
+      {:ok, uuid} ->
+        case uuid do
+          nil ->
+            %{
+              "metadata" => %{"times" => %{}},
+              "report" => %{"uuid" => UUID.uuid1(), "repos" => []}
+            }
+
+          _ ->
+            {:ok, report_json} = Redix.command(:redix, ["GET", uuid])
+            Poison.Parser.parse!(report_json)
+        end
+    end
   end
 
   defp filter_to_urls(list) do

@@ -7,7 +7,7 @@ defmodule LowendinsightGet.Endpoint do
   # use Plug.Debugger
   use Plug.ErrorHandler
 
-  alias Plug.{Adapters.Cowboy}
+  #alias Plug.{Adapters.Cowboy}
   @template_dir "lib/lowendinsight_get/templates"
 
   require Logger
@@ -32,12 +32,9 @@ defmodule LowendinsightGet.Endpoint do
     }
   end
 
-  def start_link(_opts) do
-    with {:ok, [port: port] = config} <- config() do
-      Logger.info("Starting server at http://localhost:#{port}/")
-      Cowboy.http(__MODULE__, [], config)
-    end
-  end
+  # def start_link(_opts) do
+  #   Cowboy.http(__MODULE__, [], config)
+  # end
 
   get "/" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
@@ -48,7 +45,9 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/gh_trending" do
-    render(conn, "index.html", report: LowendinsightGet.GithubTrending.get_current_gh_trending_report())
+    render(conn, "index.html",
+      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report()
+    )
   end
 
   get "/v1/analyze/:uuid" do
@@ -101,7 +100,7 @@ defmodule LowendinsightGet.Endpoint do
     })
   end
 
-  defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
+  #defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
   defp render(%{status: status} = conn, template, assigns \\ []) do
     body =
@@ -110,14 +109,11 @@ defmodule LowendinsightGet.Endpoint do
       |> String.replace_suffix(".html", ".html.eex")
       |> EEx.eval_file(assigns)
 
-    send_resp(conn, (status || 200), body)
+    send_resp(conn, status || 200, body)
   end
 
   def handle_errors(conn, _) do
+    IO.puts "****HERE*****"
     send_resp(conn, conn.status, process())
-  end
-
-  def repo_entries() do
-    LowendinsightGet.GithubTrending.get_current_gh_trending_report()
   end
 end

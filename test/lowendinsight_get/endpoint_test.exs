@@ -10,7 +10,6 @@ defmodule LowendinsightGet.EndpointTest do
 
   setup_all do
     Redix.command(:redix, ["FLUSHDB"])
-
     on_exit(fn ->
       Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
       |> Enum.map(fn child ->
@@ -30,6 +29,15 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.state == :sent
     assert conn.status == 200
     assert String.contains?(conn.resp_body, "<html>")
+  end
+
+  test "it returns error when error" do
+    conn = conn(:get, "/blah")
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 404
   end
 
   test "it returns 200 with a valid payload" do
@@ -118,4 +126,17 @@ defmodule LowendinsightGet.EndpointTest do
     # Assert the response
     assert conn.status == 404
   end
+
+  test "it returns 200 for the /gh_trending endpoint" do
+    # Create a test connection
+    conn = conn(:get, "/gh_trending")
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.contains?(conn.resp_body, "<html>")
+  end
+
 end

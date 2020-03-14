@@ -4,7 +4,8 @@
 
 use Mix.Config
 
-config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4000
+config :lowendinsight_get, LowendinsightGet.Endpoint,
+  port: String.to_integer(System.get_env("PORT") || "4000")
 
 ## Set the cache TTL period for keeping reports
 

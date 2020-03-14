@@ -6,6 +6,8 @@ defmodule LowendinsightGet.DatastoreTest do
   use ExUnit.Case, async: false
 
   setup_all do
+    datetime_plus_30 = DateTime.utc_now() |> DateTime.add(-(86400 * 10)) |> DateTime.to_iso8601()
+
     report = %{
       data: %{
         config: %{
@@ -39,7 +41,7 @@ defmodule LowendinsightGet.DatastoreTest do
       },
       header: %{
         duration: 1,
-        end_time: "2020-02-05T02:46:52.395737Z",
+        end_time: datetime_plus_30,
         library_version: "",
         source_client: "iex",
         start_time: "2020-02-05T02:46:51.375149Z",

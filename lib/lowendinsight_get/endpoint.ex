@@ -7,19 +7,20 @@ defmodule LowendinsightGet.Endpoint do
   # use Plug.Debugger
   use Plug.ErrorHandler
 
-  alias Plug.{Adapters.Cowboy}
+  #alias Plug.{Adapters.Cowboy}
+  @template_dir "lib/lowendinsight_get/templates"
 
   require Logger
 
   plug(Plug.Logger, log: :debug)
-  plug(:match)
 
   plug(Plug.Parsers,
-    parsers: [:json],
-    pass: ["application/json", "text/plain"],
+    parsers: [:json, :urlencoded],
+    pass: ["application/json", "text/*"],
     json_decoder: Poison
   )
 
+  plug(:match)
   plug(:dispatch)
 
   @content_type "application/json"
@@ -31,12 +32,9 @@ defmodule LowendinsightGet.Endpoint do
     }
   end
 
-  def start_link(_opts) do
-    with {:ok, [port: port] = config} <- config() do
-      Logger.info("Starting server at http://localhost:#{port}/")
-      Cowboy.http(__MODULE__, [], config)
-    end
-  end
+  # def start_link(_opts) do
+  #   Cowboy.http(__MODULE__, [], config)
+  # end
 
   get "/" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
@@ -44,6 +42,12 @@ defmodule LowendinsightGet.Endpoint do
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, html)
+  end
+
+  get "/gh_trending" do
+    render(conn, "index.html",
+      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report()
+    )
   end
 
   get "/v1/analyze/:uuid" do
@@ -68,23 +72,12 @@ defmodule LowendinsightGet.Endpoint do
     {status, body} =
       case conn.body_params do
         %{"urls" => urls} ->
-          if :ok == Helpers.validate_urls(urls) do
-            Logger.debug("started #{uuid} at #{start_time}")
+          case LowendinsightGet.Analysis.process_urls(urls, uuid, start_time) do
+            {:ok, empty} ->
+              {200, empty}
 
-            ## Get empty report for new job to respond the request with
-            empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
-            LowendinsightGet.Datastore.write_job(uuid, empty)
-
-            case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
-              {:ok, task} ->
-                Logger.info(task)
-                {200, Poison.encode!(empty)}
-
-              {:error, error} ->
-                {422, "LEI error - something went wrong #{error}"}
-            end
-          else
-            {422, process()}
+            {:error, error} ->
+              {422, "LEI error - something went wrong #{error}"}
           end
 
         _ ->
@@ -107,9 +100,20 @@ defmodule LowendinsightGet.Endpoint do
     })
   end
 
-  defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
+  #defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
+
+  defp render(%{status: status} = conn, template, assigns \\ []) do
+    body =
+      @template_dir
+      |> Path.join(template)
+      |> String.replace_suffix(".html", ".html.eex")
+      |> EEx.eval_file(assigns)
+
+    send_resp(conn, status || 200, body)
+  end
 
   def handle_errors(conn, _) do
+    IO.puts "****HERE*****"
     send_resp(conn, conn.status, process())
   end
 end

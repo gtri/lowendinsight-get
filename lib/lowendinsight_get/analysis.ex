@@ -6,11 +6,15 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source) do
-    case LowendinsightGet.Datastore.get_from_cache(url, Application.get_env(:lowendinsight_get, :cache_ttl)) do
+    case LowendinsightGet.Datastore.get_from_cache(
+           url,
+           Application.get_env(:lowendinsight_get, :cache_ttl)
+         ) do
       {:ok, repo_report} ->
         Logger.info("#{url} is cached, yay!")
         # have it in the cache, yay
-        {:ok, Poison.decode!(repo_report)}
+        repo_data = Poison.decode!(repo_report, as: %RepoReport{data: %Data{results: %Results{}}})
+        {:ok, repo_data}
 
       {:error, msg} ->
         Logger.info("No cache: #{msg}")
@@ -59,5 +63,29 @@ defmodule LowendinsightGet.Analysis do
     ## We're finished with all the analysis work, write the report to datastore
     LowendinsightGet.Datastore.write_job(uuid, report)
     {:ok, report}
+  end
+
+  # Pulled into a function so it can be called for other interaces
+  # Besides the endpoint.  Probably _should_ be in the analysis module.
+  # TODO: move to analysis module, get the biz logic isolated
+  def process_urls(urls, uuid, start_time) do
+    if :ok == Helpers.validate_urls(urls) do
+      Logger.debug("started #{uuid} at #{start_time}")
+
+      ## Get empty report for new job to respond the request with
+      empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
+      LowendinsightGet.Datastore.write_job(uuid, empty)
+
+      case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
+        {:ok, task} ->
+          Logger.info(task)
+          {:ok, Poison.encode!(empty)}
+
+        {:error, error} ->
+          {:error, error}
+      end
+    else
+      {:error, "invalid URLs list"}
+    end
   end
 end

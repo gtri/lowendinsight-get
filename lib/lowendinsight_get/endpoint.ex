@@ -8,18 +8,19 @@ defmodule LowendinsightGet.Endpoint do
   use Plug.ErrorHandler
 
   alias Plug.{Adapters.Cowboy}
+  @template_dir "lib/lowendinsight_get/templates"
 
   require Logger
 
   plug(Plug.Logger, log: :debug)
-  plug(:match)
 
   plug(Plug.Parsers,
-    parsers: [:json],
-    pass: ["application/json", "text/plain"],
+    parsers: [:json, :urlencoded],
+    pass: ["application/json", "text/*"],
     json_decoder: Poison
   )
 
+  plug(:match)
   plug(:dispatch)
 
   @content_type "application/json"
@@ -44,6 +45,10 @@ defmodule LowendinsightGet.Endpoint do
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, html)
+  end
+
+  get "/gh_trending" do
+    render(conn, "index.html", report: LowendinsightGet.GithubTrending.get_current_gh_trending_report())
   end
 
   get "/v1/analyze/:uuid" do
@@ -98,7 +103,21 @@ defmodule LowendinsightGet.Endpoint do
 
   defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
+  defp render(%{status: status} = conn, template, assigns \\ []) do
+    body =
+      @template_dir
+      |> Path.join(template)
+      |> String.replace_suffix(".html", ".html.eex")
+      |> EEx.eval_file(assigns)
+
+    send_resp(conn, (status || 200), body)
+  end
+
   def handle_errors(conn, _) do
     send_resp(conn, conn.status, process())
+  end
+
+  def repo_entries() do
+    LowendinsightGet.GithubTrending.get_current_gh_trending_report()
   end
 end

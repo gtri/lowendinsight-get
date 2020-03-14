@@ -7,10 +7,11 @@ defmodule LowendinsightGet.Endpoint do
   # use Plug.Debugger
   use Plug.ErrorHandler
 
-  #alias Plug.{Adapters.Cowboy}
+  # alias Plug.{Adapters.Cowboy}
   @template_dir "lib/lowendinsight_get/templates"
 
   require Logger
+  alias Plug.{Adapters.Cowboy}
 
   plug(Plug.Logger, log: :debug)
 
@@ -32,9 +33,12 @@ defmodule LowendinsightGet.Endpoint do
     }
   end
 
-  # def start_link(_opts) do
-  #   Cowboy.http(__MODULE__, [], config)
-  # end
+  def start_link(_opts) do
+    with {:ok, [port: port] = config} <- config() do
+      Logger.info("Starting server at http://localhost:#{port}/")
+      Cowboy.http(__MODULE__, [], config)
+    end
+  end
 
   get "/" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
@@ -100,7 +104,7 @@ defmodule LowendinsightGet.Endpoint do
     })
   end
 
-  #defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
+  # defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
   defp render(%{status: status} = conn, template, assigns \\ []) do
     body =
@@ -113,7 +117,9 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   def handle_errors(conn, _) do
-    IO.puts "****HERE*****"
+    IO.puts("****HERE*****")
     send_resp(conn, conn.status, process())
   end
+
+  defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 end

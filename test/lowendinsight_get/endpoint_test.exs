@@ -10,6 +10,7 @@ defmodule LowendinsightGet.EndpointTest do
 
   setup_all do
     Redix.command(:redix, ["FLUSHDB"])
+
     on_exit(fn ->
       Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
       |> Enum.map(fn child ->
@@ -138,5 +139,4 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 200
     assert String.contains?(conn.resp_body, "<html>")
   end
-
 end

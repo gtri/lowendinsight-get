@@ -11,8 +11,5 @@ defmodule LowendinsightGet.CacheCleanerTest do
 
   test "it cleans" do
     assert :ok == LowendinsightGet.CacheCleaner.clean()
-
   end
-
-
 end

@@ -39,3 +39,10 @@ config :lowendinsight,
 
 config :redix,
   redis_url: System.get_env("REDIS_URL")
+
+config :lowendinsight_get, LowendinsightGet.Scheduler,
+jobs: [
+  # Every 5 minutes
+  {"*/5 * * * *", {LowendinsightGet.CacheCleaner, :clean, []}},
+  {"0 0 * * *", {LowendinsightGet.GithubTrending, :analyze, []}}
+]

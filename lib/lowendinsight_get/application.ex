@@ -5,8 +5,6 @@
 defmodule LowendinsightGet.Application do
   use Application
 
-  alias LowendinsightGet.Endpoint
-
   require Logger
 
   def start(_type, _args) do

@@ -2,6 +2,9 @@
 # This software may be modified and distributed under the terms of
 # the BSD 3-Clause license. See the LICENSE file for details.
 
+## NOTE: This file is not used to configure the container deployment
+##       that one is in `rel/config/prod.exs`
+
 use Mix.Config
 
 config :lowendinsight_get, LowendinsightGet.Endpoint,
@@ -41,7 +44,14 @@ config :lowendinsight,
   high_functional_contributors_level:
     String.to_integer(System.get_env("LEI_HIGH_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "3"),
   medium_functional_contributors_level:
-    String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5")
+    String.to_integer(System.get_env("LEI_MEDIUM_FUNCTIONAL_CONTRIBUTORS_LEVEL") || "5"),
+
+  ## Jobs per available core for defining max concurrency.  This value
+  ## will be used to set the max_concurrency value.
+  jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "2"),
+
+  ## Base directory structure for temp clones
+  base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"
 
 config :redix,
   redis_url: System.get_env("REDIS_URL")

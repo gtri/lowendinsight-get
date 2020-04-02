@@ -3,6 +3,6 @@
 # the BSD 3-Clause license. See the LICENSE file for details.
 
 defmodule LowendinsightGet.Scheduler do
-  use Quantum.Scheduler,
+  use Quantum,
     otp_app: :lowendinsight_get
 end

@@ -106,7 +106,7 @@ defmodule LowendinsightGet.Endpoint do
 
   # defp config, do: Application.fetch_env(:lowendinsight_get, __MODULE__)
 
-  defp render(%{status: status} = conn, template, assigns \\ []) do
+  defp render(%{status: status} = conn, template, assigns) do
     body =
       @template_dir
       |> Path.join(template)

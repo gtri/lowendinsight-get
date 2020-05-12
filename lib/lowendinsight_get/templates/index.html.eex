@@ -10,23 +10,31 @@
   <body>
 
   <section class="section">
-    <div class="container">
-      <h1 class="title">
-        LowEndInsight
-      </h1>
-      <p class="subtitle">
-        Analysis of Today's Github Trending Elixir Repos
-      </p>
-      <p>
-        Report generated: <%= report["metadata"]["times"]["end_time"] %>
-      </p>
-      <p>
-        From: https://github.com/trending/elixir?since=daily
-      </p>
-      <p>
-        Report ID: <%= report["uuid"] %>
-      </p>
-    </div>
+      <div class="columns is-multiline is-centered">
+        <div class="column is-narrow is-vcentered">
+          <p>
+            <br/>
+            <img src="images/lei_bus_128.png">
+          </p>
+        </div>
+        <div class="column">
+          <h1 class="title">
+            LowEndInsight
+          </h1>
+          <p class="subtitle">
+            Analysis of Today's Github Trending Elixir Repos
+          </p>
+          <p>
+            Report generated: <%= report["metadata"]["times"]["end_time"] %>
+          </p>
+          <p>
+            From: https://github.com/trending/elixir?since=daily
+          </p>
+          <p>
+            Report ID: <%= report["uuid"] %>
+          </p>
+        </div>
+      </div>
   </section>
   <section class="section" id="report">
       <div class="table-container">
@@ -38,7 +46,7 @@
           </tr>
           </thead>
           <tbody>
-          
+
           <%= for repo <- report["report"]["repos"] do %>
             <tr class="row">
               <td class="table-data">
@@ -51,7 +59,7 @@
             <tr>
               <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
                 <div>
-                  <%= Poison.encode!(repo) %>                   
+                  <%= Poison.encode!(repo) %>
                 </div>
               </td>
             </tr>

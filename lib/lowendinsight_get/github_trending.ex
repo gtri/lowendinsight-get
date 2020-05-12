@@ -7,7 +7,7 @@ defmodule LowendinsightGet.GithubTrending do
 
   @type language() :: String.t()
 
-  @spec analyze(language()) :: :ok
+  @spec analyze(any) :: {:error, any} | {:ok, <<_::64, _::_*8>>}
   def analyze(language) do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()

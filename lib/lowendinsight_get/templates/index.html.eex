@@ -19,7 +19,7 @@
         </div>
         <div class="column">
           <h1 class="title">
-            LowEndInsight
+            <a href="https://github.com/gtri/lowendensight">LowEndInsight</a>
           </h1>
           <p class="subtitle">
             Analysis of Today's Github Trending Elixir Repos

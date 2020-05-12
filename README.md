@@ -1,5 +1,7 @@
 # lowendinsight-get
 
+![bus_factor](priv/static/images/lei_bus_128.png)
+
 Super simple POST API to get a LowEndInsight report
 
 ![default_elixir_ci](https://github.com/gtri/lowendinsight-get/workflows/default_elixir_ci/badge.svg)

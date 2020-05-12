@@ -4,6 +4,7 @@
 
 defmodule LowendinsightGet.Endpoint do
   use Plug.Router
+
   # use Plug.Debugger
 
   use Plug.ErrorHandler
@@ -15,7 +16,8 @@ defmodule LowendinsightGet.Endpoint do
   alias Plug.{Adapters.Cowboy}
 
   plug(Plug.Logger, log: :debug)
-  plug Plug.Static, from: "priv/static/images", at: "/images"
+  plug(Plug.Static, from: "priv/static/images", at: "/images")
+
   plug(Plug.Parsers,
     parsers: [:json, :urlencoded],
     pass: ["application/json", "text/*"],

@@ -8,8 +8,8 @@ defmodule LowendinsightGet.MixProject do
   def project do
     [
       app: :lowendinsight_get,
-      version: "0.4.3",
-      elixir: "~> 1.7",
+      version: "0.5.0",
+      elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls]
@@ -30,11 +30,11 @@ defmodule LowendinsightGet.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},
-      {:quantum, "~> 2.4"},
+      {:quantum, "~> 3.0-rc"},
       {:timex, "~> 3.0"},
       ## {:lowendinsight, path: "../lowendinsight"},
       ## {:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
-      {:lowendinsight, "0.4.3"},
+      {:lowendinsight, "0.5.0"},
       {:distillery, "~> 2.1"},
       {:excoveralls, "~> 0.10", only: :test}
     ]

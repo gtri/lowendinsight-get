@@ -9,7 +9,7 @@ defmodule LowendinsightGet.MixProject do
     [
       app: :lowendinsight_get,
       version: "0.5.0",
-      elixir: "~> 1.9",
+      elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls]

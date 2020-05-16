@@ -52,8 +52,13 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/gh_trending" do
-    render(conn, "index.html",
-      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report()
+    render(conn, "index.html", [])
+  end
+
+  get "/gh_trending/:language" do
+    render(conn, "language.html",
+      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report(language),
+      language: language
     )
   end
 

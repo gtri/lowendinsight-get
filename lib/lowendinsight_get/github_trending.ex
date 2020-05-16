@@ -26,13 +26,13 @@ defmodule LowendinsightGet.GithubTrending do
         )
 
         # Write the UUID into the gh_trending entry in Redis
-        Redix.command(:redix, ["SET", "gh_trending_uuid", uuid])
+        Redix.command(:redix, ["SET", "gh_trending_#{language}_uuid", uuid])
         {:ok, "successfully analyzed trending repos for job id:#{uuid}"}
     end
   end
 
-  def get_current_gh_trending_report() do
-    case Redix.command(:redix, ["GET", "gh_trending_uuid"]) do
+  def get_current_gh_trending_report(language) do
+    case Redix.command(:redix, ["GET", "gh_trending_#{language}_uuid"]) do
       {:error, reason} ->
         {:error, reason}
 

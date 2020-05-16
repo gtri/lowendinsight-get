@@ -14,7 +14,7 @@
         <div class="column is-narrow is-vcentered">
           <p>
             <br/>
-            <img src="images/lei_bus_128.png">
+            <img src="../images/lei_bus_128.png">
           </p>
         </div>
         <div class="column">
@@ -22,51 +22,22 @@
             <a href="https://github.com/gtri/lowendensight">LowEndInsight</a>
           </h1>
           <p class="subtitle">
-            Analysis of Today's Github Trending Elixir Repos
-          </p>
-          <p>
-            Report generated: <%= report["metadata"]["times"]["end_time"] %>
-          </p>
-          <p>
-            From: https://github.com/trending/elixir?since=daily
-          </p>
-          <p>
-            Report ID: <%= report["uuid"] %>
+            Analysis of Today's Github Trending Repos
           </p>
         </div>
       </div>
   </section>
-  <section class="section" id="report">
-      <div class="table-container">
-        <table class="table is-fullwidth is-striped" id="repo">
-          <thead>
-          <tr>
-            <th><abbr title="Url">URL</abbr></th>
-            <th><abbr title="Risk">Risk</abbr></th>
-          </tr>
-          </thead>
-          <tbody>
-
-          <%= for repo <- report["report"]["repos"] do %>
-            <tr class="row">
-              <td class="table-data">
-                <%= repo["data"]["repo"] %>
-              </td>
-              <td class="table-data">
-                <%= repo["data"]["risk"] %>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
-                <div>
-                  <%= Poison.encode!(repo) %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </section>
+  <section class="section">
+    <div class="columns">
+      <div class="column">
+        <p class="subtitle">By Language:</p>
+        <ul>
+          <li><a href="gh_trending/elixir">Elixir</a></li>
+          <li><a href="gh_trending/javascript">Javascript</a></li>
+        <ul>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
   </body>
 </html>

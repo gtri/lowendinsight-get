@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LowEndInsight</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <!-- Use jsdelivr.net later..-->
+    <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/reset.css" rel="stylesheet">
+	  <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css" rel="stylesheet">
+	  <link href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css" rel="stylesheet">
+	  <script src="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/App.js"></script>
+	  <script src="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.js"></script>
+    <!--<script defer type="text/javascript" src="gh_trending.js"></script>-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
@@ -40,30 +47,64 @@
       <div class="table-container">
         <table class="table is-fullwidth is-striped" id="repo">
           <thead>
-          <tr>
-            <th><abbr title="Url">URL</abbr></th>
-            <th><abbr title="Risk">Risk</abbr></th>
-          </tr>
-          </thead>
-          <tbody>
-
-          <%= for repo <- report["report"]["repos"] do %>
-            <tr class="row">
-              <td class="table-data">
-                <%= repo["data"]["repo"] %>
-              </td>
-              <td class="table-data">
-                <%= repo["data"]["risk"] %>
-              </td>
-            </tr>
             <tr>
-              <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
-                <div>
-                  <%= Poison.encode!(repo) %>
-                </div>
-              </td>
+              <th><abbr title="Url">URL</abbr></th>
+              <th><abbr title="Risk">Risk</abbr></th>
+              <th><abbr title="JSON">JSON</abbr></th>
             </tr>
+          </thead>
+          <tbody>     
+          <%= for repo <- report["report"]["repos"] do %>
+            <script defer type="text/javascript">
+                var table = document.getElementById("repo")
+                var url = <%= repo["data"]["repo"] %>
+                var risk = <%= repo["data"]["risk"] %>
+                var jsondata = <%= Poison.encode!(repo) %>
+
+                displayRow(table, url, risk, jsondata)
+
+                function displayRow(table, url, risk, jsondata){
+                  var row = table.insertRow(-1);
+                  row.className = "row";
+                  var newurl = row.insertCell(0);
+                  var newrisk = row.insertCell(1);
+                  var newjson = row.insertCell(2);
+
+                  newurl.className = "table-data";
+                  newrisk.className = "table-data";
+                  newjson.className = "table-data";
+                  newurl.innerHTML = url;
+                  newrisk.innerHTML = risk;
+
+                  var button = document.createElement("Button");
+                  button.innerHTML = "View";
+                  button.className = "button is-danger";
+                  newjson.appendChild(button);
+
+                  var div = document.createElement("div");
+                  div.className = "box";
+                  div.style.display = "none";
+                  var tree = jsonTree.create(jsondata, div);
+                  newjson.appendChild(div);
+
+                  button.addEventListener('click', () => {
+                    if(div.style.display == "none"){
+                          button.textContent = "Hide";
+                          div.style.display = "block";
+                    } else {
+                        button.textContent = "View";
+                        tree.collapse();
+                        div.style.display = "none";
+                    }
+                  });    
+              }
+
+              </script>
+			  
+			    <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
+          </td>
           <% end %>
+              
           </tbody>
         </section>
       </div>

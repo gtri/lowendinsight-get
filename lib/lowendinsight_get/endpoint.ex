@@ -52,7 +52,8 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/gh_trending" do
-    render(conn, "index.html", [])
+    languages = Application.get_env(:lowendinsight_get, :languages)
+    render(conn, "index.html", languages: languages)
   end
 
   get "/gh_trending/:language" do

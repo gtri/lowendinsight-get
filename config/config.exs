@@ -11,7 +11,27 @@ config :lowendinsight_get, LowendinsightGet.Endpoint,
 
 config :lowendinsight_get,
   cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "30"),
-  cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true")
+  cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true"),
+  languages: [
+    "elixir",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "javascript",
+    "ruby",
+    "c",
+    "c++",
+    "c#",
+    "haskell",
+    "php",
+    "scala",
+    "swift",
+    "objective-c",
+    "kotlin",
+    "shell",
+    "typescript"
+  ]
 
 config :lowendinsight,
   ## Contributor in terms of discrete users
@@ -50,10 +70,10 @@ config :lowendinsight,
 
   ## Jobs per available core for defining max concurrency.  This value
   ## will be used to set the max_concurrency value.
-  jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "2"),
+  jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "1"),
 
   ## Base directory structure for temp clones
-  base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"
+  base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/Volumes/lei_data"
 
 import_config "#{Mix.env()}.exs"
 

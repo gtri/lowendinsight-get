@@ -5,7 +5,7 @@
 defmodule LowendinsightGet.Analysis do
   require Logger
 
-  def analyze(url, source) do
+  def analyze(url, source, options) do
     case LowendinsightGet.Datastore.get_from_cache(
            url,
            Application.get_env(:lowendinsight_get, :cache_ttl)
@@ -19,12 +19,9 @@ defmodule LowendinsightGet.Analysis do
       {:error, msg} ->
         Logger.info("No cache: #{msg}")
         # don't have it
-        case AnalyzerModule.analyze(url, source) do
-          {:ok, rep} ->
-            Logger.info("caching #{url}")
-            LowendinsightGet.Datastore.write_to_cache(url, rep)
-            {:ok, rep}
-        end
+        {:ok, rep} = AnalyzerModule.analyze(url, source, options)
+        LowendinsightGet.Datastore.write_to_cache(url, rep)
+        {:ok, rep}
     end
   end
 
@@ -33,9 +30,9 @@ defmodule LowendinsightGet.Analysis do
 
     repos =
       urls
-      |> Task.async_stream(__MODULE__, :analyze, ["lei-get"],
+      |> Task.async_stream(__MODULE__, :analyze, ["lei-get", %{types: false}],
         timeout: :infinity,
-        max_concurrency: 10
+        max_concurrency: 1
       )
       |> Enum.map(fn {:ok, report} -> elem(report, 1) end)
 

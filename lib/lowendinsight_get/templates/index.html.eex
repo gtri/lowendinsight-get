@@ -32,10 +32,10 @@
       <div class="column">
         <p class="subtitle">By Language:</p>
         <ul>
-          <li><a href="gh_trending/elixir">Elixir</a></li>
-          <li><a href="gh_trending/javascript">Javascript</a></li>
+          <%= for language <- languages do %>
+          <li><a href="gh_trending/<%= language %>"><%= language %></a></li>
+          <% end %>
         <ul>
-        </div>
       </div>
     </div>
   </section>

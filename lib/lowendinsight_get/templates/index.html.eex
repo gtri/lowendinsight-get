@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LowEndInsight</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/reset.css" rel="stylesheet">
-    <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css" rel="stylesheet">
-    <link href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/reset.css">
+    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css">
+    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css">
     <script src="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/App.js"></script>
     <script src="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href = "css/gh_trending.css">
 
   </head>
@@ -52,30 +52,35 @@
         <table class="table is-fullwidth is-striped" id="repo"  >
           <thead>
             <tr class="tablehead">
-              <th><abbr title="Url" >URL</abbr></th>
-              <th><abbr title="CCount">Contributor Count</abbr></th>
-              <th><abbr title="FCCount">Functional Contributor Count</abbr></th>
-              <th><abbr title="Risk">Risk</abbr></th>
-              <th><abbr title="JSON">JSON</abbr></th>
+              <th>URL</th>
+              <th>Contributor Count</th>
+              <th>
+                Functional Contributor Count
+                  <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
+                  </div>           
+              </th>
+              <th>Risk</th>
+              <th>JSON</th>
             </tr>
           </thead>
-          <tbody>     
-          <%= for repo <- report["report"]["repos"] do %>
+          <tbody>
+            <%= for repo <- report["report"]["repos"] do %>
 
-            <script defer type="text/javascript">
+              <script defer type="text/javascript">
 
-              var table = document.getElementById("repo");
-              var url = "<%= repo["data"]["repo"] %>";
-              var ccount = "<%= repo["data"]["results"]["contributor_count"] %>"
-              var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>"
-              var risk = "<%= repo["data"]["risk"] %>";
-              var jsondata = <%= Poison.encode!(repo) %>;
+                var table = document.getElementById("repo");
+                var url = "<%= repo["data"]["repo"] %>";
+                var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
+                var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
+                var risk = "<%= repo["data"]["risk"] %>";
+                var jsondata = <%= Poison.encode!(repo) %>;
 
-              displayRow(table, url, ccount, fccount, risk, jsondata);
-            </script>
+                displayRow(table, url, ccount, fccount, risk, jsondata);
+              </script>
 
-          <% end %>
-              
+            <% end %>
           </tbody>
         </section>
       </div>

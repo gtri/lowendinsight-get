@@ -15,7 +15,14 @@ function displayRow(table, url, ccount, fccount, risk, jsondata) {
     newrisk.className = "table-data is-family-code risk";
     newjson.className = "table-data is-family-code json";
     
-    newurl.innerHTML = url;
+    var a = document.createElement("a");
+    var link = document.createTextNode(url);
+    a.appendChild(link);
+    a.href = url;
+    a.setAttribute("target", "_blank")
+    newurl.appendChild(a);
+
+    //newurl.innerHTML = url;
     newccount.innerHTML = ccount;
     newfccount.innerHTML = fccount;
     newrisk.innerHTML = risk;

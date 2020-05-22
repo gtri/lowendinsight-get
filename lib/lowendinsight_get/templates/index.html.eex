@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LowEndInsight</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <!-- Use jsdelivr.net later..-->
     <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/reset.css" rel="stylesheet">
-	  <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css" rel="stylesheet">
-	  <link href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css" rel="stylesheet">
-	  <script src="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/App.js"></script>
-	  <script src="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.js"></script>
-    <!--<script defer type="text/javascript" src="gh_trending.js"></script>-->
+    <link href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css" rel="stylesheet">
+    <link href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css" rel="stylesheet">
+    <script src="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/App.js"></script>
+    <script src="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href = "css/gh_trending.css">
+
   </head>
   <body>
-
+  <script src="js/gh_trending.js" type="text/javascript"></script> 
   <section class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-narrow is-vcentered">
@@ -26,83 +26,54 @@
         </div>
         <div class="column">
           <h1 class="title">
-            <a href="https://github.com/gtri/lowendensight">LowEndInsight</a>
+            <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
-          <p class="subtitle">
+          <p class="subtitle sub" >
             Analysis of Today's Github Trending Elixir Repos
-          </p>
+          </p> 
+          <div class="box reportbox">
           <p>
-            Report generated: <%= report["metadata"]["times"]["end_time"] %>
+            <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
           </p>
+          <br/>
           <p>
-            From: https://github.com/trending/elixir?since=daily
+            <strong>From:</strong> https://github.com/trending/elixir?since=daily
           </p>
+          <br/>
           <p>
-            Report ID: <%= report["uuid"] %>
+            <strong>Report ID:</strong> <%= report["uuid"] %>
           </p>
+          </div>
         </div>
       </div>
   </section>
   <section class="section" id="report">
       <div class="table-container">
-        <table class="table is-fullwidth is-striped" id="repo">
+        <table class="table is-fullwidth is-striped" id="repo"  >
           <thead>
-            <tr>
-              <th><abbr title="Url">URL</abbr></th>
+            <tr class="tablehead">
+              <th><abbr title="Url" >URL</abbr></th>
+              <th><abbr title="CCount">Contributor Count</abbr></th>
+              <th><abbr title="FCCount">Functional Contributor Count</abbr></th>
               <th><abbr title="Risk">Risk</abbr></th>
               <th><abbr title="JSON">JSON</abbr></th>
             </tr>
           </thead>
           <tbody>     
           <%= for repo <- report["report"]["repos"] do %>
+
             <script defer type="text/javascript">
-                var table = document.getElementById("repo")
-                var url = <%= repo["data"]["repo"] %>
-                var risk = <%= repo["data"]["risk"] %>
-                var jsondata = <%= Poison.encode!(repo) %>
 
-                displayRow(table, url, risk, jsondata)
+              var table = document.getElementById("repo");
+              var url = "<%= repo["data"]["repo"] %>";
+              var ccount = "<%= repo["data"]["results"]["contributor_count"] %>"
+              var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>"
+              var risk = "<%= repo["data"]["risk"] %>";
+              var jsondata = <%= Poison.encode!(repo) %>;
 
-                function displayRow(table, url, risk, jsondata){
-                  var row = table.insertRow(-1);
-                  row.className = "row";
-                  var newurl = row.insertCell(0);
-                  var newrisk = row.insertCell(1);
-                  var newjson = row.insertCell(2);
+              displayRow(table, url, ccount, fccount, risk, jsondata);
+            </script>
 
-                  newurl.className = "table-data";
-                  newrisk.className = "table-data";
-                  newjson.className = "table-data";
-                  newurl.innerHTML = url;
-                  newrisk.innerHTML = risk;
-
-                  var button = document.createElement("Button");
-                  button.innerHTML = "View";
-                  button.className = "button is-danger";
-                  newjson.appendChild(button);
-
-                  var div = document.createElement("div");
-                  div.className = "box";
-                  div.style.display = "none";
-                  var tree = jsonTree.create(jsondata, div);
-                  newjson.appendChild(div);
-
-                  button.addEventListener('click', () => {
-                    if(div.style.display == "none"){
-                          button.textContent = "Hide";
-                          div.style.display = "block";
-                    } else {
-                        button.textContent = "View";
-                        tree.collapse();
-                        div.style.display = "none";
-                    }
-                  });    
-              }
-
-              </script>
-			  
-			    <td colspan="2" style="word-wrap: break-word; max-width: 150px;" class="is-family-code">
-          </td>
           <% end %>
               
           </tbody>

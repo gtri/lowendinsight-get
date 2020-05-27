@@ -17,6 +17,8 @@ defmodule LowendinsightGet.Endpoint do
 
   plug(Plug.Logger, log: :debug)
   plug(Plug.Static, from: "priv/static/images", at: "/images")
+  plug(Plug.Static, from: "priv/static/js", at: "/js")
+  plug(Plug.Static, from: "priv/static/css", at: "/css")
 
   plug(Plug.Parsers,
     parsers: [:json, :urlencoded],

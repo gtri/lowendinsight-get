@@ -65,7 +65,7 @@ defmodule LowendinsightGet.GithubTrending do
   end
 
   defp fetch_trending_list(language) do
-    url = "https://github-trending-api.now.sh?language=" <> language
+    url = "https://ghapi.huchen.dev/repositories?since=daily&language=" <> language
     Logger.info("fetching trend list for: #{url}")
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->

@@ -11,85 +11,37 @@
     <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
-  <script src="js/gh_trending.js" type="text/javascript"></script> 
+  <script src="js/gh_trending.js" type="text/javascript"></script>
   <section class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-narrow is-vcentered">
           <p>
             <br/>
-            <img src="images/lei_bus_128.png">
+            <img src="../images/lei_bus_128.png">
           </p>
         </div>
         <div class="column">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
-          <p class="subtitle sub" >
-            Analysis of Today's Github Trending Elixir Repos
-          </p> 
-          <div class="box reportbox">
-          <p>
-            <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
-          </p>
-          
-          <p>
-            <strong>From:</strong>
-            <a href="https://github.com/trending/elixir?since=daily">
-              https://github.com/trending/elixir?since=daily
-            </a>
-          </p>
-          
-          <p>
-            <strong>Report ID:</strong> <%= report["uuid"] %>
+          <p class="subtitle">
+            Analysis of Today's Github Trending Repos
           </p>
           </div>
         </div>
       </div>
   </section>
-  <section class="section" id="report">
-      <div class="table-container">
-        <table class="table is-fullwidth is-striped" id="repo"  >
-          <thead>
-            <tr class="tablehead">
-              <th>URL</th>
-              <th>Contributor Count</th>
-              <th>
-                Functional Contributor Count
-                  <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
-                  </div>           
-              </th>
-              <th>Risk</th>
-              <th>JSON</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= for repo <- report["report"]["repos"] do %>
-                <%= case Helpers.get_slug(repo["data"]["repo"]) do %>
-                  <%= {:ok, slug} -> %>
-
-                    <script defer type="text/javascript">
-
-                      var table = document.getElementById("repo");
-                      var url = "<%= repo["data"]["repo"] %>";
-                      var slug = "<%= slug %>";
-                      var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
-                      var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
-                      var risk = "<%= repo["data"]["risk"] %>";
-                      var jsondata = <%= Poison.encode!(repo) %>;
-
-                      display_row(table, url, slug, ccount, fccount, risk, jsondata);
-
-                    </script>
-
-                  <%= {:error, msg} ->  %>
-                    <%= {:error, msg} %>
-                <% end %>
-            <% end %>
-          </tbody>
-        </section>
+  <section class="section">
+    <div class="columns">
+      <div class="column">
+        <p class="subtitle">By Language:</p>
+        <ul>
+          <%= for language <- languages do %>
+          <li><a href="gh_trending/<%= language %>"><%= language %></a></li>
+          <% end %>
+        <ul>
       </div>
-    </section>
+    </div>
+  </section>
   </body>
 </html>

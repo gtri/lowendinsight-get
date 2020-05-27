@@ -4,6 +4,7 @@
 
 defmodule LowendinsightGet.Endpoint do
   use Plug.Router
+
   # use Plug.Debugger
 
   use Plug.ErrorHandler
@@ -15,7 +16,10 @@ defmodule LowendinsightGet.Endpoint do
   alias Plug.{Adapters.Cowboy}
 
   plug(Plug.Logger, log: :debug)
-  plug Plug.Static, from: "priv/static/images", at: "/images"
+  plug(Plug.Static, from: "priv/static/images", at: "/images")
+  plug(Plug.Static, from: "priv/static/js", at: "/js")
+  plug(Plug.Static, from: "priv/static/css", at: "/css")
+
   plug(Plug.Parsers,
     parsers: [:json, :urlencoded],
     pass: ["application/json", "text/*"],
@@ -50,8 +54,14 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/gh_trending" do
-    render(conn, "index.html",
-      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report()
+    languages = Application.get_env(:lowendinsight_get, :languages)
+    render(conn, "index.html", languages: languages)
+  end
+
+  get "/gh_trending/:language" do
+    render(conn, "language.html",
+      report: LowendinsightGet.GithubTrending.get_current_gh_trending_report(language),
+      language: language
     )
   end
 

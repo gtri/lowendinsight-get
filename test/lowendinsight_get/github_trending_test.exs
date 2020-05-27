@@ -8,7 +8,7 @@ defmodule LowendinsightGet.GithubTrendingTest do
   test "it performs analysis on the trending repos in github" do
     {:ok, msg} = LowendinsightGet.GithubTrending.analyze("elixir")
     assert true == String.contains?(msg, "successfully")
-    report = LowendinsightGet.GithubTrending.get_current_gh_trending_report()
+    report = LowendinsightGet.GithubTrending.get_current_gh_trending_report("elixir")
     assert report["state"] == "complete" || "incomplete"
   end
 end

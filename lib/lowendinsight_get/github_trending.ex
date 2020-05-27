@@ -7,7 +7,16 @@ defmodule LowendinsightGet.GithubTrending do
 
   @type language() :: String.t()
 
-  @spec analyze(language()) :: :ok
+  # def process_languages() do
+  #   Application.get_env(:lowendinsight_get, :languages)
+  #   |> Enum.each(fn language ->
+  #     Mix.shell().info("Analyzing trending repos for: #{language}")
+  #     LowendinsightGet.GithubTrending.analyze(language)
+  #     Mix.shell().info("Analyzed trending repos for: #{language}")
+  #   end)
+  # end
+
+  @spec analyze(any) :: {:error, any} | {:ok, <<_::64, _::_*8>>}
   def analyze(language) do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()
@@ -26,13 +35,13 @@ defmodule LowendinsightGet.GithubTrending do
         )
 
         # Write the UUID into the gh_trending entry in Redis
-        Redix.command(:redix, ["SET", "gh_trending_uuid", uuid])
-        {:ok, "successfully analyzed trending repos for job id:#{uuid}"}
+        Redix.command(:redix, ["SET", "gh_trending_#{language}_uuid", uuid])
+        {:ok, "successfully started analyzing trending repos for job id:#{uuid}"}
     end
   end
 
-  def get_current_gh_trending_report() do
-    case Redix.command(:redix, ["GET", "gh_trending_uuid"]) do
+  def get_current_gh_trending_report(language) do
+    case Redix.command(:redix, ["GET", "gh_trending_#{language}_uuid"]) do
       {:error, reason} ->
         {:error, reason}
 
@@ -56,8 +65,8 @@ defmodule LowendinsightGet.GithubTrending do
   end
 
   defp fetch_trending_list(language) do
-    url = "https://github-trending-api.now.sh\?language\=#{language}"
-
+    url = "https://ghapi.huchen.dev/repositories?since=daily&language=" <> language
+    Logger.info("fetching trend list for: #{url}")
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, Poison.Parser.parse!(body)}
@@ -66,7 +75,9 @@ defmodule LowendinsightGet.GithubTrending do
         {:error, "Not found :("}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error(reason)
         {:error, reason}
     end
   end
+
 end

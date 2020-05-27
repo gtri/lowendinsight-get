@@ -26,6 +26,8 @@ Look at `config/config.exs` or if you're building your own container
 The configuration items are also explained at
 https://github.com/gtri/lowendinsight in more detail.
 
+## Note: For Windows, avoid using single quotes in commands.  Use double quotes instead and escape nested quotes i.e. use \"
+
 ## Run
 
 ### Development

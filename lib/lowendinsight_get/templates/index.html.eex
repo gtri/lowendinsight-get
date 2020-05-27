@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LowEndInsight</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/reset.css">
-    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/app.css">
-    <link rel="stylesheet" href="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.css">
-    <script src="https://gitcdn.xyz/repo/summerstyle/app.js/44a55639df5a58e93c41586f6ea6530adb8c44d9/App.js"></script>
-    <script src="https://gitcdn.xyz/repo/summerstyle/jsonTreeViewer/master/libs/jsonTree/jsonTree.js"></script>
-    <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.css">
     <link rel="stylesheet" href = "css/gh_trending.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.min.js"></script>
+    <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
   <script src="js/gh_trending.js" type="text/javascript"></script> 
@@ -35,11 +31,14 @@
           <p>
             <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
           </p>
-          <br/>
+          
           <p>
-            <strong>From:</strong> https://github.com/trending/elixir?since=daily
+            <strong>From:</strong>
+            <a href="https://github.com/trending/elixir?since=daily">
+              https://github.com/trending/elixir?since=daily
+            </a>
           </p>
-          <br/>
+          
           <p>
             <strong>Report ID:</strong> <%= report["uuid"] %>
           </p>
@@ -67,19 +66,26 @@
           </thead>
           <tbody>
             <%= for repo <- report["report"]["repos"] do %>
+                <%= case Helpers.get_slug(repo["data"]["repo"]) do %>
+                  <%= {:ok, slug} -> %>
 
-              <script defer type="text/javascript">
+                    <script defer type="text/javascript">
 
-                var table = document.getElementById("repo");
-                var url = "<%= repo["data"]["repo"] %>";
-                var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
-                var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
-                var risk = "<%= repo["data"]["risk"] %>";
-                var jsondata = <%= Poison.encode!(repo) %>;
+                      var table = document.getElementById("repo");
+                      var url = "<%= repo["data"]["repo"] %>";
+                      var slug = "<%= slug %>";
+                      var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
+                      var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
+                      var risk = "<%= repo["data"]["risk"] %>";
+                      var jsondata = <%= Poison.encode!(repo) %>;
 
-                displayRow(table, url, ccount, fccount, risk, jsondata);
-              </script>
+                      display_row(table, url, slug, ccount, fccount, risk, jsondata);
 
+                    </script>
+
+                  <%= {:error, msg} ->  %>
+                    <%= {:error, msg} %>
+                <% end %>
             <% end %>
           </tbody>
         </section>

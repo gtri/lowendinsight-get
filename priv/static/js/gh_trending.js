@@ -1,11 +1,10 @@
-function displayRow(table, url, ccount, fccount, risk, jsondata) {
+function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
     var row = table.insertRow(-1);
     row.className = "row";
 
-    //obj notation
     var newurl = row.insertCell(0);
     var newccount = row.insertCell(1);
-    var newfccount = row.insertCell(2)
+    var newfccount = row.insertCell(2);
     var newrisk = row.insertCell(3);
     var newjson = row.insertCell(4);
 
@@ -16,13 +15,12 @@ function displayRow(table, url, ccount, fccount, risk, jsondata) {
     newjson.className = "table-data is-family-code json";
     
     var a = document.createElement("a");
-    var link = document.createTextNode(url);
+    var link = document.createTextNode(slug);
     a.appendChild(link);
     a.href = url;
-    a.setAttribute("target", "_blank")
+    a.setAttribute("target", "_blank");
     newurl.appendChild(a);
 
-    //newurl.innerHTML = url;
     newccount.innerHTML = ccount;
     newfccount.innerHTML = fccount;
     newrisk.innerHTML = risk;

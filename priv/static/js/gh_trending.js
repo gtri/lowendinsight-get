@@ -38,7 +38,6 @@ function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
 
     var spanbutton = document.createElement("span");
     var button = document.createElement("Button");
-    //button.innerHTML = "view";
     button.className = "button is-info is-family-code";
     spanbutton.innerHTML = "view"
     spanbutton.style["font-weight"] = "bold";

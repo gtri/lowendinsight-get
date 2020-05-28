@@ -73,7 +73,7 @@ config :lowendinsight,
   jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "1"),
 
   ## Base directory structure for temp clones
-  base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/Volumes/lei_data"
+  base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"
 
 import_config "#{Mix.env()}.exs"
 

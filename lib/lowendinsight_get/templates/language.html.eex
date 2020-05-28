@@ -25,7 +25,7 @@
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
           <p class="subtitle sub" >
-            Analysis of Today's Github Trending Elixir Repos
+            Analysis of Today's Github Trending <%= String.capitalize(language) %> Repos
           </p>
           <div class="box reportbox">
           <p>
@@ -34,14 +34,15 @@
 
           <p>
             <strong>From:</strong>
-            <a href="https://github.com/trending/elixir?since=daily">
-              https://github.com/trending/elixir?since=daily
+            <a href="https://github.com/trending/<%= language %>?since=daily">
+              https://github.com/trending/<%= language %>?since=daily
             </a>
           </p>
 
           <p>
             <strong>Report ID:</strong> <%= report["uuid"] %>
           </p>
+          <p><a href="/gh_trending/">Back to Language Index</a></p>
           </div>
         </div>
       </div>

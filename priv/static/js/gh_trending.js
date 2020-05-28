@@ -28,12 +28,16 @@ function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
     newccount.innerHTML = ccount;
     newfccount.innerHTML = fccount;
 
-    if(risk == "high"){
-        riskspan.className += " highrisk";
-    } else if (risk == "critical"){
-        riskspan.className += " criticalrisk";
-    } else if (risk == "low") {
-        riskspan.className += " lowrisk";
+    switch(risk){
+        case "critical": 
+            riskspan.className += " criticalrisk"; break;
+        case "high": 
+            riskspan.className += " highrisk"; break;
+        case "medium": 
+            riskspan.className += " mediumrisk"; break;
+        case "low": 
+            riskspan.className += " lowrisk"; break;
+        default: break;
     }
 
     var spanbutton = document.createElement("span");

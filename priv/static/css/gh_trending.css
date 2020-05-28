@@ -24,7 +24,8 @@
 
 .sub {
 	margin: 30px 0px !important;
-	background-color: #95AFC9; 
+	/* background-color: #95AFC9;  */
+	background-color: #4d97d6;
 	color: white; 
 	display: block; 
 	padding: 6px 6px; 
@@ -58,11 +59,31 @@
 	background-color: #d4d4d4;
 }
 
+tr:hover td {
+	background-color: #e8e8e8 !important;
+}
+
+.table-data > a {
+	color: rgb(39, 74, 180);
+	text-decoration: underline;
+}
+
+tr.tablehead th {
+	color: white;
+}
+
+.table thead td {
+	vertical-align: middle;
+	border-bottom: 1px solid #b3b3b3;
+	overflow: visible;
+	overflow-x: scroll;
+}
+
 div p strong {
 	color: #1C398D;
 }
 
-.lowrisk {
+.lowrisk, .mediumrisk {
 	font-weight: bold;
 }
 
@@ -78,11 +99,6 @@ div p strong {
 	background-color: red !important;
 	color: white;
 	padding: 3px;
-}
-
-.table-data > a {
-	color: rgb(39, 74, 180);
-	text-decoration: underline;
 }
 
 h1 > a {
@@ -101,17 +117,6 @@ td > a:hover {
 
 a:link {
 	font-family: Trebuchet MS, Arial, sans-serif;
-}
-
-tr.tablehead th {
-	color: white;
-}
-
-.table thead td {
-	vertical-align: middle;
-	border-bottom: 1px solid #b3b3b3;
-	overflow: visible;
-	overflow-x: scroll;
 }
 
 .tooltip {

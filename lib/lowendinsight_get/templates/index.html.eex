@@ -37,7 +37,7 @@
         <p class="subtitle">By Language:</p>
         <ul>
           <%= for language <- languages do %>
-          <li><a href="gh_trending/<%= language %>"><%= language %></a></li>
+          <li><a href="/gh_trending/<%= language %>"><%= language %></a></li>
           <% end %>
         <ul>
       </div>

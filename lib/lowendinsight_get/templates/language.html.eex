@@ -34,8 +34,8 @@
 
           <p>
             <strong>From:</strong>
-            <a href="https://github.com/trending/elixir?since=daily">
-              https://github.com/trending/elixir?since=daily
+            <a href="https://github.com/trending/<%= language %>?since=daily">
+              https://github.com/trending/<%= language %>?since=daily
             </a>
           </p>
 

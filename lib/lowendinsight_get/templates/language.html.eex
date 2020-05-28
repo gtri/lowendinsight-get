@@ -31,18 +31,20 @@
           <p>
             <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
           </p>
-
           <p>
             <strong>From:</strong>
             <a href="https://github.com/trending/elixir?since=daily">
               https://github.com/trending/elixir?since=daily
             </a>
           </p>
-
           <p>
             <strong>Report ID:</strong> <%= report["uuid"] %>
           </p>
           </div>
+        </div>
+        <div class="column">
+        </div>
+        <div class="column">
         </div>
       </div>
   </section>
@@ -79,7 +81,9 @@
                       var risk = "<%= repo["data"]["risk"] %>";
                       var jsondata = <%= Poison.encode!(repo) %>;
 
-                      display_row(table, url, slug, ccount, fccount, risk, jsondata);
+                      display_row(table, url, slug, ccount, fccount, "low", jsondata);
+                      display_row(table, url, slug, ccount, fccount, "high", jsondata);
+                      display_row(table, url, slug, ccount, fccount, "critical", jsondata);
 
                     </script>
 

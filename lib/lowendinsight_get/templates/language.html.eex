@@ -25,7 +25,7 @@
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
           <p class="subtitle sub" >
-            Analysis of Today's Github Trending <%= String.capitalize(language) %> Repos
+            Analysis of Today's Github Trending Repos
           </p>
           <div class="box reportbox">
           <p>
@@ -47,7 +47,7 @@
           <div class = "dropdown">
                <div class = "dropdown-trigger">
                   <button class = "button is-warning" aria-haspopup = "true" aria-controls = "dropdown-menu">
-                     <span>Language</span>
+                     <span><%= String.capitalize(language) %></span>
                      <span class = "icon is-small">
                         <i class = "fa fa-angle-down" aria-hidden="true"></i>
                      </span>

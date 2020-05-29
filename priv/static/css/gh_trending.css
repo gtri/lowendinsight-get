@@ -35,6 +35,12 @@
 	width: auto;
 }
 
+/* .sub strong {
+	background-color: green;
+	color: white;
+	padding: 2px;
+} */
+
 .tablehead {
 	background-color: #333333;
     color: white;
@@ -87,14 +93,14 @@ div p strong {
 	font-weight: bold;
 	background-color: orange !important;
 	color: white;
-	padding: 3px;
+	padding: 4px;
 }
 
 .criticalrisk {
 	font-weight: bold;
 	background-color: red !important;
 	color: white;
-	padding: 3px;
+	padding: 4px;
 }
 
 h1 > a {
@@ -165,7 +171,7 @@ th .tooltip {
 }
 
 .dropdown {
-	margin-top: 67px;
+	margin-top: 64px;
 }
 
 .dropdown-content {

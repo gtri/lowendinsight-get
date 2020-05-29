@@ -20,7 +20,7 @@
             <img src="../images/lei_bus_128.png">
           </p>
         </div>
-        <div class="column">
+        <div class="column" id="reportbox">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>

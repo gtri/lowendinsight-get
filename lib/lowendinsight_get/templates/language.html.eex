@@ -20,7 +20,7 @@
             <img src="../images/lei_bus_128.png">
           </p>
         </div>
-        <div class="column">
+        <div class="column" id="reportbox">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
@@ -28,6 +28,9 @@
             Analysis of Today's Github Trending <%= String.capitalize(language) %> Repos
           </p>
           <div class="box reportbox">
+          <p>
+            <strong>Report ID:</strong> <%= report["uuid"] %>
+          </p>
           <p>
             <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
           </p>
@@ -37,34 +40,50 @@
               https://github.com/trending/<%= language %>?since=daily
             </a>
           </p>
-          <p>
-            <strong>Report ID:</strong> <%= report["uuid"] %>
-          </p>
-          <br/>
-          <p><a href="/gh_trending/"><i class="fas fa-arrow-circle-left fa-fw"></i>Back to Language Index</a></p>
+          
           </div>
         </div>
         <div class="column">
+          <div class = "dropdown">
+               <div class = "dropdown-trigger">
+                  <button class = "button is-warning" aria-haspopup = "true" aria-controls = "dropdown-menu">
+                     <span>Language</span>
+                     <span class = "icon is-small">
+                        <i class = "fa fa-angle-down" aria-hidden="true"></i>
+                     </span>
+                  </button>
+               </div>
+               <div class = "dropdown-menu" id = "dropdown-menu" role = "menu">
+                  <div class = "dropdown-content">
+                    <%= for lang <- languages do %>
+                     <a href="/gh_trending/<%= lang %>" class = "dropdown-item"><%= lang %></a>
+                    <% end %>
+                  </div>
+               </div>
+            </div>
+            <script>
+               languages_button_event();
+            </script>
+         </div>
         </div>
-        <div class="column">
-        </div>
+        <div class="column"></div>
       </div>
+
   </section>
   <section class="section" id="report">
       <div class="table-container">
         <table class="table is-fullwidth is-striped" id="repo"  >
           <thead>
             <tr class="tablehead">
-              <th>URL</th>
+              <th>Project</th>
+              <th>Risk</th>
               <th>Contributor Count</th>
-              <th>
-                Functional Contributor Count
-                  <div class="tooltip">
+              <th>Functional Contributor Count
+                <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
                     <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
                   </div>
               </th>
-              <th>Risk</th>
               <th>JSON</th>
             </tr>
           </thead>
@@ -76,14 +95,14 @@
                     <script defer type="text/javascript">
 
                       var table = document.getElementById("repo");
-                      var url = "<%= repo["data"]["repo"] %>";
+                      var project = "<%= repo["data"]["repo"] %>";
                       var slug = "<%= slug %>";
                       var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
                       var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
                       var risk = "<%= repo["data"]["risk"] %>";
                       var jsondata = <%= Poison.encode!(repo) %>;
 
-                      display_row(table, url, slug, ccount, fccount, risk , jsondata);
+                      display_row(table, project, slug, ccount, fccount, risk , jsondata);
 
                     </script>
 

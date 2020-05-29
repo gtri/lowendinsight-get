@@ -1,17 +1,18 @@
 .section {
 	font-size: 14px; 
-	line-height: 1.4;
+	line-height: 1.3;
 }
 
-.column {
-	width: max-content;
+#reportbox.column {
+	max-width: max-content;
 }
 
 .reportbox {
 	background-color: #F2F2F2; 
 	display: block; 
 	font-family: arial;
-	line-height: 2;
+	font-size: 15px;
+	line-height: 2.2;
 	white-space: nowrap;
 	width: auto;
 }
@@ -19,12 +20,12 @@
 .reportbox strong {
     font-family: copperplate;
 	color: #1C398D;
-	font-size: 15px;
+	font-size: 16px;
 }
 
 .sub {
-	margin: 30px 0px !important;
-	/* background-color: #95AFC9;  */
+	margin: 27px 0px !important;
+	padding: 9px !important;
 	background-color: #4d97d6;
 	color: white; 
 	display: block; 
@@ -43,29 +44,24 @@
 	display: "none";
 }
 
-.table .risk {
-	background-color: #f2f2f2;
-}
-
 .table .fccount {
-    background-color: #e6e6e6;
+    background-color: #f2f2f2;
 }
 
 .table .ccount {
-    background-color: #dddddd;
+    background-color: #eeeeee;
 }
 
-.table .url {
-	background-color: #d4d4d4;
+.table .risk {
+	background-color: #e7e7e7;
+}
+
+.table .project {
+	background-color: #dfdfdf;
 }
 
 tr:hover td {
 	background-color: #e8e8e8 !important;
-}
-
-.table-data > a {
-	color: rgb(39, 74, 180);
-	text-decoration: underline;
 }
 
 tr.tablehead th {
@@ -166,4 +162,21 @@ th .tooltip {
 
 .table-container {
 	overflow: visible;
+}
+
+.dropdown {
+	margin-top: 67px;
+}
+
+.dropdown-content {
+	border-bottom: 1px solid #333333;
+	opacity: 1;
+}
+
+.dropdown .button > span {
+	color: black;
+}
+
+.red {
+	background-color: red;
 }

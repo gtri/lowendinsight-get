@@ -1,14 +1,14 @@
-function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
+function display_row(table, project, slug, ccount, fccount, risk, jsondata) {
     var row = table.insertRow(-1);
     row.className = "row";
 
-    var newurl = row.insertCell(0);
-    var newccount = row.insertCell(1);
-    var newfccount = row.insertCell(2);
-    var newrisk = row.insertCell(3);
+    var newproject = row.insertCell(0);
+    var newrisk = row.insertCell(1);
+    var newccount = row.insertCell(2);
+    var newfccount = row.insertCell(3);
     var newjson = row.insertCell(4);
 
-    newurl.className = "table-data is-family-code url";
+    newproject.className = "table-data is-family-code project";
     newccount.className = "table-data is-family-code ccount";
     newfccount.className = "table-data is-family-code fccount";
     newrisk.className = "table-data is-family-code risk";
@@ -17,9 +17,9 @@ function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
     var a = document.createElement("a");
     var link = document.createTextNode(slug);
     a.appendChild(link);
-    a.href = url;
+    a.href = project;
     a.setAttribute("target", "_blank");
-    newurl.appendChild(a);
+    newproject.appendChild(a);
 
     var riskspan = document.createElement("span");
     riskspan.innerHTML = risk;
@@ -64,4 +64,17 @@ function display_row(table, url, slug, ccount, fccount, risk, jsondata) {
             div.style.display = "none";
         }
     });
+}
+
+function languages_button_event(){
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdown = document.querySelector('.dropdown');
+          
+        dropdown.addEventListener('click', function(event) {
+          
+           event.stopPropagation();
+            
+           dropdown.classList.toggle('is-active');
+        });
+     });     
 }

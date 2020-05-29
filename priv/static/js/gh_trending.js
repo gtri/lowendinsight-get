@@ -9,9 +9,9 @@ function display_row(table, project, slug, ccount, fccount, risk, jsondata) {
     var newjson = row.insertCell(4);
 
     newproject.className = "table-data is-family-code project";
+    newrisk.className = "table-data is-family-code risk";
     newccount.className = "table-data is-family-code ccount";
     newfccount.className = "table-data is-family-code fccount";
-    newrisk.className = "table-data is-family-code risk";
     newjson.className = "table-data is-family-code json";
     
     var a = document.createElement("a");
@@ -68,13 +68,24 @@ function display_row(table, project, slug, ccount, fccount, risk, jsondata) {
 
 function languages_button_event(){
     document.addEventListener('DOMContentLoaded', function () {
+    
         var dropdown = document.querySelector('.dropdown');
           
         dropdown.addEventListener('click', function(event) {
-          
-           event.stopPropagation();
-            
-           dropdown.classList.toggle('is-active');
+            event.stopPropagation();
+            dropdown.classList.toggle('is-active');
+                
+        });    
+
+        document.addEventListener('click', function(e) {
+            dropdown.classList.remove('is-active');
         });
-     });     
+    });
+
+
+
+
+
+
+
 }

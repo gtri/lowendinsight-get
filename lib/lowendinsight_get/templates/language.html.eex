@@ -20,14 +20,14 @@
             <img src="../images/lei_bus_128.png">
           </p>
         </div>
-        <div class="column" id="reportbox">
+        <div class="column" id="report-info-box">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
           <p class="subtitle sub" >
             Analysis of Today's Github Trending Repos
           </p>
-          <div class="box reportbox">
+          <div class="box report-info-box">
           <p>
             <strong>Report ID:</strong> <%= report["uuid"] %>
           </p>

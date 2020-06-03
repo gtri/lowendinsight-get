@@ -26,7 +26,7 @@ defmodule LowendinsightGet.GithubTrending do
         {:error, reason}
 
       {:ok, list} ->
-        urls = filter_to_urls(list)
+        urls = filter_to_urls(list) |> Enum.take(10)
 
         LowendinsightGet.Analysis.process_urls(
           urls,

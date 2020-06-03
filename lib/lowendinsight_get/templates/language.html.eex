@@ -40,7 +40,7 @@
               https://github.com/trending/<%= language %>?since=daily
             </a>
           </p>
-          
+
           </div>
         </div>
         <div class="column">
@@ -89,26 +89,22 @@
           </thead>
           <tbody>
             <%= for repo <- report["report"]["repos"] do %>
-                <%= case Helpers.get_slug(repo["data"]["repo"]) do %>
-                  <%= {:ok, slug} -> %>
+                <% {:ok, slug} = Helpers.get_slug(repo["data"]["repo"]) %>
 
-                    <script defer type="text/javascript">
+                <script defer type="text/javascript">
 
-                      var table = document.getElementById("repo");
-                      var project = "<%= repo["data"]["repo"] %>";
-                      var slug = "<%= slug %>";
-                      var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
-                      var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
-                      var risk = "<%= repo["data"]["risk"] %>";
-                      var jsondata = <%= Poison.encode!(repo) %>;
+                  var table = document.getElementById("repo");
+                  var project = "<%= repo["data"]["repo"] %>";
+                  var slug = "<%= slug %>";
+                  var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
+                  var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
+                  var risk = "<%= repo["data"]["risk"] %>";
+                  var jsondata = <%= Poison.encode!(repo) %>;
 
-                      display_row(table, project, slug, ccount, fccount, risk , jsondata);
+                  display_row(table, project, slug, ccount, fccount, risk , jsondata);
 
-                    </script>
+                </script>
 
-                  <%= {:error, msg} ->  %>
-                    <%= {:error, msg} %>
-                <% end %>
             <% end %>
           </tbody>
         </section>

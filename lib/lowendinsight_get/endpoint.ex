@@ -59,6 +59,7 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/gh_trending/:language" do
+    IO.inspect language, label: "LANG"
     languages = Application.get_env(:lowendinsight_get, :languages)
     render(conn, "language.html",
       report: LowendinsightGet.GithubTrending.get_current_gh_trending_report(language),

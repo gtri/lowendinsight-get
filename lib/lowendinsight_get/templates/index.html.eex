@@ -20,7 +20,7 @@
             <img src="../images/lei_bus_128.png">
           </p>
         </div>
-        <div class="column" id="reportbox">
+        <div class="column" id="report-info-box">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
           </h1>
@@ -28,7 +28,6 @@
             Analysis of Today's Github Trending Repos
           </p>
         </div>
-        
         <div class="column dropmenu">
           <div class = "dropdown">
                <div class = "dropdown-trigger">

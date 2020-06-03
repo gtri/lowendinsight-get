@@ -11,4 +11,11 @@ defmodule LowendinsightGet.GithubTrendingTest do
     report = LowendinsightGet.GithubTrending.get_current_gh_trending_report("elixir")
     assert report["state"] == "complete" || "incomplete"
   end
+
+  test "large repo filter" do
+    list = ["https://github.com/torvalds/linux"]
+
+    newlist = LowendinsightGet.GithubTrending.filter_out_large_repos(list)
+    assert newlist == ["https://github.com/torvalds/linux-skip_too_big"]
+  end
 end

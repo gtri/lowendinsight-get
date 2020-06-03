@@ -62,7 +62,7 @@ defmodule LowendinsightGet.GithubTrending do
     end
   end
 
-  defp filter_out_large_repos(list) do
+  def filter_out_large_repos(list) do
     list
     |> Enum.map(fn url ->
       {:ok, slug} = Helpers.get_slug(url)

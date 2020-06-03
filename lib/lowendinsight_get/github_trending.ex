@@ -26,7 +26,9 @@ defmodule LowendinsightGet.GithubTrending do
         {:error, reason}
 
       {:ok, list} ->
-        urls = filter_to_urls(list) |> Enum.take(10)
+        urls = filter_to_urls(list) |> filter_out_large_repos() |> Enum.take(10)
+
+        IO.inspect urls, label: "URLS"
 
         LowendinsightGet.Analysis.process_urls(
           urls,
@@ -58,6 +60,20 @@ defmodule LowendinsightGet.GithubTrending do
             Poison.Parser.parse!(report_json)
         end
     end
+  end
+
+  def filter_out_large_repos(list) do
+    list
+    |> Enum.map(fn url ->
+      {:ok, slug} = Helpers.get_slug(url)
+      response = HTTPoison.get!("https://api.github.com/repos/" <> slug)
+      json = Poison.Parser.parse!(response.body)
+      if json["size"] < 1000000 do
+        url
+      else
+        url <> "-skip_too_big"
+      end
+    end)
   end
 
   defp filter_to_urls(list) do

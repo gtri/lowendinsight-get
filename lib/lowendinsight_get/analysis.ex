@@ -6,7 +6,11 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source, options) do
-    LowendinsightGet.CounterAgent.add(self(), url)
+    counter = Process.whereis(:counter)
+
+    if counter do
+      LowendinsightGet.CounterAgent.add(self(), url)
+    end
 
     case LowendinsightGet.Datastore.get_from_cache(
            url,

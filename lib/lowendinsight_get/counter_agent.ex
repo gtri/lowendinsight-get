@@ -13,8 +13,7 @@ defmodule LowendinsightGet.CounterAgent do
   
     def add(pid, url) do
       Agent.update(:counter, fn {proc, log} -> 
-        if map_size(proc) == 0, do: IO.puts "\n"
-        IO.puts "running process ##{map_size(proc) + 1} -> #{url}"
+        Logger.info("running process ##{map_size(proc) + 1} -> #{url}")
         {Map.put(proc, pid, :running), log} 
       end)
       update()
@@ -40,8 +39,8 @@ defmodule LowendinsightGet.CounterAgent do
       completed = log.completed + 1
       cond do
         log.total > log.completed && log.total > 0 ->
-          IO.puts "completed #{round(completed/log.total * 100)}% " <> 
-          (if (completed < log.total), do: " ", else: "") <> "|  running: #{map_size(proc) - completed}  |  total urls: #{log.total}"
+          Logger.info("completed #{round(completed/log.total * 100)}% " <> 
+          (if (completed < log.total), do: " ", else: "") <> "|  running: #{map_size(proc) - completed}  |  total urls: #{log.total}")
         true -> :ok
         end
     end

@@ -39,7 +39,7 @@ defmodule LowendinsightGet.CounterAgent do
       completed = log.completed + 1
       cond do
         log.total > log.completed && log.total > 0 ->
-          Logger.info("completed #{round(completed/log.total * 100)}% " <> 
+          Logger.info("completed #{round(completed / log.total * 100)}% " <> 
           (if (completed < log.total), do: " ", else: "") <> "|  running: #{map_size(proc) - completed}  |  total urls: #{log.total}")
         true -> :ok
         end

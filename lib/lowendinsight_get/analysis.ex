@@ -6,9 +6,7 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source, options) do
-    counter = Process.whereis(:counter)
-
-    if counter do
+    if Process.whereis(:counter) do
       LowendinsightGet.CounterAgent.add(self(), url)
     end
 

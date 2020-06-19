@@ -20,15 +20,20 @@ defmodule LowendinsightGet.GithubTrending do
   def analyze(language) do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()
+    check_repo? = check_repo_size?()
 
     case fetch_trending_list(language) do
       {:error, reason} ->
         {:error, reason}
 
       {:ok, list} ->
-        urls = filter_to_urls(list) |> filter_out_large_repos() |> Enum.take(10)
+        urls = 
+        filter_to_urls(list) 
+        |> Enum.map(fn url -> get_repo_size(url) end) 
+        |> Enum.map(fn {repo_size, url} -> filter_out_large_repos({repo_size, url}, check_repo?) end) 
+        |> Enum.take(10)
 
-        IO.inspect urls, label: "URLS"
+        Logger.debug("URLS: #{inspect urls}")
 
         LowendinsightGet.Analysis.process_urls(
           urls,
@@ -62,18 +67,28 @@ defmodule LowendinsightGet.GithubTrending do
     end
   end
 
-  def filter_out_large_repos(list) do
-    list
-    |> Enum.map(fn url ->
-      {:ok, slug} = Helpers.get_slug(url)
-      response = HTTPoison.get!("https://api.github.com/repos/" <> slug)
-      json = Poison.Parser.parse!(response.body)
-      if json["size"] < 1000000 do
-        url
-      else
-        url <> "-skip_too_big"
-      end
-    end)
+  defp get_repo_size(url) do
+    {:ok, slug} = Helpers.get_slug(url)
+    # token = "75b92e169bc1ad911d9a078ef4810d0ab3f45e50"
+    # headers = ["Authorization: token #{token}"]
+    {:ok, response} = HTTPoison.get("https://api.github.com/repos/" <> slug)
+    json = Poison.Parser.parse!(response.body)
+    {json["size"], url}
+  end
+
+  defp filter_out_large_repos({repo_size, url}, check_repo?) when repo_size < 1000000 or not check_repo? do
+    url
+  end
+
+  defp filter_out_large_repos({_repo_size, url}, check_repo?) when check_repo? do
+    url <> "-skip_too_big"
+  end
+
+
+  defp check_repo_size?() do 
+    if Application.fetch_env(:lowendinsight_get, :check_repo_size?) == :error,
+      do: false,
+      else: Application.fetch_env!(:lowendinsight_get, :check_repo_size?)
   end
 
   defp filter_to_urls(list) do

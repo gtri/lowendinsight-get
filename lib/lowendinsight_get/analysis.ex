@@ -6,6 +6,10 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source, options) do
+    if Process.whereis(:counter) do
+      LowendinsightGet.CounterAgent.add(self(), url)
+    end
+
     case LowendinsightGet.Datastore.get_from_cache(
            url,
            Application.get_env(:lowendinsight_get, :cache_ttl)
@@ -27,15 +31,17 @@ defmodule LowendinsightGet.Analysis do
 
   def process(uuid, urls, start_time) do
     Logger.info("processing #{uuid} -> #{urls}")
-
+    {:ok, _counter} = LowendinsightGet.CounterAgent.new_counter(Enum.count(urls))
+  
     repos =
       urls
       |> Task.async_stream(__MODULE__, :analyze, ["lei-get", %{types: false}],
-        timeout: :infinity,
-        max_concurrency: 1
-      )
+          timeout: :infinity,
+          max_concurrency: 1)
       |> Enum.map(fn {:ok, report} -> elem(report, 1) end)
-
+    
+    LowendinsightGet.CounterAgent.update_and_stop()
+      
     report = %{
       state: "complete",
       report: %{uuid: UUID.uuid1(), repos: repos},

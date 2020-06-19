@@ -6,7 +6,7 @@ defmodule LowendinsightGet.Analysis do
   require Logger
 
   def analyze(url, source, options) do
-    LowendinsightGet.CounterAgent.add(self())
+    LowendinsightGet.CounterAgent.add(self(), url)
 
     case LowendinsightGet.Datastore.get_from_cache(
            url,

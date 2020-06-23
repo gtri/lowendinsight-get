@@ -30,7 +30,7 @@ defmodule LowendinsightGet.Analysis do
   end
 
   def process(uuid, urls, start_time) do
-    Logger.info("processing #{uuid} -> #{urls}")
+    Logger.info("processing #{uuid} -> #{inspect urls}")
     {:ok, _counter} = LowendinsightGet.CounterAgent.new_counter(Enum.count(urls))
   
     repos =

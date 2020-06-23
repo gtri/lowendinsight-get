@@ -94,7 +94,7 @@
                 <script defer type="text/javascript">
 
                   var table = document.getElementById("repo");
-                  var project = "<%= report["data"]["repo"] %>";
+                  var project = "<%= repo["data"]["repo"] %>";
                   var slug = "<%= slug %>";
                   var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
                   var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";

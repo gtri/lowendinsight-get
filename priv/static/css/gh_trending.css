@@ -24,6 +24,10 @@
 	font-size: 16px;
 }
 
+#input-box {
+	margin-top: 100px;
+}
+
 .sub {
 	margin: 27px 0px !important;
 	padding: 9px !important;
@@ -108,8 +112,10 @@ td > a:hover {
 	text-decoration: none;
 }
 
-.fa-fw {
-	margin-right: 4px;
+.fa-fw, .fa-book, a > i {
+	margin-right: 5px;
+	font-size: 14px;
+	margin-left: 12px;
 }
 
 a:link {
@@ -177,3 +183,23 @@ th .tooltip {
 .dropdown .button > span {
 	color: black;
 }
+
+.search {
+	width: 584px;
+	height: 44px;
+	line-height: 44px;
+	border: none;
+	border-radius: 6px;
+	margin-bottom: 30px;
+	font: 16px arial, sans-serif;
+	padding-left: 17px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+  .search:hover, .search:focus {
+	outline: none;
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .input-field .button {
+	  margin-left: 11px;
+  }

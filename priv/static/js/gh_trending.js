@@ -1,4 +1,4 @@
-function display_row(table, project, slug, ccount, fccount, risk, jsondata) {
+function display_row(table, project, slug, ccount, fccount, risk, json_data) {
     var row = table.insertRow(-1);
     row.className = "row";
 
@@ -40,26 +40,33 @@ function display_row(table, project, slug, ccount, fccount, risk, jsondata) {
         default: break;
     }
 
+    view_json_button(json_data, newjson);
+
+}
+
+function view_json_button(json_data, parent){
+    var button_text = "view";
+    
     var spanbutton = document.createElement("span");
     var button = document.createElement("Button");
     button.className = "button is-info is-family-code";
-    spanbutton.innerHTML = "view"
+    spanbutton.innerHTML = button_text;
     spanbutton.style["font-weight"] = "bold";
     button.appendChild(spanbutton);
-    newjson.appendChild(button);
+    parent.appendChild(button);
 
     var div = document.createElement("div");
     div.className = "box tree";
     div.style.display = "none"
-    var tree = jsonTree.create(jsondata, div);
-    newjson.appendChild(div);
+    var tree = jsonTree.create(json_data, div);
+    parent.appendChild(div);
 
     button.addEventListener('click', () => {
         if (div.style.display == "none") {
             spanbutton.textContent = "hide";
             div.style.display = "block";
         } else {
-            spanbutton.textContent = "view";
+            spanbutton.textContent = button_text;
             tree.collapse();
             div.style.display = "none";
         }
@@ -81,11 +88,22 @@ function languages_button_event(){
             dropdown.classList.remove('is-active');
         });
     });
-
-
-
-
-
-
-
 }
+
+function report_button_event(){
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById("form")
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var url = document.getElementById("input-url").value;
+            var encoded_url = encodeURIComponent(url);
+
+            this.action = `/url=${encoded_url}`;
+            this.submit();
+        })
+    })
+}
+

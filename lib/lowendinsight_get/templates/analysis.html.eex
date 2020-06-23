@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LowEndInsight</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.css">
+    <link rel="stylesheet" href = "../css/gh_trending.css">
+    <script src="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.min.js"></script>
+    <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+  <script src="../js/gh_trending.js" type="text/javascript"></script>
+  <a href="/doc"><i class="fa fa-book" aria-hidden="true"></i>manual</a>
+  <section class="section">
+      <div id="input-box" class="columns is-centered">
+        <div class="column is-narrow is-vcentered">
+          <p>
+            <br/>
+            <img src="../images/lei_bus_128.png">
+          </p>
+        </div>
+        <div class="column is-narrow is-vcentered">
+          <h1 class="title">
+            <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
+          </h1>
+          <form id="form" class="input-field" action="/report/" method="get">
+            <input type="text" id="input-url" class="search" placeholder="Enter URL">
+            <input type="submit" id="get-report-button" class="button is-dark" value="Get Report">
+          </form>
+        </div>
+      </div>
+      <br/><br/>
+
+      <section class="section" id="report">
+        <div class="table-container">
+          <table class="table is-fullwidth is-striped" id="repo">
+            <thead>
+              <tr class="tablehead">
+                <th>Project</th>
+                <th>Risk</th>
+                <th>Contributor Count</th>
+                <th>Functional Contributor Count
+                  <div class="tooltip">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
+                    </div>
+                </th>
+                <th>JSON</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% {:ok, slug} = Helpers.get_slug(url) %>
+                <script defer type="text/javascript">
+                  report_button_event();
+                  var report = <%= report %>;                  
+                  var table = document.getElementById("repo");
+                  var project = report["data"]["repo"];
+                  var slug = "<%= slug %>";
+                  var ccount = report["data"]["results"]["contributor_count"];
+                  var fccount = report["data"]["results"]["functional_contributors"];
+                  var risk = report["data"]["risk"];
+
+                  display_row(table, project, slug, ccount, fccount, risk, report);
+                </script>
+                
+            </tbody>
+        </section>
+  </section>
+  </body>
+</html>

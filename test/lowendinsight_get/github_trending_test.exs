@@ -13,9 +13,15 @@ defmodule LowendinsightGet.GithubTrendingTest do
   end
 
   test "large repo filter" do
-    list = ["https://github.com/torvalds/linux"]
+    check_repo? = LowendinsightGet.GithubTrending.check_repo_size?()
+    # if Application.fetch_env(:lowendinsight_get, :check_repo_size?) == :error,
+    # do: false,
+    # else: Application.fetch_env!(:lowendinsight_get, :check_repo_size?)
 
-    newlist = LowendinsightGet.GithubTrending.filter_out_large_repos(list)
-    assert newlist == ["https://github.com/torvalds/linux-skip_too_big"]
+    url = "https://github.com/torvalds/linux"
+
+    {repo_size, url} = LowendinsightGet.GithubTrending.get_repo_size(url)
+    new_url = LowendinsightGet.GithubTrending.filter_out_large_repos({repo_size, url}, check_repo?)
+    assert new_url == "https://github.com/torvalds/linux-skip_too_big"
   end
 end

@@ -31,7 +31,8 @@ config :lowendinsight_get,
     "kotlin",
     "shell",
     "typescript"
-  ]
+  ],
+  check_repo_size?: System.get_env("LEI_CHECK_REPO_SIZE") || false
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

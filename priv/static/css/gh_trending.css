@@ -31,8 +31,9 @@
 .sub {
 	margin: 27px 0px !important;
 	padding: 9px !important;
-	background-color: #4d97d6;
-	color: white; 
+	/* background-color: #4d97d6; */
+	background-color: #cccccc;
+	color: black;  
 	display: block; 
 	padding: 6px 6px; 
 	border-radius: 6px;
@@ -182,6 +183,7 @@ th .tooltip {
 
 .dropdown .button > span {
 	color: black;
+	font-weight: 480;
 }
 
 .search {

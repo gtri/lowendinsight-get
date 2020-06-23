@@ -22,7 +22,7 @@
         </div>
         <div class="column" id="report-info-box">
           <h1 class="title">
-            <a href="https://github.com/gtri/lowendensight" target="_blank">LowEndInsight</a>
+            <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
           </h1>
           <p class="subtitle sub" >
             Analysis of Today's Github Trending Repos
@@ -94,7 +94,7 @@
                 <script defer type="text/javascript">
 
                   var table = document.getElementById("repo");
-                  var project = "<%= repo["data"]["repo"] %>";
+                  var project = "<%= report["data"]["repo"] %>";
                   var slug = "<%= slug %>";
                   var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
                   var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";

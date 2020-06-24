@@ -40,8 +40,7 @@
               https://github.com/trending/<%= language %>?since=daily
             </a>
           </p>
-
-          </div>
+        </div>
         </div>
         <div class="column">
           <div class = "dropdown">
@@ -66,9 +65,7 @@
             </script>
           </div>
         </div>
-
       </div>
-
   </section>
   <section class="section" id="report">
       <div class="table-container">
@@ -81,8 +78,9 @@
               <th>Functional Contributor Count
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
-                  </div>
+                    <span class="tooltiptext">A functional contributor is one that contributes above a certain 
+                    percentage of commits equal to or greater than their "fair" share.</span>
+                </div>
               </th>
               <th>JSON</th>
             </tr>
@@ -90,9 +88,7 @@
           <tbody>
             <%= for repo <- report["report"]["repos"] do %>
                 <% {:ok, slug} = Helpers.get_slug(repo["data"]["repo"]) %>
-
                 <script defer type="text/javascript">
-
                   var table = document.getElementById("repo");
                   var project = "<%= repo["data"]["repo"] %>";
                   var slug = "<%= slug %>";
@@ -100,11 +96,8 @@
                   var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
                   var risk = "<%= repo["data"]["risk"] %>";
                   var jsondata = <%= Poison.encode!(repo) %>;
-
                   display_row(table, project, slug, ccount, fccount, risk , jsondata);
-
                 </script>
-
             <% end %>
           </tbody>
         </section>

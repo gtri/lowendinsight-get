@@ -25,9 +25,9 @@
           <h1 class="title">
             <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
           </h1>
-          <form id="form" class="input-field" action="/report/" method="get">
+          <form id="form" class="input-field" action="/url=" method="get">
             <input type="text" id="input-url" class="search" placeholder="Enter URL">
-            <input type="submit" id="get-report-button" class="button is-dark" value="Get Report">
+            <button type="submit" id="get-report-button" class="button is-dark">Get Report</button>
           </form>
         </div>
       </div>
@@ -44,14 +44,15 @@
                 <th>Functional Contributor Count
                   <div class="tooltip">
                       <i class="fas fa-info-circle"></i>
-                      <span class="tooltiptext">A functional contributor is one that contributes above a certain percentage of commits equal to or greater than their "fair" share.</span>
-                    </div>
+                      <span class="tooltiptext">A functional contributor is one that contributes above a certain 
+                      percentage of commits equal to or greater than their "fair" share.</span>
+                  </div>
                 </th>
                 <th>JSON</th>
               </tr>
             </thead>
             <tbody>
-                <% {:ok, slug} = Helpers.get_slug(url) %>
+              <% {:ok, slug} = Helpers.get_slug(url) %>
                 <script defer type="text/javascript">
                   report_button_event();
                   var report = <%= report %>;                  
@@ -61,10 +62,8 @@
                   var ccount = report["data"]["results"]["contributor_count"];
                   var fccount = report["data"]["results"]["functional_contributors"];
                   var risk = report["data"]["risk"];
-
                   display_row(table, project, slug, ccount, fccount, risk, report);
-                </script>
-                
+                </script>                
             </tbody>
         </section>
   </section>

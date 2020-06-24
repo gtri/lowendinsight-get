@@ -23,15 +23,12 @@
           <h1 class="title">
             <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
           </h1>
-          <form id="form" class="input-field" action="/report/" method="get">
+          <form id="form" class="input-field" action="/url=" method="get">
             <input type="text" id="input-url" class="search" placeholder="Enter URL">
-            <input type="submit" id="get-report-button" class="button is-dark" value="Get Report">
+            <button type="submit" id="get-report-button" class="button is-dark">Get Report</button>
           </form>
         </div>
       </div>
-      <div id="box" class="box" style="display: none">
-        <p>Loading report...</p>
-      <div>
       <script>
         report_button_event()
       </script>

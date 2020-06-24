@@ -98,6 +98,9 @@ function report_button_event(){
             event.preventDefault();
             event.stopPropagation();
 
+            var button = document.getElementById("get-report-button")
+            button.classList.toggle("is-loading")
+
             var url = document.getElementById("input-url").value;
             var encoded_url = encodeURIComponent(url);
 

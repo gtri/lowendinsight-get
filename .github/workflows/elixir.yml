@@ -1,6 +1,9 @@
 name: default_elixir_ci
 
 on:
+  pull_request:
+    branches:
+      - 'develop'
   push:
     branches:
       - '*'         # matches every branch

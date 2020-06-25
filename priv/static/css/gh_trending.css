@@ -52,22 +52,34 @@ body {
 	display: "none";
 }
 
+.jsontree_tree {
+	font-size: 12px;
+}
+
+.jsontree_value_string {
+	color: blue;
+}
+
+.jsontree_value_number {
+	color: orange;
+}
+
+div.box.tree {
+	width: max-content;
+}
 
 .table .json {
 	background-color: #fdfdfd;
 }
 
-.table .large_commit_risk {
-	background-color: #f2f2f2;
-}
-
-.table .recent_commit_size {
-	background-color: #efefef;
-}
-
 .table .commit_currency {
+	background-color: #f1f1f1;
+}
+
+.table .large_commit_risk {
 	background-color: #eaeaea;
 }
+
 
 .table .fccount {
 	background-color: #e4e4e4;
@@ -135,7 +147,6 @@ td > a:hover {
 }
 
 .button > a {
-	color: white;
 	color: black;
 }
 
@@ -270,4 +281,13 @@ th .tooltip {
 	.github-corner .octo-arm {
 		animation:octocat-wave 
   560ms ease-in-out}
+}
+
+.svg {
+	fill:#151513; 
+	color:#fff; 
+	position: absolute; 
+	top: 0; 
+	border: 0; 
+    right: 0;
 }

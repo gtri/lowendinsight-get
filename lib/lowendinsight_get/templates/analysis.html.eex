@@ -80,6 +80,7 @@
                 <% {:ok, slug} = Helpers.get_slug(url) %>
                   <script defer type="text/javascript">
                     report_button_event();
+                    var report = <%= report %>;                  
                     var project = report["data"]["repo"];
                     var slug = "<%= slug %>";
                     var risk = report["data"]["risk"];
@@ -87,9 +88,8 @@
                     var fccount = report["data"]["results"]["functional_contributors"];
                     var large_commit_risk = report["data"]["results"]["large_recent_commit_risk"];
                     var commit_currency = report["data"]["results"]["commit_currency_weeks"];
-                    var json_data = <%= report %>;                  
 
-                    display_row(project, slug, risk, ccount, fccount, large_commit_risk, commit_currency, json_data);
+                    display_row(project, slug, risk, ccount, fccount, large_commit_risk, commit_currency, report);
                   </script>                
               </tbody>
             </table>
@@ -98,7 +98,7 @@
     </body>
   <footer id="footer" class="footer">
     <div class="content has-text-centered">
-      <img class="" id="gtri" src="../images/gtri.png">
+      <img id="gtri" src="../images/gtri.png">
     </div>
   </footer>
 </html>

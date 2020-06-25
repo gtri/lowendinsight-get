@@ -1,3 +1,6 @@
+body {
+	padding-bottom: 50px;
+}
 .section {
 	font-size: 13px; 
 	line-height: 1.3;
@@ -231,6 +234,9 @@ th .tooltip {
 }
 
 #footer {
+	position: relative;
+	bottom: 0;
+	width: 100%;
 	margin-top: 90px;
 	background-color: #f0f0f0;
 }
@@ -252,9 +258,10 @@ th .tooltip {
 	20%,60% {
 		transform:rotate(-25deg)
 	}
-	40%,80%{
+	40%,80% {
 		transform:rotate(10deg)
-	}}
+	}
+}
 	
 @media (max-width:500px) {
 	.github-corner:hover .octo-arm {
@@ -262,4 +269,5 @@ th .tooltip {
 	}
 	.github-corner .octo-arm {
 		animation:octocat-wave 
-  560ms ease-in-out}}
+  560ms ease-in-out}
+}

@@ -1,6 +1,26 @@
-body {
-	padding-bottom: 50px;
+html, body {
+	height: 100%; 
+	margin: 0; 
 }
+
+header { 
+	height: 50px; 
+}
+
+#footer {
+	height: 50px; 
+	background-color: #f0f0f0;
+}
+
+body { 
+	display: flex; 
+	flex-direction: column; 
+}
+  
+footer {
+	margin-top: auto; 
+}
+
 .section {
 	font-size: 13px; 
 	line-height: 1.3;
@@ -80,19 +100,16 @@ div.box.tree {
 	background-color: #eaeaea;
 }
 
-
 .table .fccount {
 	background-color: #e4e4e4;
 }
 
 .table .ccount {
-	background-color: #dfdfdf;
-
+	background-color: #e0e0e0;
 }
 
 .table .risk {
 	background-color: #dbdbdb;
-
 }
 
 .table .project {
@@ -244,18 +261,9 @@ th .tooltip {
 	  margin-left: 11px;
 }
 
-#footer {
-	position: relative;
-	bottom: 0;
-	width: 100%;
-	margin-top: 90px;
-	background-color: #f0f0f0;
-}
-
 #gtri {
-	  margin-top: 10px;
-	  height: 65px;
-	  width: 150px;
+	  height: 66px;
+	  width: 134px;
 }
 
 .github-corner:hover .octo-arm {
@@ -263,13 +271,13 @@ th .tooltip {
 }
 
 @keyframes octocat-wave { 
-	0%,100% {
+	0%, 100% {
 		transform:rotate(0)
 	}
-	20%,60% {
+	20%, 60% {
 		transform:rotate(-25deg)
 	}
-	40%,80% {
+	40%, 80% {
 		transform:rotate(10deg)
 	}
 }
@@ -280,7 +288,8 @@ th .tooltip {
 	}
 	.github-corner .octo-arm {
 		animation:octocat-wave 
-  560ms ease-in-out}
+		  560ms ease-in-out
+	}
 }
 
 .svg {

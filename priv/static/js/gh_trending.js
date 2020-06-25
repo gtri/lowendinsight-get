@@ -1,32 +1,39 @@
-function display_row(table, project, slug, ccount, fccount, risk, json_data) {
+function display_row(project, slug, risk, ccount, fccount, large_commit_risk, commit_currency, json_data) {
+    var table = document.getElementById("repo")
     var row = table.insertRow(-1);
     row.className = "row";
 
-    var newproject = row.insertCell(0);
-    var newrisk = row.insertCell(1);
-    var newccount = row.insertCell(2);
-    var newfccount = row.insertCell(3);
-    var newjson = row.insertCell(4);
+    var project_cell = row.insertCell(0);
+    var risk_cell = row.insertCell(1);
+    var ccount_cell = row.insertCell(2);
+    var fccount_cell = row.insertCell(3);
+    var large_commit_risk_cell = row.insertCell(4);
+    var ccurreny_cell = row.insertCell(5);
+    var json_cell = row.insertCell(6);
 
-    newproject.className = "table-data is-family-code project";
-    newrisk.className = "table-data is-family-code risk";
-    newccount.className = "table-data is-family-code ccount";
-    newfccount.className = "table-data is-family-code fccount";
-    newjson.className = "table-data is-family-code json";
+    project_cell.className = "table-data is-family-code project";
+    risk_cell.className = "table-data is-family-code risk";
+    ccount_cell.className = "table-data is-family-code ccount";
+    fccount_cell.className = "table-data is-family-code fccount";
+    large_commit_risk_cell.className = "table-data is-family-code large_commit_risk";
+    ccurreny_cell.className = "table-data is-family-code commit_currency";
+    json_cell.className = "table-data is-family-code json";
     
     var a = document.createElement("a");
     var link = document.createTextNode(slug);
     a.appendChild(link);
     a.href = project;
     a.setAttribute("target", "_blank");
-    newproject.appendChild(a);
+    project_cell.appendChild(a);
 
     var riskspan = document.createElement("span");
     riskspan.innerHTML = risk;
+    risk_cell.appendChild(riskspan);
 
-    newrisk.appendChild(riskspan);
-    newccount.innerHTML = ccount;
-    newfccount.innerHTML = fccount;
+    ccount_cell.innerHTML = ccount;
+    fccount_cell.innerHTML = fccount;
+    large_commit_risk_cell.innerHTML = large_commit_risk;
+    ccurreny_cell.innerHTML = commit_currency;
 
     switch(risk){
         case "critical": 
@@ -40,7 +47,7 @@ function display_row(table, project, slug, ccount, fccount, risk, json_data) {
         default: break;
     }
 
-    view_json_button(json_data, newjson);
+    view_json_button(json_data, json_cell);
 
 }
 
@@ -98,8 +105,8 @@ function report_button_event(){
             event.preventDefault();
             event.stopPropagation();
 
-            var button = document.getElementById("get-report-button")
-            button.classList.toggle("is-loading")
+            var button = document.getElementById("get-report-button");
+            button.classList.toggle("is-loading");
 
             var url = document.getElementById("input-url").value;
             var encoded_url = encodeURIComponent(url);

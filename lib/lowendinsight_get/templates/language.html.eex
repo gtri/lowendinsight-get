@@ -73,33 +73,44 @@
           <thead>
             <tr class="tablehead">
               <th>Project</th>
-              <th>Risk</th>
-              <th>Contributor Count</th>
-              <th>Functional Contributor Count
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">A functional contributor is one that contributes above a certain 
-                    percentage of commits equal to or greater than their "fair" share.</span>
-                </div>
-              </th>
-              <th>JSON</th>
+                <th>Risk</th>
+                <th>Contributor Count</th>
+                <th>Functional Contributor Count
+                  <div class="tooltip">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="tooltiptext">A functional contributor is one that contributes above a certain 
+                      percentage of commits equal to or greater than their "fair" share.</span>
+                  </div>
+                </th>
+                <th>Large Recent Commit Risk
+                  <div class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltiptext">Large Recent Commit Risk is a measure of how large the most recent commit is in relation
+                        to the size of the codebase.</span>
+                    </div>
+                </th>
+                <th>Commit Currency (weeks)</th>
+                <th>JSON</th>
             </tr>
           </thead>
           <tbody>
             <%= for repo <- report["report"]["repos"] do %>
                 <% {:ok, slug} = Helpers.get_slug(repo["data"]["repo"]) %>
                 <script defer type="text/javascript">
-                  var table = document.getElementById("repo");
                   var project = "<%= repo["data"]["repo"] %>";
                   var slug = "<%= slug %>";
+                  var risk = "<%= repo["data"]["risk"] %>";
                   var ccount = "<%= repo["data"]["results"]["contributor_count"] %>";
                   var fccount = "<%= repo["data"]["results"]["functional_contributors"] %>";
-                  var risk = "<%= repo["data"]["risk"] %>";
-                  var jsondata = <%= Poison.encode!(repo) %>;
-                  display_row(table, project, slug, ccount, fccount, risk , jsondata);
+                  var large_commit_risk = "<%= repo["data"]["results"]["large_recent_commit_risk"] %>";
+                  var commit_currency = "<%= repo["data"]["results"]["commit_currency_weeks"] %>";
+                  var json_data = <%= Poison.encode!(repo) %>;
+                  
+                  display_row(project, slug, risk, ccount, fccount, large_commit_risk, commit_currency, json_data);
                 </script>
             <% end %>
           </tbody>
+        </table>
         </section>
       </div>
     </section>

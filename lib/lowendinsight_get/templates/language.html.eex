@@ -11,29 +11,20 @@
     <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
-  <script src="../js/gh_trending.js" type="text/javascript"></script>
-  <section class="section">
+    <script src="../js/gh_trending.js" type="text/javascript"></script>
+    <section class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-narrow is-vcentered">
-          <p>
-            <br/>
-            <img src="../images/lei_bus_128.png">
-          </p>
+          <p><br/><img src="../images/lei_bus_128.png"></p>
         </div>
         <div class="column" id="report-info-box">
           <h1 class="title">
             <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
           </h1>
-          <p class="subtitle sub" >
-            Analysis of Today's Github Trending Repos
-          </p>
+          <p class="subtitle sub">Analysis of Today's Github Trending Repos</p>
           <div class="box report-info-box">
-          <p>
-            <strong>Report ID:</strong> <%= report["uuid"] %>
-          </p>
-          <p>
-            <strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %>
-          </p>
+          <p><strong>Report ID:</strong> <%= report["uuid"] %></p>
+          <p><strong>Report generated:</strong> <%= report["metadata"]["times"]["end_time"] %></p>
           <p>
             <strong>From:</strong>
             <a href="https://github.com/trending/<%= language %>?since=daily">
@@ -41,33 +32,33 @@
             </a>
           </p>
         </div>
-        </div>
+      </div>
         <div class="column">
           <div class = "dropdown">
-               <div class = "dropdown-trigger">
+              <div class = "dropdown-trigger">
                   <button class = "button is-warning" aria-haspopup = "true" aria-controls = "dropdown-menu">
-                     <span><%= String.capitalize(language) %></span>
-                     <span class = "icon is-small">
+                    <span><%= String.capitalize(language) %></span>
+                    <span class = "icon is-small">
                         <i class = "fa fa-angle-down" aria-hidden="true"></i>
-                     </span>
+                    </span>
                   </button>
-               </div>
-               <div class = "dropdown-menu" id = "dropdown-menu" role = "menu">
+              </div>
+              <div class = "dropdown-menu" id = "dropdown-menu" role = "menu">
                   <div class = "dropdown-content">
                     <%= for lang <- languages do %>
-                     <a href="/gh_trending/<%= URI.encode_www_form(lang) %>" class = "dropdown-item"><%= lang %></a>
+                    <a href="/gh_trending/<%= URI.encode_www_form(lang) %>" class = "dropdown-item"><%= lang %></a>
                     <% end %>
                   </div>
-               </div>
+              </div>
             </div>
-            <script>
-               languages_button_event();
-            </script>
           </div>
         </div>
       </div>
-  </section>
-  <section class="section" id="report">
+    </section>
+    <script>
+      languages_button_event();
+    </script>
+    <section class="section" id="report">
       <div class="table-container">
         <table class="table is-fullwidth is-striped" id="repo"  >
           <thead>
@@ -111,9 +102,7 @@
             <% end %>
           </tbody>
         </table>
-        </section>
       </div>
     </section>
-
   </body>
 </html>

@@ -48,7 +48,6 @@ function display_row(project, slug, risk, ccount, fccount, large_commit_risk, co
     }
 
     view_json_button(json_data, json_cell);
-
 }
 
 function view_json_button(json_data, parent){

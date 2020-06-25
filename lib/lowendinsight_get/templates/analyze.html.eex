@@ -38,8 +38,8 @@
               <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
             </h1>
             <form id="form" class="input-field" action="/url=" method="get">
-              <input type="text" id="input-url" class="search" placeholder="Enter URL">
-              <button type="submit" id="get-report-button" class="button is-dark">Get Report</button>
+              <input type="text" id="input-url" class="search" placeholder="Enter public git repo URL">
+              <button type="submit" id="get-report-button" class="button is-dark">Analyze</button>
             </form>
             <button class="button is-warning is-small is-rounded">
                 <a href="/doc"><i class="fas fa-book-open"></i>Manual</a>

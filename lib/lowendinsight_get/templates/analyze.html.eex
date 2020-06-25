@@ -42,7 +42,7 @@
               <button type="submit" id="get-report-button" class="button is-dark">Get Report</button>
             </form>
             <button class="button is-warning is-small is-rounded">
-                <a href="/doc"><i class="fa fa-book" aria-hidden="true"></i>Manual</a>
+                <a href="/doc"><i class="fas fa-book-open"></i>Manual</a>
               </button>
           </div>
         </div>

@@ -4,5 +4,8 @@
 
 use Mix.Config
 
+config :lowendinsight_get,
+  check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "false")
+
 config :redix,
   redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/3"

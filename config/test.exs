@@ -11,7 +11,8 @@ config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4444
 
 config :lowendinsight_get,
   cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "30"),
-  cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true")
+  cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true"),
+  check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true")
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

@@ -67,25 +67,27 @@ defmodule LowendinsightGet.GithubTrending do
     end
   end
 
-  defp get_repo_size(url) do
-    {:ok, slug} = Helpers.get_slug(url)
-    # token = "75b92e169bc1ad911d9a078ef4810d0ab3f45e50"
-    # headers = ["Authorization: token #{token}"]
-    {:ok, response} = HTTPoison.get("https://api.github.com/repos/" <> slug)
-    json = Poison.Parser.parse!(response.body)
-    {json["size"], url}
+  def get_repo_size(url) do
+    case Helpers.get_slug(url) do
+      {:ok, slug} -> 
+        {:ok, response} = HTTPoison.get("https://api.github.com/repos/" <> slug)
+        json = Poison.Parser.parse!(response.body)
+        {json["size"], url}
+      {:error, msg} -> {:error, msg}
+    end
+
   end
 
-  defp filter_out_large_repos({repo_size, url}, check_repo?) when repo_size < 1000000 or not check_repo? do
+  def filter_out_large_repos({repo_size, url}, check_repo?) when repo_size < 1000000 or not check_repo? do
     url
   end
 
-  defp filter_out_large_repos({_repo_size, url}, check_repo?) when check_repo? do
+  def filter_out_large_repos({_repo_size, url}, check_repo?) when check_repo? do
     url <> "-skip_too_big"
   end
 
 
-  defp check_repo_size?() do 
+  def check_repo_size?() do 
     if Application.fetch_env(:lowendinsight_get, :check_repo_size?) == :error,
       do: false,
       else: Application.fetch_env!(:lowendinsight_get, :check_repo_size?)

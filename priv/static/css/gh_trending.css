@@ -1,5 +1,8 @@
+body {
+	padding-bottom: 50px;
+}
 .section {
-	font-size: 14px; 
+	font-size: 13px; 
 	line-height: 1.3;
 }
 
@@ -24,11 +27,15 @@
 	font-size: 16px;
 }
 
+#input-box {
+	margin-top: 100px;
+}
+
 .sub {
 	margin: 27px 0px !important;
 	padding: 9px !important;
-	background-color: #4d97d6;
-	color: white; 
+	background-color: #cccccc;
+	color: black;  
 	display: block; 
 	padding: 6px 6px; 
 	border-radius: 6px;
@@ -45,25 +52,44 @@
 	display: "none";
 }
 
+
+.table .json {
+	background-color: #fdfdfd;
+}
+
+.table .large_commit_risk {
+	background-color: #f2f2f2;
+}
+
+.table .recent_commit_size {
+	background-color: #efefef;
+}
+
+.table .commit_currency {
+	background-color: #eaeaea;
+}
+
 .table .fccount {
-    background-color: #f2f2f2;
+	background-color: #e4e4e4;
 }
 
 .table .ccount {
-    background-color: #eeeeee;
+	background-color: #dfdfdf;
+
 }
 
 .table .risk {
-	background-color: #e7e7e7;
+	background-color: #dbdbdb;
+
 }
 
 .table .project {
-	background-color: #dfdfdf;
+	background-color: #d3d3d3;
 }
 
-tr:hover td {
+/* tr:hover td {
 	background-color: #e8e8e8 !important;
-}
+} */
 
 tr.tablehead th {
 	color: white;
@@ -108,8 +134,15 @@ td > a:hover {
 	text-decoration: none;
 }
 
-.fa-fw {
-	margin-right: 4px;
+.button > a {
+	color: white;
+	color: black;
+}
+
+.fa-fw, .fa-book, a > i {
+	margin-right: 5px;
+	font-size: 14px;
+	margin-left: 0px;
 }
 
 a:link {
@@ -124,7 +157,7 @@ a:link {
   
 .tooltip span.tooltiptext {
 	visibility: hidden;
-	width: 350px;
+	width: 375px;
 	background-color: #e6e6e6;
 	color: black;
 	text-align: center;
@@ -132,13 +165,13 @@ a:link {
 	border-radius: 6px;
 	position: absolute;
 	z-index: 1;
-	bottom: 210%;
+	bottom: 217%;
 	left: 7px; 
-	margin-left: -165px;
+	margin-left: -177px;
 	overflow: visible;
-	opacity: .6;
+	opacity: .8;
 	font-size: 10px;
-	border: 2px solid black;
+	border: 1px solid black;
 }
   
 .tooltip:hover .tooltiptext {
@@ -176,4 +209,65 @@ th .tooltip {
 
 .dropdown .button > span {
 	color: black;
+	font-weight: 442;
+}
+
+.search {
+	width: 584px;
+	height: 44px;
+	line-height: 44px;
+	border: none;
+	border-radius: 6px;
+	margin-bottom: 18px;
+	font: 16px arial, sans-serif;
+	padding-left: 17px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.search:hover, .search:focus {
+	outline: none;
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.input-field .button {
+	  margin-left: 11px;
+}
+
+#footer {
+	position: relative;
+	bottom: 0;
+	width: 100%;
+	margin-top: 90px;
+	background-color: #f0f0f0;
+}
+
+#gtri {
+	  margin-top: 10px;
+	  height: 65px;
+	  width: 150px;
+}
+
+.github-corner:hover .octo-arm {
+	  animation:octocat-wave 560ms ease-in-out
+}
+
+@keyframes octocat-wave { 
+	0%,100% {
+		transform:rotate(0)
+	}
+	20%,60% {
+		transform:rotate(-25deg)
+	}
+	40%,80% {
+		transform:rotate(10deg)
+	}
+}
+	
+@media (max-width:500px) {
+	.github-corner:hover .octo-arm {
+		animation:none
+	}
+	.github-corner .octo-arm {
+		animation:octocat-wave 
+  560ms ease-in-out}
 }

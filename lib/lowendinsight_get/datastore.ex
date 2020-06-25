@@ -28,7 +28,6 @@ defmodule LowendinsightGet.Datastore do
   def write_job(uuid, report) do
     case Redix.command(:redix, ["SET", uuid, Poison.encode!(report)]) do
       {:ok, res} ->
-        # Logger.debug("wrote job #{uuid} -> #{Poison.encode!(report)}")
         {:ok, res}
     end
   end
@@ -54,7 +53,7 @@ defmodule LowendinsightGet.Datastore do
   def write_to_cache(url, report) do
     case Redix.command(:redix, ["SET", url, Poison.encode!(report)]) do
       {:ok, res} ->
-        # Logger.debug("wrote report #{url} -> #{Poison.encode!(report)}")
+        Logger.debug("wrote report #{url}")
         {:ok, res}
     end
   end
@@ -69,7 +68,7 @@ defmodule LowendinsightGet.Datastore do
     ## the returned value as 'nil'
     case Redix.command(:redix, ["GET", url]) do
       {:ok, res} ->
-        # Logger.debug("get report #{url} -> #{res}")
+        Logger.debug("get report #{url}")
 
         case res do
           nil ->

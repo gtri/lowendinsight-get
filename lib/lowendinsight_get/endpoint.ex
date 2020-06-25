@@ -46,6 +46,11 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/" do
+    render(conn, "analyze.html", 
+    report: "")
+  end
+
+  get "/doc" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
 
     conn
@@ -65,6 +70,14 @@ defmodule LowendinsightGet.Endpoint do
       language: language,
       languages: languages
     )
+  end
+
+  get "/url=:url" do
+    url = URI.decode(url)
+    {:ok, report} = LowendinsightGet.Analysis.analyze(url, "lei-get", %{types: false})
+    render(conn, "analysis.html",
+    report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
+    url: url)
   end
 
   get "/v1/analyze/:uuid" do

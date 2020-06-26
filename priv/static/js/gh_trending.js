@@ -2,31 +2,49 @@
 function remove_error(){
     document.getElementById("input-url").classList.remove("error");
     document.getElementById("invalid-url").style.visibility = "hidden";
-    document.getElementById("get-report-button").classList.remove("is-loading");
+    // document.getElementById("analyze-button").classList.remove("is-loading");
+    document.getElementById("analyze-button").innerHTML = "Analyze"
+    document.getElementById("analyze-button").disabled = false;
 }
 
-function validate_url(encoded_url){
-    let request = new XMLHttpRequest();
-    request.open("GET", `/validate-url/url=${encoded_url}`, false);
-    request.send(null);
-    return request.status == 200;
+async function validate_url(encoded_url){
+    var is_valid_url = false;
+    var is_valid_repo = false;
+
+    var validate_request = 
+        await fetch(`/validate-url/url=${encoded_url}`)
+            .then(validate => {
+                is_valid_url = (validate.status == 200);
+            }).catch(error => console.log(error))
+
+    if(is_valid_url){
+        document.getElementById("analyze-button").innerHTML = "loading...";
+        var analyze_request = 
+            await fetch(`/url=${encoded_url}`)
+                .then(analyze => {
+                    is_valid_repo = (analyze.status == 200);
+                }).catch(error => console.log(error))
+    } 
+    return is_valid_repo;
 }
 
-function validate_and_submit(){
-    var form= document.getElementById("form");
+async function validate_and_submit(){
+    var form = document.getElementById("form");
     event.preventDefault();
     event.stopPropagation();
 
-    var button = document.getElementById("get-report-button");
-    button.classList.add("is-loading");
-
+    var button = document.getElementById("analyze-button");
+    // button.classList.add("is-loading");
+    button.setAttribute("disabled", true);
+    
     var input = document.getElementById("input-url");
     var url = input.value;
     var encoded_url = encodeURIComponent(url);
-    
-    if (validate_url(encoded_url)) {
+
+    var is_valid_url = await validate_url(encoded_url);
+
+    if (is_valid_url == true) {
       form.action = `/url=${encoded_url}`;
-      console.log("it's valid!!!!")
       form.submit();
     } else {
         button.classList.remove("is-loading");

@@ -74,10 +74,16 @@ defmodule LowendinsightGet.Endpoint do
 
   get "/url=:url" do
     url = URI.decode(url)
-    {:ok, report} = LowendinsightGet.Analysis.analyze(url, "lei-get", %{types: false})
-    render(conn, "analysis.html",
-    report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
-    url: url)
+    case LowendinsightGet.Analysis.analyze(url, "lei-get", %{types: false}) do
+      {:ok, report} ->
+        render(conn, "analysis.html",
+          report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
+          url: url)
+      {:error, msg} -> 
+        conn 
+        |> put_resp_content_type(@content_type) 
+        |> send_resp(400, Poison.encode!(%{:error => msg}))
+    end
   end
 
   get "/validate-url/url=:url" do
@@ -87,10 +93,10 @@ defmodule LowendinsightGet.Endpoint do
         :ok ->
           {200, Poison.encode!(%{:ok => "valid url"})}
         
-        {:error, _msg} ->
-          {204, Poison.encode!(%{:error => "invalid url"})}
+        {:error, msg} ->
+          {201, Poison.encode!(%{:error => msg})}
       end
-    
+
       conn
       |> put_resp_content_type(@content_type)
       |> send_resp(status, body)

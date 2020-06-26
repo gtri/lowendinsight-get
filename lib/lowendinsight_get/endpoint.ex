@@ -80,6 +80,22 @@ defmodule LowendinsightGet.Endpoint do
     url: url)
   end
 
+  get "/validate-url/url=:url" do
+    url = URI.decode(url)
+    {status, body} = 
+      case Helpers.validate_url(url) do
+        :ok ->
+          {200, Poison.encode!(%{:ok => "valid url"})}
+        
+        {:error, _msg} ->
+          {204, Poison.encode!(%{:error => "invalid url"})}
+      end
+    
+      conn
+      |> put_resp_content_type(@content_type)
+      |> send_resp(status, body)
+  end
+
   get "/v1/analyze/:uuid" do
     {status, body} =
       case LowendinsightGet.Datastore.get_job(uuid) do

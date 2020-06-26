@@ -32,7 +32,7 @@ footer {
 }
 
 .report-info-box {
-	background-color: #F2F2F2; 
+	background-color: #eaeaea; 
 	display: block; 
 	font-family: arial;
 	font-size: 15px;
@@ -54,13 +54,14 @@ footer {
 .sub {
 	margin: 27px 0px !important;
 	padding: 9px !important;
-	background-color: #cccccc;
+	background-color: #444444f5;
 	color: black;  
 	display: block; 
 	padding: 6px 6px; 
 	border-radius: 6px;
 	white-space: nowrap;
 	width: auto;
+	color: white;
 }
 
 .tablehead {
@@ -167,10 +168,11 @@ td > a:hover {
 	color: black;
 }
 
-.fa-fw, .fa-book-open, a > i {
+.fa-fw, .fa-book-open, .fa-github, a > i {
 	margin-right: 5px;
 	font-size: 12px;
 	margin-left: 0px;
+	color: black;
 }
 
 a:link {
@@ -241,15 +243,16 @@ th .tooltip {
 }
 
 .search {
-	width: 584px;
-	height: 44px;
+	width: 515px;
+	height: 40px;
 	line-height: 44px;
 	border: none;
 	border-radius: 6px;
-	margin-bottom: 18px;
+	margin-bottom: 9px;
 	font: 16px arial, sans-serif;
+	margin-top: 2px;
 	padding-left: 17px;
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .search:hover, .search:focus {
@@ -258,16 +261,24 @@ th .tooltip {
 }
 
 .input-field .button {
-	  margin-left: 11px;
+	margin-left: 9px;
+}
+
+#manual {
+	margin: 22px 0px 0px 57px;
+}
+
+#gh-trending {
+	margin: 22px 0px 100px 19px;
 }
 
 #gtri {
-	  height: 66px;
-	  width: 134px;
+	height: 66px;
+	width: 134px;
 }
 
 .github-corner:hover .octo-arm {
-	  animation:octocat-wave 560ms ease-in-out
+	animation:octocat-wave 560ms ease-in-out
 }
 
 @keyframes octocat-wave { 
@@ -299,4 +310,27 @@ th .tooltip {
 	top: 0; 
 	border: 0; 
     right: 0;
+}
+
+#invalid-url {
+	visibility: hidden;
+	color: white;
+	font-weight: 500;
+	font-size: 11px;
+	padding: 3px 5px;
+	margin-left: 4px;
+	background-color: red;
+	border-radius: 4px;
+}
+
+.error {
+	border: 2px solid #FA8072;
+    position: relative;
+    animation: shake .1s linear;
+	animation-iteration-count: 3;
+}
+
+@keyframes shake {
+    0% { left: -5px; }
+    100% { right: -5px; }
 }

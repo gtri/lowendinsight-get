@@ -165,4 +165,28 @@ defmodule LowendinsightGet.EndpointTest do
      assert conn.status == 200
      assert String.contains?(conn.resp_body, "<html>")
   end
+
+  test "it returns 200 when url is valid for /validate-url endpoint" do
+    # Create a test connection
+    conn = conn(:get, "/validate-url/url=https%3A%2F%2Fgithub.com%2Felixir-lang%2Fex_doc?")
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 200
+  end
+
+  test "it returns 204 when url is invalid for /validate-url endpoint" do
+    # Create a test connection
+    conn = conn(:get, "/validate-url/url=www.url.com")
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 204
+  end
 end

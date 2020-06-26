@@ -10,20 +10,22 @@ header {
 #footer {
 	height: 50px; 
 	background-color: #f0f0f0;
+	margin-top: auto; 
 }
 
 body { 
 	display: flex; 
 	flex-direction: column; 
 }
-  
-footer {
-	margin-top: auto; 
-}
 
 .section {
 	font-size: 13px; 
 	line-height: 1.3;
+	padding: 2rem 1.5rem;
+}
+
+a.is-family-code {
+	font-size: .8rem;
 }
 
 #report-info-box.column {
@@ -252,7 +254,7 @@ th .tooltip {
 	font: 16px arial, sans-serif;
 	margin-top: 2px;
 	padding-left: 17px;
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.08);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .search:hover, .search:focus {
@@ -261,15 +263,23 @@ th .tooltip {
 }
 
 .input-field .button {
-	margin-left: 9px;
+	margin: 2px 0 0 9px;
 }
 
 #manual {
-	margin: 22px 0px 0px 57px;
+	margin: 21px 0px 0px 160px;
 }
 
 #gh-trending {
-	margin: 22px 0px 100px 19px;
+	margin: 21px 0px 100px 19px;
+}
+
+.button.is-success {
+	background-color: #48c774a4;
+}
+
+.button.is-warning {
+	background-color: #ffd83d83;
 }
 
 #gtri {
@@ -319,7 +329,7 @@ th .tooltip {
 	font-size: 11px;
 	padding: 3px 5px;
 	margin-left: 4px;
-	background-color: red;
+	background-color: rgba(255, 0, 0, 0.925);
 	border-radius: 4px;
 }
 

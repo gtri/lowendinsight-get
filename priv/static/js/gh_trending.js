@@ -1,8 +1,7 @@
 
 function remove_error(){
     document.getElementById("input-url").classList.remove("error");
-    document.getElementById("invalid-url").style.visibility = "hidden";
-    // document.getElementById("analyze-button").classList.remove("is-loading");
+    document.getElementById("invalid-url").style.display = "none";
     document.getElementById("analyze-button").innerHTML = "Analyze"
     document.getElementById("analyze-button").disabled = false;
 }
@@ -34,7 +33,6 @@ async function validate_and_submit(){
     event.stopPropagation();
 
     var button = document.getElementById("analyze-button");
-    // button.classList.add("is-loading");
     button.setAttribute("disabled", true);
     
     var input = document.getElementById("input-url");
@@ -49,7 +47,8 @@ async function validate_and_submit(){
     } else {
         button.classList.remove("is-loading");
         input.classList.add("error");
-        document.getElementById("invalid-url").style.visibility = "visible";
+        document.getElementById("invalid-url").style.display = "block";
+
     }
 }
 

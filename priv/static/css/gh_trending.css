@@ -66,6 +66,10 @@ a.is-family-code {
 	color: white;
 }
 
+.table {
+	margin-top: 6vh !important;
+}
+
 .tablehead {
 	background-color: #333333;
     color: white;
@@ -196,8 +200,8 @@ a:link {
 	padding: 5px 5px;
 	border-radius: 6px;
 	position: absolute;
-	z-index: 1;
-	bottom: 217%;
+	z-index: 2;
+	bottom: 220%;
 	left: 7px; 
 	margin-left: -177px;
 	overflow: visible;
@@ -254,6 +258,7 @@ th .tooltip {
 	font: 16px arial, sans-serif;
 	margin-top: 2px;
 	padding-left: 17px;
+	-webkit-appearance: none;
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
@@ -266,12 +271,14 @@ th .tooltip {
 	margin: 2px 0 0 9px;
 }
 
-#manual {
-	margin: 21px 0px 0px 160px;
+.buttons-div {
+	margin: 3px 0px 0px 225px;
 }
 
-#gh-trending {
-	margin: 21px 0px 100px 19px;
+.buttons-div .button {
+	width: 103px;
+	height: 37px;
+	margin-left: 15px;
 }
 
 .button.is-success {
@@ -305,12 +312,36 @@ th .tooltip {
 	
 @media (max-width:500px) {
 	.github-corner:hover .octo-arm {
-		animation:none
+		animation: none
 	}
+
 	.github-corner .octo-arm {
-		animation:octocat-wave 
-		  560ms ease-in-out
+		animation: octocat-wave 560ms ease-in-out
 	}
+
+	.buttons-div {
+		margin-left: 114px;
+	}
+
+	#analyze-button {
+		margin-left: 225px;
+		height: 39px;
+	}
+
+	.buttons-div .button {
+		margin: 20px 0 0 0;
+		height: 34px;
+	}
+
+	.search {
+		width: 100%;
+	}
+
+	.sub, .report-info-box {
+		white-space: normal !important;
+		width: 90vw;
+	}
+
 }
 
 .svg {
@@ -323,14 +354,17 @@ th .tooltip {
 }
 
 #invalid-url {
-	visibility: hidden;
+	/* visibility: hidden; */
+	display: none;
 	color: white;
 	font-weight: 500;
 	font-size: 11px;
 	padding: 3px 5px;
-	margin-left: 4px;
+	margin: 0 4px 0 4px;
 	background-color: rgba(255, 0, 0, 0.925);
 	border-radius: 4px;
+	width: max-content;
+	z-index: 2;
 }
 
 .error {

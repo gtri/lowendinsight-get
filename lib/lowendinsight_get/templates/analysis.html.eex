@@ -41,15 +41,17 @@
           </h1>
           <form id="form" class="input-field" action="/url=" method="get" onsubmit="validate_and_submit()">
             <input type="text" id="input-url" class="search" placeholder="Enter public git repo URL" required oninput="remove_error()">
-            <button type="submit" id="analyze-button" class="button is-dark">Analyze</button>
+            <button type="submit" id="analyze-button" class="button is-dark is-family-code">Analyze</button>
           </form>
           <span id="invalid-url">Invalid repo URL</span>
-          <button id="manual" class="button is-warning">
-            <a class="is-family-code" href="/doc"><i class="fas fa-book-open"></i>Manual  </a>
-          </button>
-          <button id="gh-trending" class="button is-success">
-            <a class="is-family-code" href="/gh_trending"><i class="fab fa-github"></i>Trending</a>
-          </button>
+          <div class="buttons-div">
+            <button class="button is-warning">
+              <a class="is-family-code" href="/doc"><i class="fas fa-book-open"></i>Manual</a>
+            </button>
+            <button class="button is-success">
+              <a class="is-family-code" href="/gh_trending"><i class="fab fa-github"></i>Trending</a>
+            </button>
+          </div>
         </div>
       </div>
     </section>

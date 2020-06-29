@@ -76,13 +76,22 @@ defmodule LowendinsightGet.Endpoint do
     url = URI.decode(url)
     case LowendinsightGet.Analysis.analyze(url, "lei-get", %{types: false}) do
       {:ok, report} ->
-        render(conn, "analysis.html",
-          report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
-          url: url)
+        {:ok, data} = Map.fetch(report, :data)
+        error_key? = Map.fetch(data, :error)
+        case error_key? do
+          :error ->
+            render(conn, "analysis.html",
+            report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
+            url: url)
+          _ ->
+            conn 
+          |> put_resp_content_type(@content_type) 
+          |> send_resp(401, Poison.encode!(%{:error => "Invalid url"}))
+        end
       {:error, msg} -> 
         conn 
         |> put_resp_content_type(@content_type) 
-        |> send_resp(400, Poison.encode!(%{:error => msg}))
+        |> send_resp(401, Poison.encode!(%{:error => msg}))
     end
   end
 

@@ -75,7 +75,7 @@
     </script>
     <section class="section" id="report">
       <div class="table-container">
-        <table class="table is-fullwidth is-striped" id="repo"  >
+        <table class="table is-fullwidth is-striped" id="repo">
           <thead>
             <tr class="tablehead">
               <th>Project</th>

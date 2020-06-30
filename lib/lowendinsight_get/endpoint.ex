@@ -46,6 +46,11 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/" do
+    render(conn, "analyze.html", 
+    report: "")
+  end
+
+  get "/doc" do
     {:ok, html} = File.read("#{:code.priv_dir(:lowendinsight_get)}/static/index.html")
 
     conn
@@ -65,6 +70,43 @@ defmodule LowendinsightGet.Endpoint do
       language: language,
       languages: languages
     )
+  end
+
+  get "/url=:url" do
+    url = URI.decode(url)
+    case LowendinsightGet.Analysis.analyze(url, "lei-get", %{types: false}) do
+      {:ok, report} ->
+        {:ok, data} = Map.fetch(report, :data)
+        error_key? = Map.fetch(data, :error)
+        case error_key? do
+          :error ->
+            render(conn, "analysis.html",
+            report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
+            url: url)
+          _ ->
+            conn 
+          |> put_resp_content_type(@content_type) 
+          |> send_resp(401, Poison.encode!(%{:error => "Invalid url"}))
+        end
+      {:error, msg} -> 
+          {:error, msg}
+    end
+  end
+
+  get "/validate-url/url=:url" do
+    url = URI.decode(url)
+    {status, body} = 
+      case Helpers.validate_url(url) do
+        :ok ->
+          {200, Poison.encode!(%{:ok => "valid url"})}
+        
+        {:error, msg} ->
+          {201, Poison.encode!(%{:error => msg})}
+      end
+
+      conn
+      |> put_resp_content_type(@content_type)
+      |> send_resp(status, body)
   end
 
   get "/v1/analyze/:uuid" do

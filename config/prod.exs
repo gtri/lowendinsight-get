@@ -10,6 +10,9 @@ use Mix.Config
 config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")
 
+config :lowendinsight_get, 
+  check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true")
+
 config :lowendinsight,
   ## Contributor in terms of discrete users
   ## NOTE: this currently doesn't discern same user with different email

@@ -6,7 +6,28 @@ defmodule LowendinsightGet.CacheCleanerTest do
   use ExUnit.Case, async: false
 
   setup_all do
-    :ok
+    Redix.command(:redix, ["FLUSHDB"])
+
+    on_exit(fn ->
+      Task.Supervisor.children(LowendinsightGet.AnalysisSupervisor)
+      |> Enum.map(fn child ->
+        Task.Supervisor.terminate_child(LowendinsightGet.AnalysisSupervisor, child)
+      end)
+    end)
+  end
+
+  test "redix get key" do
+    elixir_url = "https://github.com/elixir-lang/elixir"
+    {:ok, _report} = LowendinsightGet.Analysis.analyze(elixir_url, "lei-get", %{types: false})
+    {:ok, conn} = Redix.start_link(Application.get_env(:redix, :redis_url))
+    case Redix.command(conn, ["KEYS", "http*"]) do
+      {:ok, _keys} ->
+        {:ok, nil} = Redix.command(conn, ["GET", "fake_key"])
+        {:ok, json} = Redix.command(conn, ["GET", elixir_url])
+        value = Poison.decode!(json)
+        assert value["header"]["end_time"] != nil
+    end
+    Redix.stop(conn)
   end
 
   test "it cleans" do

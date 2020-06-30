@@ -89,9 +89,7 @@ defmodule LowendinsightGet.Endpoint do
           |> send_resp(401, Poison.encode!(%{:error => "Invalid url"}))
         end
       {:error, msg} -> 
-        conn 
-        |> put_resp_content_type(@content_type) 
-        |> send_resp(401, Poison.encode!(%{:error => msg}))
+          {:error, msg}
     end
   end
 

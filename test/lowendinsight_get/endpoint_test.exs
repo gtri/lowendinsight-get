@@ -130,6 +130,18 @@ defmodule LowendinsightGet.EndpointTest do
 
   test "it returns 200 for the /gh_trending endpoint" do
     # Create a test connection
+    conn = conn(:get, "/gh_trending")
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.contains?(conn.resp_body, "<html>")
+  end
+
+  test "it returns 200 for the /gh_trending/language endpoint" do
+    # Create a test connection
     conn = conn(:get, "/gh_trending/elixir")
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)

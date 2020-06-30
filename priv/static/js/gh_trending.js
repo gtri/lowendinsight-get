@@ -1,3 +1,103 @@
+
+function remove_error(){
+    document.getElementById("input-url").classList.remove("error");
+    document.getElementById("invalid-url").style.display = "none";
+    document.getElementById("analyze-button").innerHTML = "Analyze"
+    document.getElementById("analyze-button").disabled = false;
+}
+
+async function validate_url(encoded_url){
+    var is_valid_url = false;
+    var is_valid_repo = false;
+
+    var validate_request = 
+        await fetch(`/validate-url/url=${encoded_url}`)
+            .then(validate => {
+                is_valid_url = (validate.status == 200);
+            }).catch(error => console.log(error))
+
+    if(is_valid_url){
+        document.getElementById("analyze-button").innerHTML = "loading...";
+        var analyze_request = 
+            await fetch(`/url=${encoded_url}`)
+                .then(analyze => {
+                    is_valid_repo = (analyze.status == 200);
+                }).catch(error => console.log(error))
+    } 
+    return is_valid_repo;
+}
+
+async function validate_and_submit(){
+    var form = document.getElementById("form");
+    event.preventDefault();
+    event.stopPropagation();
+
+    var button = document.getElementById("analyze-button");
+    button.setAttribute("disabled", true);
+    
+    var input = document.getElementById("input-url");
+    var url = input.value;
+    var encoded_url = encodeURIComponent(url);
+
+    var is_valid_url = await validate_url(encoded_url);
+
+    if (is_valid_url == true) {
+      form.action = `/url=${encoded_url}`;
+      form.submit();
+    } else {
+        button.classList.remove("is-loading");
+        input.classList.add("error");
+        document.getElementById("invalid-url").style.display = "block";
+
+    }
+}
+
+function languages_button_event(){
+    document.addEventListener('DOMContentLoaded', function () {
+    
+        var dropdown = document.querySelector('.dropdown');
+          
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+            dropdown.classList.toggle('is-active');
+                
+        });    
+
+        document.addEventListener('click', function(e) {
+            dropdown.classList.remove('is-active');
+        });
+    });
+}
+
+function view_json_button(json_data, parent){
+    var button_text = "view";
+    
+    var spanbutton = document.createElement("span");
+    var button = document.createElement("Button");
+    button.className = "button is-info is-family-code";
+    spanbutton.innerHTML = button_text;
+    spanbutton.style["font-weight"] = "bold";
+    button.appendChild(spanbutton);
+    parent.appendChild(button);
+
+    var div = document.createElement("div");
+    div.className = "box tree";
+    div.style.display = "none";
+    var tree = jsonTree.create(json_data, div);
+    parent.appendChild(div);
+
+    button.addEventListener('click', () => {
+        if (div.style.display == "none") {
+            spanbutton.textContent = "hide";
+            div.style.display = "block";
+        } else {
+            spanbutton.textContent = button_text;
+            tree.collapse();
+            div.style.display = "none";
+        }
+    });
+}
+
 function display_row(project, slug, risk, ccount, fccount, large_commit_risk, commit_currency, json_data) {
     var table = document.getElementById("repo")
     var row = table.insertRow(-1);
@@ -46,74 +146,8 @@ function display_row(project, slug, risk, ccount, fccount, large_commit_risk, co
             riskspan.className += " lowrisk"; break;
         default: break;
     }
-
+    
     view_json_button(json_data, json_cell);
-
 }
 
-function view_json_button(json_data, parent){
-    var button_text = "view";
-    
-    var spanbutton = document.createElement("span");
-    var button = document.createElement("Button");
-    button.className = "button is-info is-family-code";
-    spanbutton.innerHTML = button_text;
-    spanbutton.style["font-weight"] = "bold";
-    button.appendChild(spanbutton);
-    parent.appendChild(button);
-
-    var div = document.createElement("div");
-    div.className = "box tree";
-    div.style.display = "none"
-    var tree = jsonTree.create(json_data, div);
-    parent.appendChild(div);
-
-    button.addEventListener('click', () => {
-        if (div.style.display == "none") {
-            spanbutton.textContent = "hide";
-            div.style.display = "block";
-        } else {
-            spanbutton.textContent = button_text;
-            tree.collapse();
-            div.style.display = "none";
-        }
-    });
-}
-
-function languages_button_event(){
-    document.addEventListener('DOMContentLoaded', function () {
-    
-        var dropdown = document.querySelector('.dropdown');
-          
-        dropdown.addEventListener('click', function(event) {
-            event.stopPropagation();
-            dropdown.classList.toggle('is-active');
-                
-        });    
-
-        document.addEventListener('click', function(e) {
-            dropdown.classList.remove('is-active');
-        });
-    });
-}
-
-function report_button_event(){
-    document.addEventListener('DOMContentLoaded', function () {
-        var form = document.getElementById("form")
-
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            var button = document.getElementById("get-report-button");
-            button.classList.toggle("is-loading");
-
-            var url = document.getElementById("input-url").value;
-            var encoded_url = encodeURIComponent(url);
-
-            this.action = `/url=${encoded_url}`;
-            this.submit();
-        })
-    })
-}
 

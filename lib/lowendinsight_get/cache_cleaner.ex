@@ -18,12 +18,13 @@ defmodule LowendinsightGet.CacheCleaner do
           case Redix.command(conn, ["GET", key]) do
             {:ok, nil} ->
               Logger.debug("#{key}: already gone")
-
+              {:ok, nil}
+      
             {:ok, json} ->
               value = Poison.decode!(json)
               report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
               cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
-
+      
               if report_time > cache_ttl do
                 Redix.command(conn, ["DEL", key])
                 Logger.info("Deleting TTL expired key: #{key}")

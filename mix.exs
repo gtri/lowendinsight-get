@@ -26,7 +26,7 @@ defmodule LowendinsightGet.MixProject do
   defp deps do
     [
       {:plug, "~> 1.6"},
-      {:cowboy, "~> 2.4"},
+      {:cowboy, "< 2.8.0", overide: true},
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},

@@ -8,7 +8,7 @@ defmodule LowendinsightGet.MixProject do
   def project do
     [
       app: :lowendinsight_get,
-      version: "0.5.0",
+      version: "0.6.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -26,7 +26,7 @@ defmodule LowendinsightGet.MixProject do
   defp deps do
     [
       {:plug, "~> 1.6"},
-      {:cowboy, "~> 2.4"},
+      {:cowboy, "< 2.8.0", overide: true},
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 0.10", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},

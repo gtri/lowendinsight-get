@@ -48,7 +48,6 @@ async function validate_and_submit(){
         button.classList.remove("is-loading");
         input.classList.add("error");
         document.getElementById("invalid-url").style.display = "block";
-
     }
 }
 
@@ -74,7 +73,11 @@ function view_json_button(json_data, parent){
     
     var spanbutton = document.createElement("span");
     var button = document.createElement("Button");
-    button.className = "button is-info is-family-code";
+    if (window.matchMedia('(max-device-width: 768px)').matches) {
+        button.className = "button is-info is-small is-family-code";
+    } else {
+        button.className = "button is-info is-family-code";   
+    }
     spanbutton.innerHTML = button_text;
     spanbutton.style["font-weight"] = "bold";
     button.appendChild(spanbutton);

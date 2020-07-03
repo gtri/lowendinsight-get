@@ -44,7 +44,7 @@
            <span id="invalid-url">Invalid repo URL</span>
           <div class="buttons-div">
             <button class="button is-warning">
-              <a class="is-family-code" href="/doc"><i class="fas fa-book-open"></i>Manual  </a>
+              <a class="is-family-code" href="/doc"><i class="fas fa-book-open"></i>Manual</a>
             </button>
             <button class="button is-success">
               <a class="is-family-code" href="/gh_trending"><i class="fab fa-github"></i>Trending</a>

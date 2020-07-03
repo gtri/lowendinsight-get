@@ -1,53 +1,61 @@
+function disable_button(){
+    var button = document.getElementById("analyze-button");
+    button.classList.add("is-loading");
+    button.setAttribute("disabled", true);
+}
+
+function get_encoded_url(){
+    var input = document.getElementById("input-url");
+    var url = input.value;
+    return encodeURIComponent(url);
+}
+
+function display_error() {
+    document.getElementById("analyze-button").classList.remove("is-loading");
+    document.getElementById("input-url").classList.add("error");
+    document.getElementById("invalid-url").style.display = "block";
+}
 
 function remove_error(){
     document.getElementById("input-url").classList.remove("error");
     document.getElementById("invalid-url").style.display = "none";
-    document.getElementById("analyze-button").innerHTML = "Analyze"
     document.getElementById("analyze-button").disabled = false;
+    document.getElementById("analyze-button").classList.remove("is-loading");
 }
 
 async function validate_url(encoded_url){
     var is_valid_url = false;
     var is_valid_repo = false;
 
-    var validate_request = 
-        await fetch(`/validate-url/url=${encoded_url}`)
-            .then(validate => {
-                is_valid_url = (validate.status == 200);
-            }).catch(error => console.log(error))
+    await fetch(`/validate-url/url=${encoded_url}`)
+        .then(validate => {
+            is_valid_url = (validate.status == 200);
+        }).catch(error => console.log(error))
 
     if(is_valid_url){
-        document.getElementById("analyze-button").innerHTML = "loading...";
-        var analyze_request = 
-            await fetch(`/url=${encoded_url}`)
-                .then(analyze => {
-                    is_valid_repo = (analyze.status == 200);
-                }).catch(error => console.log(error))
+        await fetch(`/url=${encoded_url}`)
+            .then(analyze => {
+                is_valid_repo = (analyze.status == 200);
+            }).catch(error => console.log(error))
     } 
     return is_valid_repo;
 }
 
 async function validate_and_submit(){
-    var form = document.getElementById("form");
     event.preventDefault();
     event.stopPropagation();
 
-    var button = document.getElementById("analyze-button");
-    button.setAttribute("disabled", true);
-    
-    var input = document.getElementById("input-url");
-    var url = input.value;
-    var encoded_url = encodeURIComponent(url);
+    var form = document.getElementById("form");
+    disable_button();
 
+    var encoded_url = get_encoded_url();
     var is_valid_url = await validate_url(encoded_url);
 
-    if (is_valid_url == true) {
+    if (is_valid_url) {
       form.action = `/url=${encoded_url}`;
       form.submit();
     } else {
-        button.classList.remove("is-loading");
-        input.classList.add("error");
-        document.getElementById("invalid-url").style.display = "block";
+        display_error();
     }
 }
 

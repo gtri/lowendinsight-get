@@ -3,7 +3,7 @@ name: deploy_release_elixir_ci
 on: 
   push:
     branches:
-      - master
+      - main 
 
 jobs:
   build:

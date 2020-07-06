@@ -6,7 +6,7 @@
     <title>LowEndInsight</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.css">
-    <link rel="stylesheet" href = "../css/gh_trending.css">
+    <link rel="stylesheet" href = "../css/endpoints.css">
     <script src="https://cdn.jsdelivr.net/npm/json-tree-viewer@0.0.2/libs/jsonTree/jsonTree.min.js"></script>
     <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <a href="https://github.com/gtri/lowendinsight" target="_blank" class="github-corner" aria-label="View source on GitHub">
@@ -26,7 +26,7 @@
     </a>
   </head>
   <body>
-  <script src="../js/gh_trending.js" type="text/javascript"></script>
+  <script src="../js/endpoints.js" type="text/javascript"></script>
   <section class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-narrow is-vcentered">

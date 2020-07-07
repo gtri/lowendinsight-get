@@ -59,7 +59,6 @@ defmodule LowendinsightGet.GithubTrending do
               "metadata" => %{"times" => %{}},
               "report" => %{"uuid" => UUID.uuid1(), "repos" => []}
             }
-
           _ ->
             {:ok, report_json} = Redix.command(:redix, ["GET", uuid])
             Poison.Parser.parse!(report_json)
@@ -67,15 +66,25 @@ defmodule LowendinsightGet.GithubTrending do
     end
   end
 
+  defp get_token() do
+    if Application.fetch_env(:lowendinsight_get, :gh_token) == :error,
+    do: "",
+    else: Application.fetch_env!(:lowendinsight_get, :gh_token)
+  end
+
+  defp fetch_gh_api_response(token, slug) do
+    headers = ["Authorization": "Bearer #{token}", "Accept": "Application/json; Charset=utf-8"]
+    HTTPoison.get("https://api.github.com/repos/" <> slug, headers)
+  end
+
   def get_repo_size(url) do
     case Helpers.get_slug(url) do
       {:ok, slug} -> 
-        {:ok, response} = HTTPoison.get("https://api.github.com/repos/" <> slug)
+        {:ok, response} = fetch_gh_api_response(get_token(), slug)
         json = Poison.Parser.parse!(response.body)
         {json["size"], url}
       {:error, msg} -> {:error, msg}
     end
-
   end
 
   def filter_out_large_repos({repo_size, url}, check_repo?) when repo_size < 1000000 or not check_repo? do

@@ -27,7 +27,9 @@ defmodule LowendinsightGet.CacheCleanerTest do
         case Redix.command(conn, ["GET", elixir_url]) do
           {:ok, json} ->
             value = Poison.decode!(json)
-            assert value["header"]["end_time"] != nil
+            if(value["header"]["end_time"] != nil) do
+              report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
+            end
         end
     end
     Redix.stop(conn)

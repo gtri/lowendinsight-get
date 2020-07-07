@@ -22,12 +22,14 @@ defmodule LowendinsightGet.CacheCleaner do
       
             {:ok, json} ->
               value = Poison.decode!(json)
-              report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
-              cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
-      
-              if report_time > cache_ttl do
-                Redix.command(conn, ["DEL", key])
-                Logger.info("Deleting TTL expired key: #{key}")
+              if value["header"]["end_time"] != nil do
+                report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
+                cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
+        
+                if report_time > cache_ttl do
+                  Redix.command(conn, ["DEL", key])
+                  Logger.info("Deleting TTL expired key: #{key}")
+                end
               end
           end
         end)

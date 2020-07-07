@@ -14,27 +14,33 @@ defmodule LowendinsightGet.CacheCleaner do
       {:ok, keys} ->
         Enum.each(keys, fn key ->
           Logger.debug("key -> #{key}")
-
-          case Redix.command(conn, ["GET", key]) do
-            {:ok, nil} ->
-              Logger.debug("#{key}: already gone")
-              {:ok, nil}
-      
-            {:ok, json} ->
-              value = Poison.decode!(json)
-              if value["header"]["end_time"] != nil do
-                report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
-                cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
-        
-                if report_time > cache_ttl do
-                  Redix.command(conn, ["DEL", key])
-                  Logger.info("Deleting TTL expired key: #{key}")
-                end
-              end
-          end
+          check_ttl(conn, key)
         end)
     end
 
     Redix.stop(conn)
+  end
+
+  def check_ttl(conn, key, force_delete? \\ false) do
+    case Redix.command(conn, ["GET", key]) do
+      {:ok, nil} ->
+        Logger.debug("#{key}: already gone")
+        {:ok, nil}
+
+      {:ok, json} ->
+        value = Poison.decode!(json)
+        if value["header"]["end_time"] != nil do
+          cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
+          report_time = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
+          if force_delete? == false, 
+            do: report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
+
+          if report_time >= cache_ttl do
+            Logger.info("Deleting TTL expired key: #{key}")
+            Redix.command(conn, ["DEL", key])
+            :deleted
+          end
+        end
+    end
   end
 end

@@ -22,10 +22,12 @@ defmodule LowendinsightGet.CacheCleanerTest do
     {:ok, conn} = Redix.start_link(Application.get_env(:redix, :redis_url))
     case Redix.command(conn, ["KEYS", "http*"]) do
       {:ok, _keys} ->
-        {:ok, nil} = Redix.command(conn, ["GET", "fake_key"])
-        {:ok, json} = Redix.command(conn, ["GET", elixir_url])
-        value = Poison.decode!(json)
-        assert value["header"]["end_time"] != nil
+        assert {:ok, nil} == Redix.command(conn, ["GET", "fake_key"])
+        case Redix.command(conn, ["GET", elixir_url]) do
+          {:ok, json} ->
+            value = Poison.decode!(json)
+            assert value["header"]["end_time"] != nil
+        end
     end
     Redix.stop(conn)
   end

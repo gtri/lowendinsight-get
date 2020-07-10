@@ -16,24 +16,21 @@ defmodule LowendinsightGet.CacheCleanerTest do
     end)
   end
 
-  test "redix get key" do
+  test "deletes key when cache TTL expires" do
     elixir_url = "https://github.com/elixir-lang/elixir"
     {:ok, _report} = LowendinsightGet.Analysis.analyze(elixir_url, "lei-get", %{types: false})
     {:ok, conn} = Redix.start_link(Application.get_env(:redix, :redis_url))
     
-    case Redix.command(conn, ["KEYS", "http*"]) do
-      {:ok, _keys} ->
-        assert {:ok, nil} == Redix.command(conn, ["GET", "fake_key"])
-        case Redix.command(conn, ["GET", elixir_url]) do
-          {:ok, json} ->
-            value = Poison.decode!(json)
-            assert value["header"]["end_time"] != nil
-        end
-    end
+    assert {:ok, nil} == LowendinsightGet.CacheCleaner.check_ttl(conn, "fake_key")
+    assert :deleted == LowendinsightGet.CacheCleaner.check_ttl(conn, elixir_url, true)
+
     Redix.stop(conn)
   end
 
   test "it cleans" do
+    elixir_url = "https://github.com/elixir-lang/elixir"
+    {:ok, _report} = LowendinsightGet.Analysis.analyze(elixir_url, "lei-get", %{types: false})
+
     assert :ok == LowendinsightGet.CacheCleaner.clean()
   end
 end

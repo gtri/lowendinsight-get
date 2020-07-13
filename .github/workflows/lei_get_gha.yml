@@ -1,0 +1,11 @@
+name: lei_get_gha
+
+on:
+    # [push, pull_request]
+
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+     # - uses: actions/lowendinsight-gha

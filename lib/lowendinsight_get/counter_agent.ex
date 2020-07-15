@@ -3,8 +3,14 @@ defmodule LowendinsightGet.CounterAgent do
     require Logger
   
     def new_counter(number_of_processes) do
-      Agent.start_link(fn -> { %{}, %{completed: 0, total: number_of_processes}} end, 
-      name: :counter)
+      if !Process.whereis(:counter) do
+        Agent.start_link(fn -> { %{}, %{completed: 0, total: number_of_processes}} end, 
+          name: :counter)
+      else
+        Agent.update(:counter, fn {proc, log} ->
+        {proc, Map.put(log, :total, log.total + number_of_processes)} end)
+      end
+      update()
     end
   
     def get() do
@@ -40,7 +46,7 @@ defmodule LowendinsightGet.CounterAgent do
       cond do
         log.total > log.completed ->
           Logger.info("completed #{round(completed / log.total * 100)}% " <> 
-          (if (completed < log.total), do: " ", else: "") <> "|  running: #{map_size(proc) - completed}  |  total urls: #{log.total}")
+          (if (completed < log.total), do: " ", else: "") <> "|  running: #{map_size(proc) - completed}  |  total URLs: #{log.total}")
           :logged
         true -> :no_log
       end

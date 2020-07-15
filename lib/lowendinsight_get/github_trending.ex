@@ -7,14 +7,13 @@ defmodule LowendinsightGet.GithubTrending do
 
   @type language() :: String.t()
 
-  # def process_languages() do
-  #   Application.get_env(:lowendinsight_get, :languages)
-  #   |> Enum.each(fn language ->
-  #     Mix.shell().info("Analyzing trending repos for: #{language}")
-  #     LowendinsightGet.GithubTrending.analyze(language)
-  #     Mix.shell().info("Analyzed trending repos for: #{language}")
-  #   end)
-  # end
+  def process_languages() do
+    Application.get_env(:lowendinsight_get, :languages)
+    |> Enum.each(fn language -> 
+      task = Task.async(__MODULE__, :analyze, [language])
+      Task.await(task)
+    end)
+  end
 
   @spec analyze(any) :: {:error, any} | {:ok, <<_::64, _::_*8>>}
   def analyze(language) do

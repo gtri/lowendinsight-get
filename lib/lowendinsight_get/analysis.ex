@@ -31,7 +31,7 @@ defmodule LowendinsightGet.Analysis do
 
   def process(uuid, urls, start_time) do
     Logger.info("processing #{uuid} -> #{inspect urls}")
-    {:ok, _counter} = LowendinsightGet.CounterAgent.new_counter(Enum.count(urls))
+    LowendinsightGet.CounterAgent.new_counter(Enum.count(urls))
   
     repos =
       urls
@@ -40,7 +40,7 @@ defmodule LowendinsightGet.Analysis do
           max_concurrency: 1)
       |> Enum.map(fn {:ok, report} -> elem(report, 1) end)
     
-    LowendinsightGet.CounterAgent.update_and_stop()
+    LowendinsightGet.CounterAgent.update()
       
     report = %{
       state: "complete",

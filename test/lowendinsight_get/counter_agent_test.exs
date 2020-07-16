@@ -3,7 +3,7 @@ defmodule LowendinsightGet.CounterAgentTest do
 
     test "counter agent adds pid and url, increments, and stops" do        
         number_of_urls = 1
-        {:ok, _counter} = LowendinsightGet.CounterAgent.new_counter(number_of_urls)
+        LowendinsightGet.CounterAgent.new_counter(number_of_urls)
 
         assert Process.whereis(:counter) != nil
 
@@ -23,6 +23,10 @@ defmodule LowendinsightGet.CounterAgentTest do
         {proc, log} = LowendinsightGet.CounterAgent.get()
         assert log.completed == 1
         assert LowendinsightGet.CounterAgent.log_status({proc, log}) == :no_log
+
+        LowendinsightGet.CounterAgent.new_counter(6)
+        {proc, log} = LowendinsightGet.CounterAgent.get()
+        assert log.total == number_of_urls + 6
 
         LowendinsightGet.CounterAgent.update_and_stop()
         assert Process.whereis(:counter) == nil

@@ -31,9 +31,7 @@ defmodule LowendinsightGet.CacheCleaner do
         value = Poison.decode!(json)
         if value["header"]["end_time"] != nil do
           cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
-          report_time = Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
-          if force_delete? == false, 
-            do: report_time = value["header"]["end_time"] |> TimeHelper.get_commit_delta()
+          report_time = get_report_time(value, force_delete?)
 
           if report_time >= cache_ttl do
             Logger.info("Deleting TTL expired key: #{key}")
@@ -43,4 +41,13 @@ defmodule LowendinsightGet.CacheCleaner do
         end
     end
   end
+
+  def get_report_time(value, force_delete?) when force_delete? == false do
+    value["header"]["end_time"] |> TimeHelper.get_commit_delta()
+  end
+
+  def get_report_time(_value, _force_delete?) do
+    Application.get_env(:lowendinsight_get, :cache_ttl) * 86400
+  end
+
 end

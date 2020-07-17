@@ -11,7 +11,7 @@ defmodule LowendinsightGet.GithubTrending do
     Application.get_env(:lowendinsight_get, :languages)
     |> Enum.each(fn language -> 
       task = Task.async(__MODULE__, :analyze, [language])
-      Task.await(task)
+      Task.await(task, get_wait_time())
     end)
   end
 
@@ -94,6 +94,11 @@ defmodule LowendinsightGet.GithubTrending do
     url <> "-skip_too_big"
   end
 
+  def get_wait_time() do 
+    if Application.fetch_env(:lowendinsight_get, :wait_time) == :error,
+    do: 1800000,
+    else: Application.fetch_env!(:lowendinsight_get, :wait_time)
+  end
 
   def check_repo_size?() do 
     if Application.fetch_env(:lowendinsight_get, :check_repo_size?) == :error,

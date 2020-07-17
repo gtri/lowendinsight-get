@@ -12,6 +12,7 @@ config :lowendinsight_get, LowendinsightGet.Endpoint,
 
 config :lowendinsight_get, 
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
+  wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "7200000"),
   gh_token: System.get_env("LEI_GH_TOKEN") || ""
 
 config :lowendinsight,

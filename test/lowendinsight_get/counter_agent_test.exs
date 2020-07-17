@@ -25,7 +25,7 @@ defmodule LowendinsightGet.CounterAgentTest do
         assert LowendinsightGet.CounterAgent.log_status({proc, log}) == :no_log
 
         LowendinsightGet.CounterAgent.new_counter(6)
-        {proc, log} = LowendinsightGet.CounterAgent.get()
+        {_proc, log} = LowendinsightGet.CounterAgent.get()
         assert log.total == number_of_urls + 6
 
         LowendinsightGet.CounterAgent.update_and_stop()

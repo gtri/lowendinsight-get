@@ -27,4 +27,9 @@ defmodule LowendinsightGet.GithubTrendingTest do
       do: assert new_url == "https://github.com/torvalds/linux-skip_too_big",
       else: assert new_url == "https://github.com/torvalds/linux"
   end
+
+  test "gets wait time" do
+    wait_time = Application.fetch_env!(:lowendinsight_get, :wait_time)
+    assert wait_time == LowendinsightGet.GithubTrending.get_wait_time()
+  end
 end

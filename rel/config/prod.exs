@@ -11,6 +11,26 @@ config :lowendinsight_get,
   cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true"),
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
   gh_token: System.get_env("LEI_GH_TOKEN") || ""
+  languages: [
+    "elixir",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "javascript",
+    "ruby",
+    "c",
+    "c++",
+    "c#",
+    "haskell",
+    "php",
+    "scala",
+    "swift",
+    "objective-c",
+    "kotlin",
+    "shell",
+    "typescript"
+  ]
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

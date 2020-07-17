@@ -13,6 +13,7 @@ config :lowendinsight_get,
   cache_ttl: String.to_integer(System.get_env("LEI_CACHE_TTL") || "30"),
   cache_clean_enable: String.to_atom(System.get_env("LEI_CACHE_CLEAN_ENABLE") || "true"),
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
+  wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "1800000"),
   gh_token: System.get_env("LEI_GH_TOKEN") || ""
 
 config :lowendinsight,

@@ -9,7 +9,7 @@ defmodule LowendinsightGet.GithubTrending do
 
   def process_languages() do
     Application.get_env(:lowendinsight_get, :languages)
-    |> Enum.each(fn language -> 
+    |> Enum.each(fn language ->
       task = Task.async(__MODULE__, :analyze, [language])
       Task.await(task, get_wait_time())
     end)
@@ -26,10 +26,10 @@ defmodule LowendinsightGet.GithubTrending do
         {:error, reason}
 
       {:ok, list} ->
-        urls = 
-        filter_to_urls(list) 
-        |> Enum.map(fn url -> get_repo_size(url) end) 
-        |> Enum.map(fn {repo_size, url} -> filter_out_large_repos({repo_size, url}, check_repo?) end) 
+        urls =
+        filter_to_urls(list)
+        |> Enum.map(fn url -> get_repo_size(url) end)
+        |> Enum.map(fn {repo_size, url} -> filter_out_large_repos({repo_size, url}, check_repo?) end)
         |> Enum.take(10)
 
         Logger.debug("URLS: #{inspect urls}")
@@ -60,7 +60,7 @@ defmodule LowendinsightGet.GithubTrending do
             }
           _ ->
             {:ok, report_json} = Redix.command(:redix, ["GET", uuid])
-            Poison.Parser.parse!(report_json)
+            Poison.Parser.parse!(report_json, %{})
         end
     end
   end
@@ -78,9 +78,9 @@ defmodule LowendinsightGet.GithubTrending do
 
   def get_repo_size(url) do
     case Helpers.get_slug(url) do
-      {:ok, slug} -> 
+      {:ok, slug} ->
         {:ok, response} = fetch_gh_api_response(get_token(), slug)
-        json = Poison.Parser.parse!(response.body)
+        json = Poison.Parser.parse!(response.body, %{})
         {json["size"], url}
       {:error, msg} -> {:error, msg}
     end
@@ -94,13 +94,13 @@ defmodule LowendinsightGet.GithubTrending do
     url <> "-skip_too_big"
   end
 
-  def get_wait_time() do 
+  def get_wait_time() do
     if Application.fetch_env(:lowendinsight_get, :wait_time) == :error,
     do: 1800000,
     else: Application.fetch_env!(:lowendinsight_get, :wait_time)
   end
 
-  def check_repo_size?() do 
+  def check_repo_size?() do
     if Application.fetch_env(:lowendinsight_get, :check_repo_size?) == :error,
       do: false,
       else: Application.fetch_env!(:lowendinsight_get, :check_repo_size?)
@@ -117,7 +117,7 @@ defmodule LowendinsightGet.GithubTrending do
     Logger.info("fetching trend list for: #{url}")
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Poison.Parser.parse!(body)}
+        {:ok, Poison.Parser.parse!(body, %{})}
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, "Not found :("}

@@ -153,7 +153,7 @@ defmodule LowendinsightGet.Endpoint do
 
     conn
     |> put_resp_content_type(@content_type)
-    |> send_resp(201, "Processing languages...")
+    |> send_resp(200, "Processing languages...")
   end
 
   match _ do

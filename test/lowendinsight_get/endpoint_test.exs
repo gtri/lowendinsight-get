@@ -202,6 +202,18 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 200
   end
 
+  test "it returns 200 for the /v1/gh_trending/process endpoint" do
+    # Create a test connection
+    conn = conn(:post, "/v1/gh_trending/process")
+
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response and status
+    assert conn.state == :sent
+    assert conn.status == 200
+  end
+
   test "it returns 201 when url is invalid for /validate-url endpoint" do
     # Create a test connection
     conn = conn(:get, "/validate-url/url=www.url.com")

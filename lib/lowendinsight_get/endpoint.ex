@@ -148,6 +148,14 @@ defmodule LowendinsightGet.Endpoint do
     |> send_resp(status, body)
   end
 
+  post "/v1/gh_trending/process" do
+    Task.start_link(fn -> LowendinsightGet.GithubTrending.process_languages() end)
+
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(200, "Processing languages...")
+  end
+
   match _ do
     send_resp(conn, 404, "Requested page not found!")
   end

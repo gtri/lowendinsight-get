@@ -20,17 +20,12 @@ config :lowendinsight_get,
     "java",
     "javascript",
     "ruby",
-    "c",
     "c++",
     "c#",
     "haskell",
-    "php",
     "scala",
     "swift",
-    "objective-c",
-    "kotlin",
-    "shell",
-    "typescript"
+    "kotlin"
   ]
 
 config :lowendinsight,

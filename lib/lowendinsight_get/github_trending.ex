@@ -20,6 +20,7 @@ defmodule LowendinsightGet.GithubTrending do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()
     check_repo? = check_repo_size?()
+    num_of_repos = Application.fetch_env!(:lowendinsight_get, :num_of_repos) || 5
 
     case fetch_trending_list(language) do
       {:error, reason} ->
@@ -30,7 +31,7 @@ defmodule LowendinsightGet.GithubTrending do
         filter_to_urls(list)
         |> Enum.map(fn url -> get_repo_size(url) end)
         |> Enum.map(fn {repo_size, url} -> filter_out_large_repos({repo_size, url}, check_repo?) end)
-        |> Enum.take(10)
+        |> Enum.take(num_of_repos)
 
         Logger.debug("URLS: #{inspect urls}")
 

@@ -11,6 +11,7 @@ defmodule LowendinsightGet.GithubTrendingTest do
         assert true == String.contains?(msg, "successfully")
         report = LowendinsightGet.GithubTrending.get_current_gh_trending_report("elixir")
         assert report["state"] == "complete" || "incomplete"
+        assert Enum.count(report["report"]["repos"]) == Application.fetch_env!(:lowendinsight_get, :num_of_repos)
       {:error, msg} ->
         IO.inspect msg, label: "msg"
       end

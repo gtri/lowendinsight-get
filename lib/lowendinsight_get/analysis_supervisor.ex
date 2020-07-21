@@ -18,18 +18,27 @@ defmodule LowendinsightGet.AnalysisSupervisor do
   def perform_analysis(uuid, urls, start_time) do
     opts = [restart: :transient]
 
-    case Task.Supervisor.start_child(
-           __MODULE__,
-           LowendinsightGet.Analysis,
-           :process,
-           [uuid, urls, start_time],
-           opts
-         ) do
-      {:ok, _pid} ->
-        {:ok, "started analysis task for #{uuid}"}
+    # case Task.Supervisor.start_child(
+    #        __MODULE__,
+    #        LowendinsightGet.Analysis,
+    #        :process,
+    #        [uuid, urls, start_time],
+    #        opts
+    #      ) do
+    #   {:ok, _pid} ->
+    #     {:ok, "started analysis task for #{uuid}"}
 
-      {:error, error} ->
-        {:error, error}
-    end
+    #   {:error, error} ->
+    #     {:error, error}
+    # end
+      # {:ok, pid} = Task.Supervisor.start_child(__MODULE__, LowendinsightGet.Analysis, :process, 
+      # [uuid, urls, start_time], opts)
+
+    # {:ok, "started analysis task for #{uuid}"}
+
+    task = Task.Supervisor.async(__MODULE__, LowendinsightGet.Analysis, :process, [uuid, urls, start_time], opts)
+    Task.await(task, LowendinsightGet.GithubTrending.get_wait_time())
+    
+    {:ok, "completed analysis for #{uuid}"}
   end
 end

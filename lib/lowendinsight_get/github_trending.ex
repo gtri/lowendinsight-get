@@ -9,11 +9,9 @@ defmodule LowendinsightGet.GithubTrending do
 
   def process_languages() do
     Application.get_env(:lowendinsight_get, :languages)
-    |> Enum.each(fn language ->
-      task = Task.async(__MODULE__, :analyze, [language])
-      Task.await(task, get_wait_time())
-    end)
+    |> Enum.each(fn language -> LowendinsightGet.GithubTrending.analyze(language) end)
   end
+
 
   @spec analyze(any) :: {:error, any} | {:ok, <<_::64, _::_*8>>}
   def analyze(language) do

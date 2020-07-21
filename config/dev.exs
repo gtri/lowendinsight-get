@@ -7,6 +7,7 @@ use Mix.Config
 config :lowendinsight_get,
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "false"),
   gh_token: System.get_env("LEI_GH_TOKEN") || "",
+  num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "1800000")
 
 config :redix,

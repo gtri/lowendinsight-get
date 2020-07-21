@@ -9,17 +9,16 @@ defmodule LowendinsightGet.GithubTrending do
 
   def process_languages() do
     Application.get_env(:lowendinsight_get, :languages)
-    |> Enum.each(fn language ->
-      task = Task.async(__MODULE__, :analyze, [language])
-      Task.await(task, get_wait_time())
-    end)
+    |> Enum.each(fn language -> LowendinsightGet.GithubTrending.analyze(language) end)
   end
+
 
   @spec analyze(any) :: {:error, any} | {:ok, <<_::64, _::_*8>>}
   def analyze(language) do
     Logger.info("Github Trending Analysis: {#{language}}")
     uuid = UUID.uuid1()
     check_repo? = check_repo_size?()
+    num_of_repos = Application.fetch_env!(:lowendinsight_get, :num_of_repos) || 5
 
     case fetch_trending_list(language) do
       {:error, reason} ->
@@ -30,7 +29,7 @@ defmodule LowendinsightGet.GithubTrending do
         filter_to_urls(list)
         |> Enum.map(fn url -> get_repo_size(url) end)
         |> Enum.map(fn {repo_size, url} -> filter_out_large_repos({repo_size, url}, check_repo?) end)
-        |> Enum.take(10)
+        |> Enum.take(num_of_repos)
 
         Logger.debug("URLS: #{inspect urls}")
 

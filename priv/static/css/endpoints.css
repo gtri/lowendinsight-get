@@ -51,7 +51,7 @@ a.is-family-code {
 }
 
 .button.is-warning {
-	background-color: #ffd83d83;
+	background-color: #ffea75;
 }
 
 #report-info-box.column {
@@ -82,9 +82,9 @@ a.is-family-code {
 .sub {
 	margin: 27px 0px !important;
 	padding: 9px !important;
-	background-color: #444444f5;
+	background-color: #333333;
 	display: block; 
-	border-radius: 6px;
+	border-radius: 9px;
 	white-space: nowrap;
 	width: auto;
 	color: white;
@@ -176,7 +176,7 @@ div p strong {
 
 .criticalrisk {
 	font-weight: bold;
-	background-color: red !important;
+	background-color: #DC143C !important;
 	color: white;
 	padding: 4px;
 }
@@ -283,7 +283,8 @@ th .tooltip {
 
 .dropdown .button > span {
 	color: black;
-	font-weight: 442;
+	font-weight: 448;
+	letter-spacing: 2px;
 }
 
 .search {

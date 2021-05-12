@@ -13,15 +13,13 @@ jobs:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: OS packages
-        run: |
-          sudo apt install libssl1.0.0
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
       - uses: actions/setup-elixir@v1
         with:
           otp-version: 22.x
           elixir-version: 1.9.x
+          experimental-otp: true
       - uses: zhulik/redis-action@1.1.0
         with:
           redis version: '5'

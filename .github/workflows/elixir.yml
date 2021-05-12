@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-      - uses: actions/setup-elixir@v1.0.0
+      - uses: actions/setup-elixir@v1
         with:
           otp-version: 22.x
           elixir-version: 1.9.x

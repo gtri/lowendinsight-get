@@ -33,8 +33,9 @@ defmodule LowendinsightGet.MixProject do
       {:quantum, "~> 3.0-rc"},
       {:timex, "~> 3.0"},
       ## {:lowendinsight, path: "../lowendinsight"},
-      ## {:lowendinsight, git: "git@bitbucket.org:kitplummer/lowendinsight", branch: "develop"}
+      ## {:lowendinsight, git: "git@bitbucket.org:gtri/lowendinsight", branch: "develop"}
       {:lowendinsight, "0.6.5"},
+      {:httpoison_retry, "~> 1.1.0"},
       {:distillery, "~> 2.1"},
       {:excoveralls, "~> 0.10", only: :test}
     ]

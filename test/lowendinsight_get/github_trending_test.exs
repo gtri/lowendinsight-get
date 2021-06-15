@@ -5,6 +5,7 @@
 defmodule LowendinsightGet.GithubTrendingTest do
   use ExUnit.Case, async: false
 
+  @tag timeout: 180_000
   test "it performs analysis on the trending repos in github" do
     case LowendinsightGet.GithubTrending.analyze("elixir") do
       {:ok, msg} ->

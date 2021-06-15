@@ -26,7 +26,8 @@ config :lowendinsight_get,
     "haskell",
     "scala",
     "swift",
-    "kotlin"
+    "kotlin",
+    "dart"
   ]
 
 config :lowendinsight,

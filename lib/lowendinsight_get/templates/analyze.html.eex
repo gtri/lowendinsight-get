@@ -43,7 +43,7 @@
         </div>
         <div class="column is-narrow is-vcentered">
           <h1 class="title">
-            <a href="https://github.com/gtri/lowendinsight" target="_blank">LowEndInsight</a>
+            <a href="https://lowendinsight.dev" target="_blank">LowEndInsight</a>
           </h1>
           <form id="form" class="input-field" action="/url=" method="get" onsubmit="validate_and_submit()">
             <input type="text" id="input-url" class="search" placeholder="Enter public git repo URL" required oninput="remove_error()">

@@ -18,17 +18,12 @@ jobs:
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # container:
-    #   image: elixir:1.9.4-alpine
+    container:
+      image: elixir:1.14.1-alpine
 
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-      - uses: actions/setup-elixir@v1
-        with:
-          otp-version: 25.x
-          elixir-version: 1.14.x
-          experimental-otp: true
       - uses: zhulik/redis-action@1.1.0
         with:
           redis version: '5'

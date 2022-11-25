@@ -22,7 +22,7 @@ jobs:
       image: elixir:1.14.1-alpine
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.5.1
         with:
           node-version: 18

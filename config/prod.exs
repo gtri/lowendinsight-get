@@ -5,7 +5,7 @@
 ## NOTE: This file is not used to configure the container deployment
 ##       that one is in `rel/config/prod.exs`
 
-use Mix.Config
+import Config
 
 config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")

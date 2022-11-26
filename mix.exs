@@ -37,7 +37,7 @@ defmodule LowendinsightGet.MixProject do
       {:lowendinsight, "0.7.0"},
       {:httpoison_retry, "~> 1.1.0"},
       {:distillery, "~> 2.1"},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.15", only: :test}
     ]
   end
 end

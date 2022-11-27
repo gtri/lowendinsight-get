@@ -6,7 +6,7 @@
 # This should match the version of Alpine that the `elixir:1.7.2-alpine` image uses
 ARG ALPINE_VERSION=3.10
 
-FROM elixir:1.9.4-alpine AS builder
+FROM elixir:1.14.1-alpine AS builder
 
 # The following are build arguments used to change variable parts of the image.
 # The name of your application/release (required)

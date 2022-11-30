@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of
 # the BSD 3-Clause license. See the LICENSE file for details.
 
-use Mix.Config
+import Config
 
 config :lowendinsight_get, LowendinsightGet.Endpoint, port: String.to_integer(System.get_env("PORT") || "4444")
 ## Default Cache TTL is 30 days or 25920000 seconds
@@ -12,7 +12,7 @@ config :lowendinsight_get,
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "7200000"),
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
-  gh_token: System.get_env("LEI_GH_TOKEN") || ""
+  gh_token: System.get_env("LEI_GH_TOKEN") || "",
   languages: [
     "elixir",
     "python",
@@ -65,7 +65,8 @@ config :lowendinsight,
   base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL")
+  redis_url: System.get_env("REDIS_URL"),
+  socket_opts: [:inet6]
 
 config :lowendinsight_get, LowendinsightGet.Scheduler,
 jobs: [

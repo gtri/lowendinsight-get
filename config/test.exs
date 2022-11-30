@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of
 # the BSD 3-Clause license. See the LICENSE file for details.
 
-use Mix.Config
+import Config
 config :logger, level: :error
 
 config :lowendinsight_get, LowendinsightGet.Endpoint, port: 4444

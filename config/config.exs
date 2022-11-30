@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of
 # the BSD 3-Clause license. See the LICENSE file for details.
 
-use Mix.Config
+import Config
 
 config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4000")
@@ -39,6 +39,10 @@ config :lowendinsight_get,
   ]
 
 config :lowendinsight,
+
+  ## SBOM manifest risk  - when not present
+  sbom_risk_level: System.get_env("LEI_SBOM_RISK_LEVEL") || "medium",
+
   ## Contributor in terms of discrete users
   ## NOTE: this currently doesn't discern same user with different email
   critical_contributor_level:

@@ -42,7 +42,7 @@
         </div>
         <div class="column" id="report-info-box">
           <h1 class="title">
-            <a href="https://lowendinsight.dev" target="_blank">LowEndInsight</a>
+            <a href="https://lowendinsight.fly.dev" target="_blank">LowEndInsight</a>
           </h1>
           <p class="subtitle sub">Analysis of Today's Github Trending Repos</p>
           <div class="box report-info-box">

@@ -11,7 +11,7 @@ config :lowendinsight_get, LowendinsightGet.Endpoint,
   port: String.to_integer(System.get_env("PORT") || "4444")
 
 config :lowendinsight_get,
-  check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
+  check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "false"),
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "7200000"),
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
   gh_token: System.get_env("LEI_GH_TOKEN") || ""
@@ -54,7 +54,7 @@ config :lowendinsight,
 
   ## Jobs per available core for defining max concurrency.  This value
   ## will be used to set the max_concurrency value.
-  jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "2"),
+  jobs_per_core_max: String.to_integer(System.get_env("LEI_JOBS_PER_CORE_MAX") || "1"),
 
   ## Base directory structure for temp clones
   base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"

@@ -112,7 +112,7 @@ defmodule LowendinsightGet.GithubTrending do
 
   defp fetch_trending_list(language) do
     url =
-      "https://arcane-ridge-81730.herokuapp.com/repositories?since=daily&language=" <> URI.encode_www_form(language)
+      "https://github-trending-api.fly.dev/repositories?since=daily&language=" <> URI.encode_www_form(language)
 
     Logger.info("fetching trend list for: #{url}")
     case HTTPoison.get(url) |> HTTPoison.Retry.autoretry(max_attempts: 5, wait: 15000, retry_unknown_errors: true) do

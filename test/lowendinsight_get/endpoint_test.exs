@@ -114,6 +114,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
+    assert conn.resp_body == "{\"error\":\"invalid URLs list\"}"
     assert conn.status == 422
   end
 

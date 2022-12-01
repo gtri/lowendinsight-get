@@ -1,0 +1,184 @@
+openapi: 3.1.0
+info:
+  title: LowEndInsight API Definition
+  description: |
+    LowEndInsight is a simple "bus-factor" risk analysis library for
+    Open Source Software which is managed within a Git repository.
+  version: 0.7.0
+paths:
+  /v1/analyze:
+    post:
+      summary: POST the set of URLs to be scanned, one or more in a JSON array.
+      description: The trigger for LowEndInsight analysis against a set of URLs of git repositories.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urls:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: input URLs received and processing has begun
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response" 
+        "422":
+          description: Error with processing the submitted URLs list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    get:
+      summary: GET the analysis report for a given UUID.
+      description: Returns the LowEndInsight analysis report for all of the submitted URLs via the returned UUID (to the POST).
+      parameters:
+        - $ref: "#/components/parameters/uuid"
+      responses:
+        "200":
+          description: The report has been returned by LowEndInsight - and may be complete or incomplete, as stated in the state field.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response"
+        "404":
+          description: No report found for the given UUID provided on the path, or no UUID provided.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  parameters:
+    uuid:
+      description: UUID for the job to fetch the report for
+      name: uuid
+      in: path
+      required: true
+      schema:
+        type: string
+        maximum: 1
+        minimum: 1
+        example: e4906074-71a5-11ed-8f94-f8e43bc7b319
+  schemas:
+    response:
+      type: object
+      properties:
+        uuid:
+          type: string
+        state:
+          type: string
+        metadata:
+          type: object
+          properties:
+            times:
+              type: object
+              properties:
+                start_time:
+                  type: string
+                end_time:
+                  type: string
+                duration:
+                  type: integer
+            risk_counts:
+              type: object
+              properties:
+                critical:
+                  type: integer
+                high:
+                  type: integer
+                medium:
+                  type: integer
+                low:
+                  type: integer
+            repo_count:
+              type: integer
+        report:
+          type: object
+          properties:
+            uuid:
+              type: string
+            repos:
+              type: array
+              items:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      risk:
+                        type: string
+                      results:
+                        type: object
+                        properties:
+                          top10_contributors:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                merges:
+                                  type: integer
+                                email:
+                                  type: string
+                                contributions:
+                                  type: integer
+                          sbom_risk:
+                            type: string
+                          recent_commit_size_in_percent_of_codebase:
+                            type: float
+                          large_recent_commit_risk:
+                            type: string
+                          functional_contributors_risk:
+                            type: string
+                          functional_contributors:
+                            type: integer
+                          functional_contributor_names:
+                            type: array
+                            items:
+                              type: string
+                          contributor_risk:
+                            type: string
+                          contributor_count:
+                            type: integer
+                          commit_currency_weeks:
+                            type: integer
+                          commit_currency_risk:
+                            type: string
+                      repo:
+                        type: string
+                      config:
+                        type: object
+                        properties:
+                          sbom_risk_level:
+                            type: string
+                          medium_large_commit_level:
+                            type: float
+                          medium_functional_contributors_level:
+                            type: integer
+                          medium_currency_level:
+                            type: integer
+                          medium_contributor_level:
+                            type: integer
+                          high_large_commit_level:
+                            type: float
+                          high_functional_contributors_level:
+                            type: integer
+                          high_currency_level:
+                            type: integer
+                          high_contributor_level:
+                            type: integer
+                          critical_large_commit_level:
+                            type: float

@@ -46,7 +46,7 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   get "/" do
-    render(conn, "analyze.html", 
+    render(conn, "analyze.html",
     report: "")
   end
 
@@ -84,22 +84,22 @@ defmodule LowendinsightGet.Endpoint do
             report: Poison.encode!(report, as: %RepoReport{data: %Data{results: %Results{}}}),
             url: url)
           _ ->
-            conn 
-          |> put_resp_content_type(@content_type) 
+            conn
+          |> put_resp_content_type(@content_type)
           |> send_resp(401, Poison.encode!(%{:error => "Invalid url"}))
         end
-      {:error, msg} -> 
+      {:error, msg} ->
           {:error, msg}
     end
   end
 
   get "/validate-url/url=:url" do
     url = URI.decode(url)
-    {status, body} = 
+    {status, body} =
       case Helpers.validate_url(url) do
         :ok ->
           {200, Poison.encode!(%{:ok => "valid url"})}
-        
+
         {:error, msg} ->
           {201, Poison.encode!(%{:error => msg})}
       end
@@ -116,7 +116,7 @@ defmodule LowendinsightGet.Endpoint do
           {200, job}
 
         {:error, _job} ->
-          {404, Poison.encode!(%{:error => "no job found."})}
+          {404, Poison.encode!(%{:error => "invalid UUID provided, no job found."})}
       end
 
     conn
@@ -136,7 +136,7 @@ defmodule LowendinsightGet.Endpoint do
               {200, empty}
 
             {:error, error} ->
-              {422, "LEI error - something went wrong #{error}"}
+              {422, Poison.encode!(%{:error => error})}
           end
 
         _ ->
@@ -157,7 +157,9 @@ defmodule LowendinsightGet.Endpoint do
   end
 
   match _ do
-    send_resp(conn, 404, "Requested page not found!")
+    conn
+    |> put_resp_content_type(@content_type)
+    |> send_resp(404, Poison.encode!(%{:error => "UUID not provided or found."}))
   end
 
   defp process do

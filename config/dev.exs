@@ -9,7 +9,7 @@ config :lowendinsight_get,
   gh_token: System.get_env("LEI_GH_TOKEN") || "",
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "1800000"),
-  use_workers: false
+  use_workers: true
 
 config :redix,
   timeout: :infinity

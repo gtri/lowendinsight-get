@@ -114,7 +114,16 @@ defmodule LowendinsightGet.Endpoint do
     {status, body} =
       case LowendinsightGet.Datastore.get_job(uuid) do
         {:ok, job} ->
-          {200, job}
+          ## update job if incomplete
+          job_obj = Poison.decode!(job)
+          case job_obj["state"] do
+            "complete" -> {200, job}
+            "incomplete" ->
+              ### we need to update with new stuffs.
+              Logger.debug("refreshing report")
+              refreshed_job = LowendinsightGet.Analysis.refresh_job(job_obj)
+              {200, Poison.encode!(refreshed_job)}
+          end
 
         {:error, _job} ->
           {404, Poison.encode!(%{:error => "invalid UUID provided, no job found."})}

@@ -26,7 +26,7 @@ defmodule LowendinsightGet.MixProject do
   defp deps do
     [
       {:plug, "~> 1.14"},
-      {:uuid, "~> 1.1"},
+      {:elixir_uuid, "~> 1.2"},
       {:cowboy, "~> 2.9", overide: true},
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.6", except: :prod, runtime: false},

@@ -32,16 +32,16 @@ defmodule LowendinsightGet.Analysis do
   def process(uuid, urls, start_time) do
     Logger.info("processing #{uuid} -> #{inspect urls}")
     LowendinsightGet.CounterAgent.new_counter(Enum.count(urls))
-  
+
     repos =
       urls
       |> Task.async_stream(__MODULE__, :analyze, ["lei-get", %{types: false}],
           timeout: :infinity,
           max_concurrency: 1)
       |> Enum.map(fn {:ok, report} -> elem(report, 1) end)
-    
+
     LowendinsightGet.CounterAgent.update()
-      
+
     report = %{
       state: "complete",
       report: %{uuid: UUID.uuid1(), repos: repos},
@@ -68,21 +68,40 @@ defmodule LowendinsightGet.Analysis do
     {:ok, report}
   end
 
-  # Pulled into a function so it can be called for other interaces
-  # Besides the endpoint.  Probably _should_ be in the analysis module.
-  # TODO: move to analysis module, get the biz logic isolated
+  # Pulled into a function so it can be called for other interfaces
+  # besides the endpoint.  Probably _should_ be in the analysis module.
   def process_urls(urls, uuid, start_time) do
     if :ok == Helpers.validate_urls(urls) do
       Logger.debug("started #{uuid} at #{start_time}")
 
       ## Get empty report for new job to respond the request with
       empty = AnalyzerModule.create_empty_report(uuid, urls, start_time)
-      LowendinsightGet.Datastore.write_job(uuid, empty)
 
+      ## TODO: Populate empty with results from cache (within 30 days)
+      repos =
+        urls
+        |> Enum.map(fn url ->
+          case LowendinsightGet.Datastore.get_from_cache(url, 28) do
+            {:ok, report} ->
+              Poison.decode!(report)
+
+
+            {:error, msg} ->
+              Logger.debug(msg)
+              # No cached create stub
+              %{data: %{repo: url}}
+          end
+        end)
+
+      report = Map.replace!(empty, :report, %{:repos => repos})
+
+
+      ## Then write job to store
+      LowendinsightGet.Datastore.write_job(uuid, report)
       case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
         {:ok, task} ->
           Logger.info(task)
-          {:ok, Poison.encode!(empty)}
+          {:ok, Poison.encode!(report)}
 
         {:error, error} ->
           {:error, error}

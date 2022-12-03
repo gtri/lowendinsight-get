@@ -109,6 +109,7 @@ defmodule LowendinsightGet.Endpoint do
       |> send_resp(status, body)
   end
 
+  ## API Bits
   get "/v1/analyze/:uuid" do
     {status, body} =
       case LowendinsightGet.Datastore.get_job(uuid) do
@@ -133,6 +134,7 @@ defmodule LowendinsightGet.Endpoint do
         %{"urls" => urls} ->
           case LowendinsightGet.Analysis.process_urls(urls, uuid, start_time) do
             {:ok, empty} ->
+              IO.inspect empty, label: "RESP"
               {200, empty}
 
             {:error, error} ->

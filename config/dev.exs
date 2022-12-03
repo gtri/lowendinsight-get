@@ -8,7 +8,23 @@ config :lowendinsight_get,
   check_repo_size?: String.to_atom(System.get_env("LEI_CHECK_REPO_SIZE") || "true"),
   gh_token: System.get_env("LEI_GH_TOKEN") || "",
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
-  wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "1800000")
+  wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "1800000"),
+  use_workers: false
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/3"
+  timeout: :infinity
+
+config :exq,
+  name: Exq,
+  host: "localhost",
+  port: 6379,
+  #password: "optional_redis_auth",
+  namespace: "exq",
+  concurrency: :infinite,
+  queues: [],
+  poll_timeout: 49,
+  scheduler_poll_timeout: 199,
+  scheduler_enable: true,
+  max_retries: 24,
+  mode: :default,
+  shutdown_timeout: 5000

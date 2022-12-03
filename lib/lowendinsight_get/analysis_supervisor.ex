@@ -18,6 +18,7 @@ defmodule LowendinsightGet.AnalysisSupervisor do
   def perform_analysis(uuid, urls, start_time) do
     opts = [restart: :transient]
     ## Queue the analysis in the worker's exq config
+    ## Only if use_workers is true
     if (Application.get_env(:lowendinsight_get, :use_workers)) do
       for url <- urls do
         Logger.debug("queueing up #{url}")

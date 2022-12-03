@@ -134,13 +134,10 @@ defmodule LowendinsightGet.Endpoint do
         %{"urls" => urls} ->
           case LowendinsightGet.Analysis.process_urls(urls, uuid, start_time) do
             {:ok, empty} ->
-              IO.inspect empty, label: "RESP"
               {200, empty}
-
             {:error, error} ->
               {422, Poison.encode!(%{:error => error})}
           end
-
         _ ->
           {422, process()}
       end

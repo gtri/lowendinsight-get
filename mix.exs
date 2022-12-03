@@ -25,14 +25,14 @@ defmodule LowendinsightGet.MixProject do
 
   defp deps do
     [
-      {:plug, "~> 1.6"},
+      {:plug, "~> 1.14"},
       {:uuid, "~> 1.1"},
-      {:cowboy, "< 2.8.0", overide: true},
+      {:cowboy, "~> 2.9", overide: true},
       {:plug_cowboy, "~> 2.0"},
-      {:credo, "~> 1.5", except: :prod, runtime: false},
+      {:credo, "~> 1.6", except: :prod, runtime: false},
       {:redix, ">= 0.0.0"},
-      {:quantum, "~> 3.0-rc"},
-      {:timex, "~> 3.0"},
+      {:quantum, "~> 3.5"},
+      {:timex, "~> 3.7"},
       {:exq, "~> 0.17"},
       ## {:lowendinsight, path: "../lowendinsight"},
       ## {:lowendinsight, git: "git@bitbucket.org:gtri/lowendinsight", branch: "develop"}

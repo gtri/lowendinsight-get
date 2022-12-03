@@ -84,8 +84,6 @@ defmodule LowendinsightGet.Analysis do
           case LowendinsightGet.Datastore.get_from_cache(url, 28) do
             {:ok, report} ->
               Poison.decode!(report)
-
-
             {:error, msg} ->
               Logger.debug(msg)
               # No cached create stub
@@ -93,19 +91,41 @@ defmodule LowendinsightGet.Analysis do
           end
         end)
 
-      report = Map.replace!(empty, :report, %{:repos => repos})
+      # Update URL list
+      urls =
+        urls
+        |> Enum.filter(fn url ->
+          !LowendinsightGet.Datastore.in_cache?(url) end)
+        |> Enum.map(fn url -> url end)
 
+      # Update the state if we don't need to do any analysis, or do it
+      # TODO: this is ugly!!  refactor after writing a test
+      if length(urls) == 0 do
+        metadata = empty[:metadata]
+        times = metadata[:times]
+        end_time = DateTime.utc_now()
+        times = Map.replace!(times, :end_time, end_time)
+        metadata = Map.replace!(metadata, :times, times)
+        updated_report = Map.replace!(empty, :metadata, metadata)
+        updated_report = Map.replace!(updated_report, :state, "complete")
+        final_report = Map.replace!(updated_report, :report, %{:repos => repos})
+        LowendinsightGet.Datastore.write_job(uuid, final_report)
+        {:ok, Poison.encode!(final_report)}
+      else
+        partial_report = Map.replace!(empty, :report, %{:repos => repos})
+        LowendinsightGet.Datastore.write_job(uuid, partial_report)
+        case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
+          {:ok, task} ->
+            Logger.info(task)
+            {:ok, Poison.encode!(partial_report)}
+
+          {:error, error} ->
+            {:error, error}
+        end
+      end
 
       ## Then write job to store
-      LowendinsightGet.Datastore.write_job(uuid, report)
-      case LowendinsightGet.AnalysisSupervisor.perform_analysis(uuid, urls, start_time) do
-        {:ok, task} ->
-          Logger.info(task)
-          {:ok, Poison.encode!(report)}
 
-        {:error, error} ->
-          {:error, error}
-      end
     else
       {:error, "invalid URLs list"}
     end

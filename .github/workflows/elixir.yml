@@ -20,8 +20,8 @@ jobs:
 #      image: elixir:1.14.1-alpine
     strategy:
       matrix:
-        otp: ['24', '25']
-        elixir: ['1.12.0', '1.14.1']
+        otp: ['24']
+        elixir: ['1.12.0']
 
     steps:
       - uses: erlef/setup-beam@v1

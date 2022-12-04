@@ -4,7 +4,7 @@ info:
   description: |
     LowEndInsight is a simple "bus-factor" risk analysis library for
     Open Source Software which is managed within a Git repository.
-  version: 0.7.0
+  version: 0.7.2
 paths:
   /v1/analyze:
     post:

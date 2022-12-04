@@ -26,7 +26,7 @@ ARG RELEASE_ROOT_DIR=/opt/app
 
 ENV SKIP_PHOENIX=${SKIP_PHOENIX} \
     APP_NAME=lowendinsight_get \
-    APP_VSN=0.7.0 \
+    APP_VSN=0.7.2 \
     MIX_ENV=${MIX_ENV} \
     RELEASE_ROOT_DIR=${RELEASE_ROOT_DIR}
 

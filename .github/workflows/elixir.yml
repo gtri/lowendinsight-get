@@ -3,13 +3,11 @@ name: default_elixir_ci
 on:
   pull_request:
     branches:
-      - 'develop'
+      - develop
   push:
-    branches:
-      - '*'         # matches every branch
-      - '*/*'       # matches every branch containing a single '/'
-      - '!main'     # excludes main - no pushes allowed
-      - '!develop'  # excludes develop - no pushes allowed
+    branches-ignore:
+      - main     # excludes main - no pushes allowed
+      - develop  # excludes develop - no pushes allowed
 
 jobs:
   build:

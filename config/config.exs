@@ -87,7 +87,7 @@ config :lowendinsight,
 import_config "#{Mix.env()}.exs"
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379/5"
+  redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379"
 
 config :lowendinsight_get, LowendinsightGet.Scheduler,
   jobs: [

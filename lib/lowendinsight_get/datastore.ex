@@ -59,7 +59,7 @@ defmodule LowendinsightGet.Datastore do
   end
 
   @doc """
-  get_from_cache/2: takes in a url and age in days, queries the datastore 
+  get_from_cache/2: takes in a url and age in days, queries the datastore
   and returns {:ok, report} if it exists, and {:not_found} if it does not,
   or {:error, message} if there was an issue reading from the datastore.
   """
@@ -86,8 +86,23 @@ defmodule LowendinsightGet.Datastore do
   end
 
   @doc """
+  in_cache?/1: takes in a url and returns true in cache, false if not
+  """
+  def in_cache?(url) do
+    case Redix.command(:redix, ["GET", url]) do
+      {:ok, res} ->
+        case res do
+          nil ->
+            false
+          _ ->
+            true
+        end
+    end
+  end
+
+  @doc """
   too_old?/2: takes in a repo report and age in days and returns 'true' if the diff
-  between the current datetime and the report end_time is greater than the 
+  between the current datetime and the report end_time is greater than the
   provided age - or return 'false'
   """
   def too_old?(repo, age) do

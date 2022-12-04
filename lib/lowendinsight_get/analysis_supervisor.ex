@@ -1,7 +1,7 @@
 # Copyright (C) 2020 by the Georgia Tech Research Institute (GTRI)
 # This software may be modified and distributed under the terms of
 # the BSD 3-Clause license. See the LICENSE file for details.
-
+require Logger
 defmodule LowendinsightGet.AnalysisSupervisor do
   @moduledoc """
   AnalysisSupervisor manages the asynchronous processing of incoming requests,
@@ -17,28 +17,22 @@ defmodule LowendinsightGet.AnalysisSupervisor do
   """
   def perform_analysis(uuid, urls, start_time) do
     opts = [restart: :transient]
-
-    # case Task.Supervisor.start_child(
-    #        __MODULE__,
-    #        LowendinsightGet.Analysis,
-    #        :process,
-    #        [uuid, urls, start_time],
-    #        opts
-    #      ) do
-    #   {:ok, _pid} ->
-    #     {:ok, "started analysis task for #{uuid}"}
-
-    #   {:error, error} ->
-    #     {:error, error}
-    # end
-      # {:ok, pid} = Task.Supervisor.start_child(__MODULE__, LowendinsightGet.Analysis, :process, 
-      # [uuid, urls, start_time], opts)
-
-    # {:ok, "started analysis task for #{uuid}"}
-
-    task = Task.Supervisor.async(__MODULE__, LowendinsightGet.Analysis, :process, [uuid, urls, start_time], opts)
-    Task.await(task, LowendinsightGet.GithubTrending.get_wait_time())
-    
-    {:ok, "completed analysis for #{uuid}"}
+    ## Queue the analysis in the worker's exq config
+    ## Only if use_workers is true
+    if (Application.get_env(:lowendinsight_get, :use_workers)) do
+      for url <- urls do
+        Logger.debug("queueing up #{url}")
+        case Exq.enqueue(Exq, "lei", LowendinsightWorker.Worker, [url]) do
+          {:ok, ack} ->
+            IO.inspect ack
+          {:error, msg} ->
+            Logger.error(msg)
+        end
+      end
+    else
+      task = Task.Supervisor.async(__MODULE__, LowendinsightGet.Analysis, :process, [uuid, urls, start_time], opts)
+      Task.await(task, LowendinsightGet.GithubTrending.get_wait_time())
+    end
+    {:ok, "collected analysis for cached repos, queued work for new repos - on job: #{uuid}"}
   end
 end

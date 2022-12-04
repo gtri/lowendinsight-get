@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "8f50335e-6a23-49c3-9915-63b2b262264f",
 		"name": "async",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "384681"
 	},
 	"item": [
 		{
@@ -11,7 +12,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"",
@@ -44,15 +44,153 @@
 					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\"]}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze",
-					"protocol": "http",
+					"raw": "{{host}}/v1/analyze",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "4000",
 					"path": [
 						"v1",
 						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "submit job bad url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"it should return a uuid\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"response is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"urls\":[\"https://github.com/kitplummer/blah\", \"blah\"]}"
+				},
+				"url": {
+					"raw": "{{host}}/v1/analyze",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "submit job no urls in body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"it should return a uuid\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.not.be.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"response is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/v1/analyze",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"analyze"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "trigger-trending.sh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/v1/gh_trending/process",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"gh_trending",
+						"process"
 					]
 				},
 				"description": "basic post\n"
@@ -65,7 +203,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
 						"exec": [
 							"pm.test(\"response is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -84,7 +221,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "d6af0520-5ff4-4348-aaff-8b21b0728dc0",
 						"exec": [
 							"setTimeout(function(){}, [3000]);"
 						],
@@ -109,12 +245,10 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze/{{uuid}}",
-					"protocol": "http",
+					"raw": "{{host}}/v1/analyze/{{uuid}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "4000",
 					"path": [
 						"v1",
 						"analyze",
@@ -126,12 +260,135 @@
 			"response": []
 		},
 		{
-			"name": "submit job 2",
+			"name": "get report no uuid",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
+						"exec": [
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"it should return a complete state\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.eql(\"UUID not provided or found.\")",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, [3000]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/v1/analyze/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"analyze",
+						""
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "get report invalid uuid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is 200\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"it should return a complete state\", function(){ ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.eql(\"invalid UUID provided, no job found.\")",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, [3000]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/v1/analyze/blah",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"analyze",
+						"blah"
+					]
+				},
+				"description": "basic post\n"
+			},
+			"response": []
+		},
+		{
+			"name": "submit job mutli",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"",
@@ -161,15 +418,13 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\"]}"
+					"raw": "{\"urls\":[\"https://github.com/satori/go.uuid\", \"https://github.com/gtri/lowendinsight\"]}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze",
-					"protocol": "http",
+					"raw": "{{host}}/v1/analyze",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "4000",
 					"path": [
 						"v1",
 						"analyze"
@@ -180,12 +435,11 @@
 			"response": []
 		},
 		{
-			"name": "get report 2",
+			"name": "get report multi",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "21f459e4-1550-44c3-9565-6d1318bbe463",
 						"exec": [
 							"pm.test(\"response is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -204,9 +458,8 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "d6af0520-5ff4-4348-aaff-8b21b0728dc0",
 						"exec": [
-							"//setTimeout(function(){}, [3000]);"
+							"setTimeout(function(){}, [3000]);"
 						],
 						"type": "text/javascript"
 					}
@@ -229,12 +482,10 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:4000/v1/analyze/{{uuid}}",
-					"protocol": "http",
+					"raw": "{{host}}/v1/analyze/{{uuid}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "4000",
 					"path": [
 						"v1",
 						"analyze",
@@ -245,6 +496,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -15,7 +15,23 @@ config :lowendinsight_get,
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "7200000"),
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
   gh_token: System.get_env("LEI_GH_TOKEN") || "",
-  use_workers: true
+  use_workers: true,
+  languages: [
+    "elixir",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "javascript",
+    "ruby",
+    "c++",
+    "c#",
+    "haskell",
+    "scala",
+    "swift",
+    "kotlin",
+    "dart"
+  ]
 
 config :lowendinsight,
   ## Contributor in terms of discrete users

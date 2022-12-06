@@ -27,6 +27,7 @@ defmodule LowendinsightGet.AnalysisSupervisor do
             IO.inspect ack
           {:error, msg} ->
             Logger.error(msg)
+            raise RuntimeError, message: "Failed to queue the analysis job."
         end
       end
     else

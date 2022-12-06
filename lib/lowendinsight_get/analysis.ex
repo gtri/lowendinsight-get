@@ -123,7 +123,6 @@ defmodule LowendinsightGet.Analysis do
             {:error, error}
         end
       end
-
     else
       {:error, "invalid URLs list"}
     end

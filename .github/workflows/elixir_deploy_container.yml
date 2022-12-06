@@ -13,6 +13,7 @@ jobs:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - run: sudo apt-get install libtinfo5
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
       - uses: actions/setup-elixir@v1

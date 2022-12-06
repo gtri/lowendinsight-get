@@ -8,7 +8,7 @@ defmodule LowendinsightGet.CacheCleaner do
   def clean() do
     cache_ttl = Application.get_env(:lowendinsight_get, :cache_ttl, 2_592_000)
     Logger.info("SCHEDULER: TTL -> #{cache_ttl}")
-    {:ok, conn} = Redix.start_link(Application.get_env(:redix, :redis_url), socket_opts: [:inet6])
+    {:ok, conn} = Redix.start_link(Application.get_env(:redix, :redis_url))
 
     case Redix.command(conn, ["KEYS", "http*"]) do
       {:ok, keys} ->

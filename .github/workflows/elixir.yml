@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop
+      - main
   push:
     branches-ignore:
       - main     # excludes main - no pushes allowed
@@ -24,6 +25,8 @@ jobs:
         elixir: ['1.14.1']
 
     steps:
+      - name: Install deps
+        run: sudo apt install libtinfo5
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp}}

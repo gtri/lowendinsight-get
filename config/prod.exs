@@ -77,8 +77,7 @@ config :lowendinsight,
   base_temp_dir: System.get_env("LEI_BASE_TEMP_DIR") || "/tmp"
 
 config :redix,
-  redis_url: System.get_env("REDIS_URL"),
-  socket_opts: [:inet6]
+  redis_url: System.get_env("REDIS_URL")
 
 config :exq,
   name: Exq,

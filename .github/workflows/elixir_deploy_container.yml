@@ -44,8 +44,3 @@ jobs:
           time: '30s'
       - name: Postman tests
         run: newman run test/docker-compose.postman_collection.json
-      - name: Publish to Registry
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: make publish-release

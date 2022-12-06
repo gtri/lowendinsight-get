@@ -17,14 +17,20 @@ jobs:
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    container:
-      image: elixir:1.14.1-alpine
-    # strategy:
-    #   matrix:
-    #     otp: ['24']
-    #     elixir: ['1.14.1']
+#    container:
+#      image: elixir:1.14.1-alpine
+    strategy:
+      matrix:
+        otp: ['24']
+        elixir: ['1.14.1']
 
     steps:
+      - name: Install deps
+        run: sudo apt install 
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}      
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.5.1
         with:

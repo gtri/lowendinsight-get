@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-elixir@v1
         with:
           otp-version: 24.x
-          elixir-version: 1.12.x
+          elixir-version: 1.14.x
           experimental-otp: true
       - uses: zhulik/redis-action@1.1.0
         with:

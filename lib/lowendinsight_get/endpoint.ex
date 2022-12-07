@@ -14,7 +14,7 @@ defmodule LowendinsightGet.Endpoint do
 
   require Logger
   alias Plug.{Adapters.Cowboy}
-
+  plug(LowendinsightGet.Auth)
   plug(Plug.Logger, log: :debug)
   plug(Plug.Static, from: "priv/static/images", at: "/images")
   plug(Plug.Static, from: "priv/static/js", at: "/js")

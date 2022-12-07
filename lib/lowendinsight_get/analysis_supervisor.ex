@@ -24,15 +24,19 @@ defmodule LowendinsightGet.AnalysisSupervisor do
         Logger.debug("queueing up #{url}")
         case Exq.enqueue(Exq, "lei", LowendinsightWorker.Worker, [url]) do
           {:ok, ack} ->
-            IO.inspect ack
+            Logger.debug("ACKED from EXQ: #{ack}")
           {:error, msg} ->
             Logger.error(msg)
             raise RuntimeError, message: "Failed to queue the analysis job."
         end
       end
     else
-      task = Task.Supervisor.async(__MODULE__, LowendinsightGet.Analysis, :process, [uuid, urls, start_time], opts)
-      Task.await(task, LowendinsightGet.GithubTrending.get_wait_time())
+      try do
+        task = Task.Supervisor.async(__MODULE__, LowendinsightGet.Analysis, :process, [uuid, urls, start_time], opts)
+        Task.await(task, LowendinsightGet.GithubTrending.get_wait_time())
+      catch
+        :exit, _ -> raise RuntimeError, message: "Timed out processing local async job."
+      end
     end
     {:ok, "collected analysis for cached repos, queued work for new repos - on job: #{uuid}"}
   end

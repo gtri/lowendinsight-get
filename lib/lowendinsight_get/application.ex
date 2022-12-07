@@ -40,7 +40,7 @@ defmodule LowendinsightGet.Application do
         [name: :redix,
          sync_connect: true,
          exit_on_disconnection: false,
-         socket_opts: [:inet6],
+         #socket_opts: [:inet6],
          host: uri.host,
          port: port,
          password: password

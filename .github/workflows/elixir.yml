@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop
+      - main
   push:
     branches-ignore:
       - main     # excludes main - no pushes allowed
@@ -21,9 +22,11 @@ jobs:
     strategy:
       matrix:
         otp: ['24']
-        elixir: ['1.12.0']
+        elixir: ['1.14.1']
 
     steps:
+      - name: Install deps
+        run: sudo apt install 
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp}}
@@ -55,8 +58,8 @@ jobs:
           time: '30s'
       - name: Postman tests
         run: newman run test/docker-compose.postman_collection.json
-      - name: Publish to Registry
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: make publish-snapshot
+      # - name: Publish to Registry
+      #   env:
+      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #   run: make publish-snapshot

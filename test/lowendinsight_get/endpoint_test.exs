@@ -7,6 +7,8 @@ defmodule LowendinsightGet.EndpointTest do
   use Plug.Test
 
   @opts LowendinsightGet.Endpoint.init([])
+  @token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJKb2tlbiIsImV4cCI6MTY3MDQzNTQ1MSwiaWF0IjoxNjcwNDI4MjUxLCJpc3MiOiJKb2tlbiIsImp0aSI6IjJzbjhyOThiczNiZzNwZWwwZzAwMDA3MiIsIm5iZiI6MTY3MDQyODI1MX0.kQgqr-7lmQtlVeq96hmIIYHEniJq638NQ10VW26kT9k"
+  @headers [{"authorization", "Bearer #{@token}"}]
 
   setup_all do
     Redix.command(:redix, ["FLUSHDB"])
@@ -41,7 +43,7 @@ defmodule LowendinsightGet.EndpointTest do
     assert conn.status == 404
   end
 
-  test "it returns 200 with a valid payload" do
+  test "it returns 401 with no token" do
     Redix.command(:redix, ["DELETE", "https://github.com/gbtestee/gbtestee"])
     # Create a test connection
     conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/gbtestee/gbtestee"]})
@@ -50,10 +52,25 @@ defmodule LowendinsightGet.EndpointTest do
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
+    assert conn.status == 401
+    json = Poison.decode!(conn.resp_body)
+    assert "Please make sure you have authentication header" == json["message"]
+  end
+
+  test "it returns 200 with a valid payload" do
+    Redix.command(:redix, ["DELETE", "https://github.com/gbtestee/gbtestee"])
+    # Create a test connection
+    conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/gbtestee/gbtestee"]})
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
+    # Invoke the plug
+    conn = LowendinsightGet.Endpoint.call(conn, @opts)
+
+    # Assert the response
     assert conn.status == 200
-    :timer.sleep(5000)
+    :timer.sleep(2000)
     json = Poison.decode!(conn.resp_body)
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200
     json = Poison.decode!(conn.resp_body)
@@ -65,6 +82,7 @@ defmodule LowendinsightGet.EndpointTest do
     # Create a test connection
     conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/git-author"]})
 
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
@@ -73,6 +91,7 @@ defmodule LowendinsightGet.EndpointTest do
     :timer.sleep(2000)
     json = Poison.decode!(conn.resp_body)
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200
     json = Poison.decode!(conn.resp_body)
@@ -81,6 +100,7 @@ defmodule LowendinsightGet.EndpointTest do
     # Create a test connection
     conn = conn(:post, "/v1/analyze", %{urls: ["https://github.com/kitplummer/git-author"]})
 
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     # Invoke the plug
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
@@ -89,6 +109,7 @@ defmodule LowendinsightGet.EndpointTest do
     :timer.sleep(1000)
     json = Poison.decode!(conn.resp_body)
     conn = conn(:get, "/v1/analyze/#{json["uuid"]}")
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
     assert conn.status == 200
     json = Poison.decode!(conn.resp_body)
@@ -100,6 +121,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = conn(:post, "/v1/analyze", %{})
 
     # Invoke the plug
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
@@ -111,6 +133,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = conn(:post, "/v1/analyze", %{urls: ["htps://github.com/kitplummer/xmpp4rails"]})
 
     # Invoke the plug
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
@@ -123,6 +146,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = conn(:get, "/fail")
 
     # Invoke the plug
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response
@@ -208,6 +232,7 @@ defmodule LowendinsightGet.EndpointTest do
     conn = conn(:post, "/v1/gh_trending/process")
 
     # Invoke the plug
+    conn = Plug.Conn.merge_req_headers(conn, @headers)
     conn = LowendinsightGet.Endpoint.call(conn, @opts)
 
     # Assert the response and status

@@ -14,7 +14,7 @@ defmodule LowendinsightGet.Endpoint do
 
   require Logger
   alias Plug.{Adapters.Cowboy}
-
+  plug(LowendinsightGet.Auth)
   plug(Plug.Logger, log: :debug)
   plug(Plug.Static, from: "priv/static/images", at: "/images")
   plug(Plug.Static, from: "priv/static/js", at: "/js")
@@ -89,7 +89,8 @@ defmodule LowendinsightGet.Endpoint do
           |> send_resp(401, Poison.encode!(%{:error => "Invalid url"}))
         end
       {:error, msg} ->
-          {:error, msg}
+        Logger.error(msg)
+        {:error, msg}
     end
   end
 

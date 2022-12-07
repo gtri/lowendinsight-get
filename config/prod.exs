@@ -15,7 +15,23 @@ config :lowendinsight_get,
   wait_time: String.to_integer(System.get_env("LEI_WAIT_TIME") || "7200000"),
   num_of_repos: String.to_integer(System.get_env("LEI_NUM_OF_REPOS") || "10"),
   gh_token: System.get_env("LEI_GH_TOKEN") || "",
-  use_workers: true
+  use_workers: true,
+  languages: [
+    "elixir",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "javascript",
+    "ruby",
+    "c++",
+    "c#",
+    "haskell",
+    "scala",
+    "swift",
+    "kotlin",
+    "dart"
+  ]
 
 config :lowendinsight,
   ## Contributor in terms of discrete users
@@ -62,3 +78,18 @@ config :lowendinsight,
 
 config :redix,
   redis_url: System.get_env("REDIS_URL")
+
+config :exq,
+  name: Exq,
+  host: System.get_env("REDIS_HOST") || "localhost",
+  port: System.get_env("REDIS_PORT") || 6379,
+  password: System.get_env("REDIS_PASSWD") || nil,
+  namespace: "exq",
+  concurrency: :infinite,
+  queues: [],
+  poll_timeout: 49,
+  scheduler_poll_timeout: 199,
+  scheduler_enable: true,
+  max_retries: 24,
+  mode: :default,
+  shutdown_timeout: 4999

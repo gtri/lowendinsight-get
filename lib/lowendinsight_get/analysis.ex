@@ -123,28 +123,24 @@ defmodule LowendinsightGet.Analysis do
             {:error, error}
         end
       end
-
     else
       {:error, "invalid URLs list"}
     end
   end
 
   def refresh_job(job) do
-    IO.inspect job
     uuid = job["uuid"]
     repos = job["report"]["repos"]
     urls =
       repos
       |> Enum.reduce([], fn object, acc ->
         repo = object["data"]["repo"]
-        IO.inspect repo, label: "REPO"
         if !Map.has_key?(object["data"], "results") do
           [ repo | acc ]
         else
           acc
         end
       end)
-    IO.inspect urls, label: "REPOS to REFRESH"
     ## TODO: Populate empty with results from cache (within 30 days)
     repos =
       urls
